@@ -1,0 +1,2615 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#5c6f9e">
+<meta name="description" content="色卡/私调图管理：图集展示、导入、筛选、编辑、备份">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="私调记录">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>私调记录</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%239fb0d4'/%3E%3Cstop offset='1' stop-color='%235c6f9e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Crect x='12' y='16' width='40' height='32' rx='6' fill='rgba(255,255,255,0.92)'/%3E%3Ccircle cx='22' cy='26' r='3.5' fill='%235c6f9e'/%3E%3Cpath d='M12 42l12-12 8 8 6-6 14 14v4a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4z' fill='%23a9b8d8'/%3E%3C/svg%3E">
+<style>
+/* ============ 基础 ============ */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg1:#eef0f4; --bg2:#e2e6ec;
+  --glass:rgba(255,255,255,0.5);
+  --glass-strong:rgba(255,255,255,0.66);
+  --glass-border:rgba(255,255,255,0.72);
+  --text:#333a47; --muted:#8a919d;
+  --btn:#ffffff; --btn-text:#465064;
+  --accent:#5c6f9e; --accent-soft:rgba(92,111,158,0.16);
+  --danger:#cf4a45; --danger-soft:rgba(207,74,69,0.12);
+  --ok:#2e8b68; --ok-soft:rgba(46,139,104,0.14);
+  --warn:#a9711e; --warn-soft:rgba(169,113,30,0.14);
+  --shadow-sm:0 2px 10px rgba(60,70,90,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  --shadow:0 14px 40px rgba(60,70,90,0.14), inset 0 1px 0 rgba(255,255,255,0.55);
+  --shadow-lg:0 24px 60px rgba(40,55,90,0.24), inset 0 1px 0 rgba(255,255,255,0.65);
+  --radius:20px; --blur:26px;
+}
+html{-webkit-text-size-adjust:100%}
+html,body{
+  width:100%;min-height:100%;
+  overscroll-behavior:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(255,255,255,0.95) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 45% at 95% 5%, rgba(200,214,235,0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(178,190,210,0.35) 0%, transparent 45%),
+    linear-gradient(165deg, var(--bg1) 0%, var(--bg2) 55%, #d9dde4 100%);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",sans-serif;
+  overflow-x:hidden;
+  touch-action:manipulation;
+}
+body.modal-lock{overflow:hidden;touch-action:none}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+input,textarea{outline:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+[hidden]{display:none !important}
+svg{display:block}
+.num{font-variant-numeric:tabular-nums}
+
+/* ============ 图标 ============ */
+.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.icon-sm{width:16px;height:16px}
+.icon-lg{width:26px;height:26px}
+.icon-fill{fill:currentColor;stroke:none}
+
+/* ============ 布局壳 ============ */
+.app{min-height:100vh;min-height:100dvh;display:flex;align-items:stretch;justify-content:center;padding:0}
+.shell-wrap{width:100%;max-width:480px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.glass{
+  background:linear-gradient(145deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 45%, rgba(255,255,255,0.32) 100%);
+  border:1px solid rgba(255,255,255,0.55);
+  backdrop-filter:blur(var(--blur)) saturate(1.35);
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.35);
+  box-shadow:0 18px 50px rgba(60,65,75,0.14), 0 4px 12px rgba(60,65,75,0.07), inset 0 1px 0 rgba(255,255,255,0.65);
+  flex:1;display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;position:relative;
+}
+.glass::before{
+  content:"";pointer-events:none;position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 30%);
+  opacity:.65;z-index:0;
+}
+.glass > *{position:relative;z-index:1}
+
+@media (min-width:500px){
+  .app{padding:18px 14px}
+  .shell-wrap{min-height:calc(100vh - 36px);border-radius:30px;overflow:hidden}
+  .glass{min-height:calc(100vh - 36px);border-radius:30px}
+}
+
+/* ============ 通用控件 ============ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  border:1px solid var(--glass-border);
+  background:linear-gradient(160deg, var(--btn) 0%, rgba(255,255,255,0.35) 100%);
+  color:var(--btn-text);
+  font-size:13px;font-weight:600;
+  padding:11px 14px;border-radius:14px;min-height:42px;
+  backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:0 6px 18px rgba(60,80,120,0.1), inset 0 1px 0 rgba(255,255,255,0.7);
+  transition:transform .12s ease, box-shadow .2s ease, opacity .2s ease;
+  user-select:none;-webkit-user-select:none;
+}
+.btn:active{transform:scale(.97);opacity:.9}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-block{width:100%}
+.btn-primary{
+  background:linear-gradient(160deg, var(--btn) 0%, rgba(255,255,255,0.72) 100%);
+  border-color:rgba(255,255,255,0.85);
+}
+.btn-ghost{background:rgba(255,255,255,0.35);border-color:rgba(255,255,255,0.5)}
+.btn-danger{color:var(--danger)}
+.btn-ok{color:var(--ok)}
+
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12.5px;padding:8px 13px;border-radius:999px;min-height:36px;
+  background:rgba(255,255,255,0.72);border:1px solid var(--glass-border);
+  color:var(--text);cursor:pointer;transition:all .18s ease;
+}
+.chip:active{transform:scale(.96)}
+.chip.on{
+  background:var(--accent-soft);border-color:rgba(92,111,158,0.4);
+  color:var(--accent);font-weight:600;
+}
+
+/* ============ 圈名页 ============ */
+.name-screen{
+  padding:48px 28px 32px;text-align:center;flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;min-height:100dvh;
+}
+.name-logo{
+  width:76px;height:76px;border-radius:24px;margin-bottom:22px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg, rgba(255,255,255,0.75), rgba(255,255,255,0.35));
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.8);
+  color:var(--accent);
+}
+.name-logo svg{width:36px;height:36px}
+.name-screen h1{font-size:clamp(21px,5.5vw,25px);font-weight:700;margin-bottom:8px;letter-spacing:.02em}
+.name-screen .tip{color:var(--muted);font-size:13px;margin-bottom:24px;line-height:1.6}
+.name-field{
+  width:100%;display:flex;align-items:center;gap:10px;
+  border:1px solid var(--glass-border);
+  background:var(--glass-strong);border-radius:16px;
+  padding:4px 14px;margin-bottom:14px;
+  box-shadow:var(--shadow-sm);
+}
+.name-field .icon{color:var(--muted)}
+.name-field input{
+  flex:1;min-width:0;border:none;background:transparent;
+  padding:12px 0;font-size:16px;min-height:46px;color:var(--text);
+}
+.name-field:focus-within{border-color:rgba(92,111,158,0.45);box-shadow:0 0 0 3px var(--accent-soft)}
+
+/* ============ 主壳 ============ */
+.shell{display:none;overflow:hidden;flex:1;min-height:100vh;min-height:100dvh;flex-direction:column}
+.shell.show{display:flex;flex-direction:column}
+
+.topbar{
+  display:flex;align-items:center;gap:11px;
+  padding:14px 14px 12px;
+  padding-top:max(14px, env(safe-area-inset-top));
+  border-bottom:1px solid rgba(255,255,255,0.28);
+  background:linear-gradient(180deg, rgba(255,255,255,0.24), transparent);
+}
+.avatar-wrap{
+  width:44px;height:44px;border-radius:50%;overflow:hidden;
+  background:rgba(255,255,255,0.55);border:1.5px solid var(--glass-border);
+  flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);
+}
+.avatar-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.upload-input{display:none}
+.title-area{flex:1;min-width:0}
+.main-title{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subtitle{font-size:11px;color:var(--muted);margin-top:2px}
+.topbar-total{text-align:right;margin-right:2px;flex-shrink:0}
+.topbar-total .t-label{font-size:10px;color:var(--muted);line-height:1.2}
+.topbar-total .t-value{font-size:14px;font-weight:700;line-height:1.3}
+.icon-btn{
+  width:40px;height:40px;border-radius:14px;
+  background:linear-gradient(160deg, rgba(255,255,255,0.55), rgba(255,255,255,0.22));
+  border:1px solid rgba(255,255,255,0.6);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--btn-text);flex-shrink:0;position:relative;overflow:hidden;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 6px 16px rgba(60,80,120,0.1), inset 0 1px 0 rgba(255,255,255,0.65);
+  transition:transform .12s ease;
+}
+.icon-btn:active{transform:scale(.94)}
+.settings-icon-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* 统计条 */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  padding:12px 14px 4px;
+}
+.stat-tile{
+  background:linear-gradient(160deg, rgba(255,255,255,0.55), rgba(255,255,255,0.22));
+  border:1px solid rgba(255,255,255,0.6);
+  border-radius:16px;padding:10px 6px;text-align:center;
+  box-shadow:var(--shadow-sm);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.stat-tile .s-label{font-size:10.5px;color:var(--muted);margin-bottom:3px;letter-spacing:.03em}
+.stat-tile .s-value{font-size:17px;font-weight:700;line-height:1.2}
+.stat-tile .s-value small{font-size:11px;font-weight:600;color:var(--muted);margin-left:1px}
+
+/* 搜索 */
+.search-bar{padding:8px 14px 2px}
+.search-field{
+  display:flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,0.55);border:1px solid var(--glass-border);
+  border-radius:14px;padding:2px 12px;
+  box-shadow:var(--shadow-sm);
+  transition:border-color .18s ease, box-shadow .18s ease;
+}
+.search-field:focus-within{border-color:rgba(92,111,158,0.45);box-shadow:0 0 0 3px var(--accent-soft)}
+.search-field .icon{color:var(--muted)}
+.search-field input{
+  flex:1;min-width:0;border:none;background:transparent;
+  padding:11px 0;font-size:15px;min-height:42px;color:var(--text);
+}
+.search-clear{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);background:rgba(140,150,170,0.18);
+}
+.search-clear .icon{width:13px;height:13px}
+
+/* 工具栏 */
+.toolbar{
+  display:flex;align-items:center;gap:9px;
+  padding:10px 14px 8px;
+  position:sticky;top:0;z-index:6;
+}
+.tool-btn{flex:1;min-height:42px;font-size:13px}
+.import-btn{flex-shrink:0;min-height:42px;font-size:13px}
+
+/* 状态筛选行 */
+.status-row{display:flex;gap:8px;padding:2px 14px 4px;overflow-x:auto;scrollbar-width:none}
+.status-row::-webkit-scrollbar{display:none}
+.status-row .chip{flex-shrink:0}
+
+/* 页面切换 */
+.page{display:none;padding:4px 14px calc(20px + env(safe-area-inset-bottom));flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.page.active{display:block;animation:pageIn .26s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.page-head{display:flex;align-items:center;gap:10px;padding:6px 0 14px}
+.back-btn{
+  width:40px;height:40px;border-radius:13px;flex-shrink:0;
+  background:linear-gradient(160deg, rgba(255,255,255,0.55), rgba(255,255,255,0.22));
+  border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;color:var(--btn-text);
+  box-shadow:var(--shadow-sm);
+}
+.page-head h2{font-size:15px;font-weight:700}
+.page-head h2:empty{display:none}
+.page-head .spacer{flex:1}
+
+/* ============ 文件夹网格 ============ */
+.folder-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.folder-card{
+  position:relative;
+  background:linear-gradient(160deg, rgba(255,255,255,0.55), rgba(255,255,255,0.2));
+  border:1px solid rgba(255,255,255,0.62);
+  border-radius:20px;overflow:hidden;cursor:pointer;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);
+  transform:translateZ(0);transition:transform .16s ease, box-shadow .2s ease;
+}
+.folder-card:active{transform:scale(.975)}
+.folder-cover{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:rgba(225,230,238,0.65)}
+.folder-cover-empty{
+  width:100%;aspect-ratio:1;display:flex;flex-direction:column;gap:6px;
+  align-items:center;justify-content:center;color:var(--muted);
+  background:linear-gradient(160deg, rgba(235,239,245,0.7), rgba(220,226,236,0.5));
+}
+.folder-cover-empty svg{width:30px;height:30px;opacity:.7}
+.folder-cover-empty span{font-size:11px;opacity:.75}
+.folder-name-tag{
+  position:absolute;left:8px;bottom:8px;z-index:2;
+  max-width:calc(100% - 16px);
+  padding:6px 10px;border-radius:12px;
+  background:linear-gradient(160deg, rgba(255,255,255,0.72), rgba(255,255,255,0.38));
+  border:1px solid rgba(255,255,255,0.75);
+  backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:0 4px 12px rgba(50,70,110,0.1), inset 0 1px 0 rgba(255,255,255,0.8);
+  font-size:13.5px;font-weight:700;letter-spacing:.02em;
+  color:var(--text);line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.folder-status-tag{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
+  padding:7px 16px;border-radius:999px;
+  backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);
+  box-shadow:0 4px 10px rgba(50,70,110,0.16), inset 0 1px 0 rgba(255,255,255,0.75);
+  font-size:12px;font-weight:700;letter-spacing:.08em;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.75);
+}
+.folder-status-tag.st-sold{background:linear-gradient(160deg, rgba(235,247,241,0.92), rgba(208,236,223,0.8));color:var(--ok)}
+.folder-status-tag.st-pending{background:linear-gradient(160deg, rgba(252,244,227,0.94), rgba(243,229,197,0.82));color:var(--warn)}
+.folder-edit-btn{
+  position:absolute;top:8px;right:8px;z-index:3;
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(160deg, rgba(255,255,255,0.7), rgba(255,255,255,0.36));
+  border:1px solid rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 4px 10px rgba(50,70,110,0.14);
+  display:flex;align-items:center;justify-content:center;color:var(--text);
+}
+.folder-edit-btn .icon{width:15px;height:15px}
+.empty-tip{
+  text-align:center;color:var(--muted);font-size:13px;
+  padding:52px 16px;grid-column:1/-1;line-height:1.9;
+}
+.empty-tip svg{width:44px;height:44px;margin:0 auto 12px;opacity:.55}
+
+/* ============ 详情页 ============ */
+.detail-card-title{
+  font-size:clamp(23px,7vw,29px);font-weight:800;letter-spacing:.04em;
+  color:var(--text);line-height:1.25;margin:4px 0 12px;padding:0 2px;
+}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.detail-actions .btn{padding:6px 12px;min-height:34px;font-size:11.5px;border-radius:999px}
+.detail-meta{
+  background:var(--glass-strong);border:1px solid var(--glass-border);
+  border-radius:14px;padding:12px 14px;margin-bottom:12px;
+  font-size:12.5px;font-weight:600;line-height:1.8;color:var(--text);
+}
+.detail-meta span{color:var(--muted);font-weight:600;margin-right:4px}
+.detail-meta .st{display:inline-flex;align-items:center;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700;margin-left:4px}
+.detail-meta .st.st-sold{background:var(--ok-soft);color:var(--ok)}
+.detail-meta .st.st-pending{background:var(--warn-soft);color:var(--warn)}
+.multi-bar{display:none;gap:8px;margin-bottom:12px}
+.multi-bar.show{display:flex}
+.multi-bar .btn{flex:1;padding:9px 4px;font-size:12px;min-height:40px;border-radius:12px}
+.card-price-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--glass-strong);border:1px solid var(--glass-border);
+  border-radius:14px;padding:11px 14px;margin-bottom:12px;cursor:pointer;
+  transition:transform .12s ease;
+}
+.card-price-row:active{transform:scale(.985)}
+.card-price-row .label{font-size:12px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:6px}
+.card-price-row .label .icon{width:14px;height:14px}
+.card-price-row .value{font-size:14px;font-weight:700;color:var(--text)}
+.total-bar{
+  background:rgba(255,255,255,0.72);border:1px solid var(--glass-border);
+  border-radius:14px;padding:12px 14px;margin-bottom:14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.total-bar .label{font-size:13px;color:var(--muted)}
+.total-bar .value{font-size:18px;font-weight:800;color:var(--accent)}
+.section-label{font-size:12px;color:var(--muted);margin-bottom:9px;font-weight:600;letter-spacing:.04em}
+
+/* ============ 记录列表 ============ */
+.record-list{display:flex;flex-direction:column;gap:10px}
+.record-wrap{position:relative}
+.record-checkbox{
+  position:absolute;top:12px;left:12px;width:22px;height:22px;z-index:3;
+  accent-color:var(--accent);display:none;
+}
+.record-checkbox.show{display:block}
+.record-item{
+  display:flex;flex-direction:column;gap:10px;
+  background:linear-gradient(160deg, rgba(255,255,255,0.52), rgba(255,255,255,0.22));
+  border:1px solid rgba(255,255,255,0.6);
+  border-radius:18px;padding:12px;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:var(--shadow-sm);
+  transition:transform .14s ease;
+}
+.record-item:active{transform:scale(.99)}
+.record-wrap .record-item.multi-on{padding-left:46px}
+.record-main{display:flex;gap:11px;align-items:flex-start;min-width:0}
+.record-thumb{
+  width:58px;height:58px;border-radius:13px;object-fit:cover;
+  background:rgba(225,230,238,0.7);flex-shrink:0;cursor:zoom-in;
+  border:1px solid rgba(255,255,255,0.5);
+}
+.record-thumb-empty{
+  width:58px;height:58px;border-radius:13px;flex-shrink:0;
+  background:rgba(225,230,238,0.55);display:flex;align-items:center;justify-content:center;
+  color:var(--muted);
+}
+.record-thumb-empty .icon{width:22px;height:22px;opacity:.6}
+.record-body{flex:1;min-width:0;padding-top:1px}
+.record-body .n{font-size:15px;font-weight:700;margin-bottom:3px}
+.record-body .m{font-size:12px;color:var(--muted);line-height:1.6}
+.record-body .note{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5;display:flex;align-items:center;gap:4px}
+.record-body .note .icon{width:13px;height:13px;opacity:.8}
+.record-actions{display:flex;gap:8px}
+.record-actions .btn{flex:1;padding:8px 4px;min-height:36px;font-size:12px;border-radius:12px}
+
+/* ============ 导入页 ============ */
+.form-card{
+  background:linear-gradient(160deg, rgba(255,255,255,0.52), rgba(255,255,255,0.24));
+  border:1px solid rgba(255,255,255,0.6);
+  border-radius:20px;padding:16px;
+  backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
+  box-shadow:var(--shadow);
+}
+.form-row{margin-bottom:13px}
+.form-row:last-child{margin-bottom:0}
+.form-row label{display:block;font-size:12.5px;color:var(--text);margin-bottom:8px;font-weight:700;letter-spacing:.03em}
+.form-row input[type="text"]{
+  width:100%;
+  border:1px solid rgba(255,255,255,0.65);
+  border-radius:14px;
+  background:linear-gradient(160deg, rgba(255,255,255,0.6), rgba(255,255,255,0.28));
+  backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+  box-shadow:var(--shadow-sm);
+  padding:12px 14px;font-size:16px;min-height:46px;color:var(--text);
+  transition:border-color .18s ease, box-shadow .18s ease;
+}
+.form-row input[type="text"]:focus{
+  border-color:rgba(92,111,158,0.45);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+.preview-box{
+  width:100%;aspect-ratio:1.35;border-radius:14px;
+  background:rgba(228,233,240,0.55);border:1.5px dashed rgba(160,172,192,0.55);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:13px;cursor:pointer;
+  transition:border-color .18s ease;
+}
+.preview-box:active{border-color:var(--accent)}
+.preview-box .icon{width:30px;height:30px;margin-bottom:6px;opacity:.65}
+.preview-box .p-hint{display:flex;flex-direction:column;align-items:center;gap:2px}
+.preview-box img{width:100%;height:100%;object-fit:cover;display:block}
+.preview-box.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px;align-content:start;overflow-y:auto;aspect-ratio:auto;min-height:140px;max-height:300px}
+.preview-box.grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:9px}
+.hint{font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.6}
+
+/* ============ 弹层 ============ */
+.modal-mask{
+  position:fixed;inset:0;z-index:60;
+  background:rgba(40,48,60,0.32);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .22s ease, visibility .22s;
+}
+.modal-mask.show{opacity:1;visibility:visible;pointer-events:auto}
+.modal{
+  width:100%;max-width:420px;max-height:min(80vh,80dvh);overflow:auto;
+  background:linear-gradient(160deg, rgba(255,255,255,0.78), rgba(255,255,255,0.44));
+  border:1px solid rgba(255,255,255,0.65);
+  backdrop-filter:blur(28px) saturate(1.35);-webkit-backdrop-filter:blur(28px) saturate(1.35);
+  border-radius:24px;padding:18px 16px;
+  box-shadow:var(--shadow-lg);
+  transform:translateY(12px) scale(.97);
+  transition:transform .26s cubic-bezier(.2,.85,.25,1);
+}
+.modal-mask.show .modal{transform:none}
+.modal h3{font-size:15.5px;font-weight:700;margin-bottom:14px}
+.modal-section{margin-bottom:15px}
+.modal-section .label{font-size:13px;color:var(--text);margin-bottom:9px;font-weight:700;letter-spacing:.03em}
+.chip-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.modal-actions{display:flex;gap:8px;margin-top:10px}
+.modal-actions .btn{flex:1;min-height:46px;font-size:14px;border-radius:14px}
+.modal-actions .cancel{background:rgba(255,255,255,0.75);color:var(--muted)}
+.modal-actions .ok{background:rgba(255,255,255,0.95);color:var(--accent);font-weight:700}
+.modal-actions .ok.danger{color:var(--danger)}
+
+/* 设置 */
+.setting-row{margin-bottom:13px}
+.setting-row > label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px;font-weight:600}
+.setting-row input[type="text"]{
+  width:100%;border:1px solid var(--glass-border);
+  background:rgba(255,255,255,0.75);border-radius:12px;
+  padding:11px 12px;font-size:16px;min-height:44px;color:var(--text);
+}
+.setting-row input[type="color"]{
+  width:48px;height:38px;border:1px solid var(--glass-border);
+  border-radius:10px;background:transparent;padding:2px;flex-shrink:0;
+}
+.setting-row input[type="checkbox"]{width:22px;height:22px;accent-color:var(--accent)}
+.color-pair{display:flex;gap:8px;align-items:center}
+.color-pair input[type="text"]{flex:1;font-size:13px;min-height:38px;padding:8px 10px}
+.setting-actions{display:flex;flex-direction:column;gap:9px;margin-top:10px}
+.setting-actions .btn{width:100%;padding:12px;font-size:13px;min-height:44px}
+
+/* 确认弹窗 */
+.confirm-modal{max-width:320px;text-align:center}
+.confirm-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.confirm-msg{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:6px;white-space:pre-line;text-align:left}
+.confirm-modal .modal-actions{margin-top:16px}
+
+/* 文件夹操作 */
+.folder-action-modal{max-width:270px;display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.folder-action-modal h3{text-align:center;margin-bottom:2px}
+.folder-action-chip{
+  width:100%;padding:13px;border-radius:999px;
+  background:rgba(255,255,255,0.75);border:1px solid var(--glass-border);
+  font-size:14px;font-weight:600;color:var(--text);min-height:46px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .12s ease;
+}
+.folder-action-chip:active{transform:scale(.97)}
+.folder-action-chip.danger{color:var(--danger)}
+
+/* 导出选择 */
+.export-list{max-height:42vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.export-row{
+  display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:13px;
+  background:rgba(255,255,255,0.58);border:1px solid rgba(255,255,255,0.65);
+  cursor:pointer;
+}
+.export-row input[type="checkbox"]{width:19px;height:19px;flex-shrink:0;accent-color:var(--accent)}
+.export-row .e-name{flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.export-count{font-size:12px;color:var(--muted)}
+
+/* ============ 灯箱 ============ */
+.lightbox{
+  position:fixed;inset:0;z-index:80;
+  background:rgba(15,20,30,0.82);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .24s ease, visibility .24s;
+}
+.lightbox.show{opacity:1;visibility:visible;pointer-events:auto}
+.lb-top{position:absolute;top:max(14px, env(safe-area-inset-top));left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:2}
+.lb-count{color:rgba(255,255,255,0.85);font-size:13px;font-weight:600;padding:7px 13px;border-radius:999px;background:rgba(255,255,255,0.14);backdrop-filter:blur(8px)}
+.lb-close{
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(255,255,255,0.16);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.lb-close .icon{width:18px;height:18px}
+.lb-img{max-width:100%;max-height:82vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,0.16);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.lb-nav.prev{left:10px}
+.lb-nav.next{right:10px}
+.lb-nav:disabled{opacity:.25;cursor:default}
+
+/* ============ Toast ============ */
+#toastWrap{
+  position:fixed;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom));z-index:130;
+  display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;padding:0 20px;
+}
+.toast{
+  display:flex;align-items:center;gap:8px;
+  max-width:88%;padding:11px 18px;border-radius:999px;
+  background:rgba(35,42,55,0.82);color:#fff;font-size:13px;font-weight:600;
+  box-shadow:0 10px 30px rgba(20,25,40,0.3);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  opacity:0;transform:translateY(14px) scale(.96);
+  transition:opacity .25s ease, transform .25s ease;
+  text-align:center;line-height:1.5;
+}
+.toast.show{opacity:1;transform:none}
+.toast .icon{width:16px;height:16px;flex-shrink:0}
+.toast.t-success{background:rgba(38,96,74,0.92)}
+.toast.t-danger{background:rgba(158,54,50,0.94)}
+
+/* ============ 加载遮罩 ============ */
+#loadingOverlay{
+  position:fixed;inset:0;z-index:110;
+  background:rgba(40,48,60,0.42);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;flex-direction:column;
+  padding:20px;
+}
+#loadingOverlay.show{display:flex}
+.loading-box{
+  background:linear-gradient(160deg, rgba(255,255,255,0.94), rgba(255,255,255,0.8));
+  border:1px solid rgba(255,255,255,0.75);
+  border-radius:20px;padding:24px 30px;text-align:center;
+  box-shadow:var(--shadow-lg);
+  max-width:290px;width:100%;
+}
+.loading-box .lt{font-size:15px;font-weight:700;color:var(--text);margin-bottom:7px}
+.loading-box .ls{font-size:12px;color:var(--muted);line-height:1.6}
+.loading-spinner{
+  width:34px;height:34px;margin:0 auto 14px;border-radius:50%;
+  border:3px solid rgba(92,111,158,0.18);border-top-color:var(--accent);
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ 动效降级 ============ */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .loading-spinner{animation:none;border-top-color:var(--accent)}
+}
+
+/* ============ 桌面端微调 ============ */
+@media (min-width:500px){
+  .name-screen{min-height:calc(100vh - 36px)}
+  .modal{max-width:420px;border-radius:24px}
+  .folder-grid{gap:14px}
+}
+</style>
+</head>
+<body>
+<!-- ===== SVG 图标库 ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.7" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12"/><path d="M15.5 9.5a3.5 3.5 0 1 0-7 0c0 4.5 7 2.5 7 5a3.5 3.5 0 1 1-7 0"/></symbol>
+</svg>
+
+<div class="app">
+  <div class="shell-wrap">
+    <!-- ===== 圈名页 ===== -->
+    <div class="glass name-screen" id="nameScreen">
+      <div class="name-logo"><svg class="icon icon-lg"><use href="#i-card" xlink:href="#i-card"/></svg></div>
+      <h1 id="screenTitle">私调记录</h1>
+      <p class="tip" id="screenTip">请输入您的圈名</p>
+      <div class="name-field">
+        <svg class="icon icon-sm"><use href="#i-edit" xlink:href="#i-edit"/></svg>
+        <input type="text" id="nameInput" maxlength="20" autocomplete="nickname" placeholder="圈名">
+      </div>
+      <button class="btn btn-primary btn-block" id="confirmName" style="min-height:48px;font-size:15px">确定</button>
+    </div>
+
+    <!-- ===== 主壳 ===== -->
+    <div class="glass shell" id="shell">
+      <div class="topbar">
+        <label class="avatar-wrap" for="avatarInput" title="点击上传头像">
+          <div class="avatar-placeholder" id="avatarPlaceholder"><svg class="icon"><use href="#i-camera" xlink:href="#i-camera"/></svg></div>
+          <img id="avatarImg" style="display:none" alt="头像">
+        </label>
+        <input type="file" id="avatarInput" accept="image/*" class="upload-input">
+        <div class="title-area">
+          <div class="main-title" id="mainTitle">圈名の私调记录</div>
+          <div class="subtitle">本机保存 · 可备份</div>
+        </div>
+        <div class="topbar-total">
+          <div class="t-label">总金额</div>
+          <div class="t-value num" id="totalAllAmount">¥0</div>
+        </div>
+        <button class="icon-btn" id="btnSettings" title="设置" aria-label="设置">
+          <span id="settingsIconEmoji"><svg class="icon"><use href="#i-settings" xlink:href="#i-settings"/></svg></span>
+          <img id="settingsIconImg" class="settings-icon-img" style="display:none" alt="设置">
+        </button>
+      </div>
+
+      <!-- 统计条 -->
+      <div class="stats-strip" id="statsStrip"></div>
+
+      <!-- ===== 主页 ===== -->
+      <div class="page active" id="pageFolders">
+        <div class="search-bar">
+          <div class="search-field">
+            <svg class="icon icon-sm"><use href="#i-search" xlink:href="#i-search"/></svg>
+            <input type="text" id="searchInput" placeholder="搜索色卡 / 会名 / 助手" autocomplete="off">
+            <button type="button" class="search-clear" id="searchClear" hidden aria-label="清除搜索"><svg class="icon"><use href="#i-close" xlink:href="#i-close"/></svg></button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <button class="btn tool-btn" id="btnFilter"><svg class="icon icon-sm"><use href="#i-filter" xlink:href="#i-filter"/></svg>筛选</button>
+          <button class="btn btn-primary import-btn" id="btnImport"><svg class="icon icon-sm"><use href="#i-plus" xlink:href="#i-plus"/></svg>导入私调</button>
+        </div>
+        <div class="status-row" id="statusChips"></div>
+        <div class="folder-grid" id="folderGrid"></div>
+      </div>
+
+      <!-- ===== 导入页 ===== -->
+      <div class="page" id="pageImport">
+        <div class="page-head">
+          <button class="back-btn" id="backFromImport" type="button" aria-label="返回"><svg class="icon"><use href="#i-chevron-left" xlink:href="#i-chevron-left"/></svg></button>
+          <h2>导入私调</h2>
+        </div>
+        <div class="form-card">
+          <div class="form-row">
+            <label>图片（点击下方选择）</label>
+            <div class="preview-box" id="previewBox">
+              <div class="p-hint"><svg class="icon"><use href="#i-image" xlink:href="#i-image"/></svg><span>点击选择图片</span></div>
+            </div>
+            <input type="file" id="importImage" accept="image/*" class="upload-input" multiple>
+          </div>
+          <div class="form-row">
+            <label>色卡名</label>
+            <input type="text" id="fCardName" placeholder="必填，例如：克拉盘 A 款">
+          </div>
+          <div class="form-row">
+            <label>会名</label>
+            <input type="text" id="fMeetName" placeholder="选填">
+          </div>
+          <div class="form-row">
+            <label>价格</label>
+            <input type="text" id="fPrice" inputmode="decimal" placeholder="选填">
+          </div>
+          <div class="form-row">
+            <label>助手</label>
+            <input type="text" id="fHelper" placeholder="选填">
+          </div>
+          <button class="btn btn-primary btn-block" id="btnSaveImport" style="margin-top:8px;min-height:48px;font-size:15px">导入成功</button>
+          <div class="hint">支持一次选多张图片，全部归入同个色卡文件夹；封面固定为首张图片。若色卡名已存在，图片将追加到该色卡中。</div>
+        </div>
+      </div>
+
+      <!-- ===== 详情页 ===== -->
+      <div class="page" id="pageDetail">
+        <div class="page-head">
+          <button class="back-btn" id="backFromDetail" type="button" aria-label="返回"><svg class="icon"><use href="#i-chevron-left" xlink:href="#i-chevron-left"/></svg></button>
+          <h2 id="detailTitle">色卡详情</h2>
+          <div class="spacer"></div>
+        </div>
+        <div id="detailBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 筛选弹层 ===== -->
+<div class="modal-mask" id="filterModal">
+  <div class="modal">
+    <h3>筛选</h3>
+    <div class="modal-section">
+      <div class="label">会名</div>
+      <div class="chip-wrap" id="chipMeets"></div>
+    </div>
+    <div class="modal-section">
+      <div class="label">助手</div>
+      <div class="chip-wrap" id="chipHelpers"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn cancel" id="filterReset">重置</button>
+      <button class="btn ok" id="filterApply">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 设置弹层 ===== -->
+<div class="modal-mask" id="settingsModal">
+  <div class="modal">
+    <h3>设置</h3>
+    <div class="setting-row">
+      <label>用户昵称</label>
+      <input type="text" id="nicknameInput" maxlength="20">
+    </div>
+    <div class="setting-row">
+      <label>标题下方文案</label>
+      <input type="text" id="subtitleInput" value="本机保存 · 可备份">
+    </div>
+    <div class="setting-row">
+      <label>上传头像</label>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="btnSettingsAvatar" class="btn" style="flex:1">选择头像图片</button>
+        <button type="button" id="btnResetAvatar" class="btn btn-ghost" style="flex:1">恢复默认</button>
+      </div>
+      <input type="file" id="settingsAvatarInput" accept="image/*" class="upload-input">
+    </div>
+    <div class="setting-row">
+      <label>自定义设置图标</label>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="btnSettingsIcon" class="btn" style="flex:1">选择设置图标</button>
+        <button type="button" id="btnResetIcon" class="btn btn-ghost" style="flex:1">恢复默认</button>
+      </div>
+      <input type="file" id="settingsIconInput" accept="image/*" class="upload-input">
+    </div>
+    <div class="setting-row">
+      <label>背景色 1</label>
+      <div class="color-pair"><input type="color" id="colorBg1" value="#f3f5f8"><input type="text" id="colorBg1Hex" value="#f3f5f8"></div>
+    </div>
+    <div class="setting-row">
+      <label>背景色 2（渐变时使用）</label>
+      <div class="color-pair"><input type="color" id="colorBg2" value="#e8ecf1"><input type="text" id="colorBg2Hex" value="#e8ecf1"></div>
+    </div>
+    <div class="setting-row" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <label style="margin:0">背景使用渐变</label>
+      <input type="checkbox" id="colorGradient" checked>
+    </div>
+    <div class="setting-row">
+      <label>文字色</label>
+      <div class="color-pair"><input type="color" id="colorText" value="#3a3f47"><input type="text" id="colorTextHex" value="#3a3f47"></div>
+    </div>
+    <div class="setting-row">
+      <label>按钮颜色（不影响背景）</label>
+      <div class="color-pair"><input type="color" id="colorBtn" value="#ffffff"><input type="text" id="colorBtnHex" value="#ffffff"></div>
+    </div>
+    <div class="setting-row">
+      <label>按钮文字色</label>
+      <div class="color-pair"><input type="color" id="colorBtnText" value="#4a5160"><input type="text" id="colorBtnTextHex" value="#4a5160"></div>
+    </div>
+    <div class="setting-actions">
+      <button id="btnExportJson" class="btn btn-primary"><svg class="icon icon-sm"><use href="#i-upload" xlink:href="#i-upload"/></svg>导出备份文件</button>
+      <button id="btnImportJson" class="btn"><svg class="icon icon-sm"><use href="#i-download" xlink:href="#i-download"/></svg>导入备份文件</button>
+      <input type="file" id="jsonFileInput" accept="application/json,.json" class="upload-input">
+      <button id="btnResetTheme" class="btn btn-ghost">恢复默认颜色</button>
+      <button id="btnClearAll" class="btn btn-danger">清空所有内容</button>
+      <button id="settingsClose" class="btn">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 文件夹内会名筛选 ===== -->
+<div class="modal-mask" id="folderMeetModal">
+  <div class="modal">
+    <h3>筛选会名</h3>
+    <div class="modal-section">
+      <div class="label">已导入的会名</div>
+      <div class="chip-wrap" id="folderMeetChips"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn cancel" id="folderMeetReset">重置</button>
+      <button class="btn ok" id="folderMeetApply">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 编辑私调 ===== -->
+<div class="modal-mask" id="editModal">
+  <div class="modal">
+    <h3>编辑私调</h3>
+    <input type="hidden" id="editRecId">
+    <input type="hidden" id="editFolderId">
+    <div class="setting-row">
+      <label>价格</label>
+      <input type="text" id="editPrice" inputmode="decimal">
+    </div>
+    <div class="setting-row">
+      <label>会名</label>
+      <input type="text" id="editMeet">
+    </div>
+    <div class="setting-row">
+      <label>助手</label>
+      <input type="text" id="editHelper">
+    </div>
+    <div class="setting-row">
+      <label>备注</label>
+      <input type="text" id="editNote">
+    </div>
+    <div class="setting-actions">
+      <button id="editSave" class="btn btn-primary">保存</button>
+      <button id="editSetCover" class="btn">设为色卡封面</button>
+      <button id="editCancel" class="btn btn-ghost">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 文件夹长按操作 ===== -->
+<div class="modal-mask" id="folderActionModal">
+  <div class="modal folder-action-modal">
+    <h3 id="folderActionTitle">色卡操作</h3>
+    <button type="button" class="folder-action-chip" id="actMoveUp">上移</button>
+    <button type="button" class="folder-action-chip" id="actMoveDown">下移</button>
+    <button type="button" class="folder-action-chip" id="actSold">已出</button>
+    <button type="button" class="folder-action-chip" id="actPending">待出</button>
+    <button type="button" class="folder-action-chip danger" id="actDeleteFolder">删除</button>
+    <button type="button" class="folder-action-chip" id="actCancel" style="background:transparent">取消</button>
+  </div>
+</div>
+
+<!-- ===== 导出选择色卡 ===== -->
+<div class="modal-mask" id="exportSelectModal">
+  <div class="modal">
+    <h3>选择要导出的色卡</h3>
+    <p style="font-size:12px;color:var(--muted);margin:-4px 0 12px;line-height:1.6">美化设置、昵称、头像会始终包含在备份中，仅色卡可勾选。</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer">
+        <input type="checkbox" id="exportSelectAll" checked style="width:19px;height:19px;accent-color:var(--accent)">
+        全选
+      </label>
+      <span class="export-count num" id="exportSelectedCount"></span>
+    </div>
+    <div class="export-list" id="exportFolderList"></div>
+    <div class="modal-actions">
+      <button class="btn cancel" id="exportSelectCancel">取消</button>
+      <button class="btn ok" id="exportSelectOk">开始导出</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 裸卡价格编辑 ===== -->
+<div class="modal-mask" id="cardPriceModal">
+  <div class="modal" style="max-width:300px">
+    <h3>裸卡价格</h3>
+    <div class="setting-row">
+      <input type="text" id="cardPriceInput" inputmode="decimal" placeholder="例如 12">
+    </div>
+    <div class="modal-actions">
+      <button class="btn cancel" id="cardPriceCancel">取消</button>
+      <button class="btn ok" id="cardPriceOk">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 取消状态确认 ===== -->
+<div class="modal-mask" id="statusCancelModal">
+  <div class="modal" style="max-width:300px;text-align:center">
+    <h3 id="statusCancelText" style="margin-bottom:14px">是否取消该状态？</h3>
+    <div class="modal-actions">
+      <button class="btn cancel" id="statusCancelNo">取消</button>
+      <button class="btn ok" id="statusCancelYes">确认取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 色卡风格编辑 ===== -->
+<div class="modal-mask" id="cardStyleModal">
+  <div class="modal" style="max-width:300px">
+    <h3>色卡风格</h3>
+    <div class="setting-row">
+      <input type="text" id="cardStyleInput" placeholder="例如：闪卡 / 雾面">
+    </div>
+    <div class="modal-actions">
+      <button class="btn cancel" id="cardStyleCancel">取消</button>
+      <button class="btn ok" id="cardStyleOk">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 通用确认弹窗 ===== -->
+<div class="modal-mask" id="confirmModal">
+  <div class="modal confirm-modal">
+    <div class="confirm-title" id="confirmTitle">提示</div>
+    <div class="confirm-msg" id="confirmMsg"></div>
+    <div class="modal-actions">
+      <button class="btn cancel" id="confirmCancel">取消</button>
+      <button class="btn ok" id="confirmOk">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 图片灯箱 ===== -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-top">
+    <div class="lb-count num" id="lbCount"></div>
+    <button class="lb-close" id="lbClose" aria-label="关闭"><svg class="icon"><use href="#i-close" xlink:href="#i-close"/></svg></button>
+  </div>
+  <img class="lb-img" id="lbImg" src="" alt="预览大图">
+  <button class="lb-nav prev" id="lbPrev" aria-label="上一张"><svg class="icon"><use href="#i-chevron-left" xlink:href="#i-chevron-left"/></svg></button>
+  <button class="lb-nav next" id="lbNext" aria-label="下一张"><svg class="icon"><use href="#i-chevron-right" xlink:href="#i-chevron-right"/></svg></button>
+</div>
+
+<!-- ===== Toast ===== -->
+<div id="toastWrap" aria-live="polite"></div>
+
+<!-- ===== 全局加载遮罩 ===== -->
+<div id="loadingOverlay">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div class="lt" id="loadingText">处理中...</div>
+    <div class="ls" id="loadingSub">请勿关闭或刷新页面</div>
+  </div>
+</div>
+
+<script>
+/* ============ 常量与状态 ============ */
+const DB_NAME = "privateRecordDB_v5";
+const DB_VERSION = 1;
+const STORE_FOLDERS = "folders";
+const STORE_RECORDS = "records";
+const STORE_PROFILE = "profile";
+let db = null;
+let currentName = "";
+let pendingImages = [];
+let multiSelect = false;
+let selectedRecordIds = new Set();
+let batchEditMode = false;
+let filterState = { meets: new Set(), helpers: new Set() };
+let statusFilter = "";
+let searchQuery = "";
+let currentDetailFolderId = null;
+let folderMeetFilter = new Set();
+let priceFolderId = null;
+let styleFolderId = null;
+let actionFolderId = null;
+let cancelStatusFolderId = null;
+let lightboxList = [];
+let lightboxIndex = -1;
+
+/* ============ 加载遮罩 ============ */
+function showLoading(text, sub) {
+  const el = document.getElementById("loadingOverlay");
+  if (!el) return;
+  document.getElementById("loadingText").textContent = text || "处理中...";
+  document.getElementById("loadingSub").textContent = sub || "请勿关闭或刷新页面";
+  el.classList.add("show");
+  document.body.classList.add("modal-lock");
+}
+function hideLoading() {
+  const el = document.getElementById("loadingOverlay");
+  if (el) el.classList.remove("show");
+  const anyOpen = document.querySelector(".modal-mask.show, .lightbox.show");
+  if (!anyOpen) document.body.classList.remove("modal-lock");
+}
+
+/* ============ IndexedDB ============ */
+function openDB() {
+  return new Promise((resolve, reject) => {
+    if (db) return resolve(db);
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE_FOLDERS)) {
+        const fs = d.createObjectStore(STORE_FOLDERS, { keyPath: "id", autoIncrement: true });
+        fs.createIndex("cardName", "cardName", { unique: true });
+      }
+      if (!d.objectStoreNames.contains(STORE_RECORDS)) {
+        const rs = d.createObjectStore(STORE_RECORDS, { keyPath: "id", autoIncrement: true });
+        rs.createIndex("folderId", "folderId", { unique: false });
+      }
+      if (!d.objectStoreNames.contains(STORE_PROFILE)) {
+        d.createObjectStore(STORE_PROFILE, { keyPath: "key" });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = () => reject(req.error || new Error("DB open fail"));
+  });
+}
+function idbReq(request) {
+  return new Promise((resolve, reject) => {
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+function txDone(tx) {
+  return new Promise((resolve, reject) => {
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error || new Error("aborted"));
+  });
+}
+
+/* ============ 工具函数 ============ */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+function compressImage(file, maxSize, quality) {
+  maxSize = maxSize || 1200;
+  quality = quality || 0.82;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > maxSize || h > maxSize) {
+          const ratio = Math.min(maxSize / w, maxSize / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+function makeThumb(dataUrl, maxSize) {
+  maxSize = maxSize || 120;
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      const ratio = Math.min(maxSize / w, maxSize / h, 1);
+      w = Math.round(w * ratio); h = Math.round(h * ratio);
+      const canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL("image/jpeg", 0.5));
+    };
+    img.onerror = reject;
+    img.src = dataUrl;
+  });
+}
+async function saveImageToDevice(dataUrl, filename) {
+  filename = filename || "私调图.png";
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
+  if (navigator.canShare) {
+    try {
+      const file = new File([blob], filename, { type: blob.type || "image/png" });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: filename });
+        return;
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") return;
+    }
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+function escapeHtml(s) {
+  return String(s || "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function parsePrice(v) {
+  const n = parseFloat(String(v || "").replace(/[^\d.]/g, ""));
+  return isNaN(n) ? 0 : n;
+}
+function hasPrice(r) {
+  return r && r.price !== undefined && r.price !== null && String(r.price).trim() !== "";
+}
+function icon(name, cls) {
+  return '<svg class="icon ' + (cls || "") + '" aria-hidden="true"><use href="#i-' + name + '" xlink:href="#i-' + name + '"/></svg>';
+}
+function qMatch(s, q) {
+  return !q || String(s || "").toLowerCase().indexOf(q) !== -1;
+}
+
+/* ============ Profile / 数据操作 ============ */
+async function saveProfile(data) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_PROFILE, "readwrite");
+  const prev = (await idbReq(tx.objectStore(STORE_PROFILE).get("user"))) || {};
+  tx.objectStore(STORE_PROFILE).put({ key: "user", ...prev, ...data });
+  await txDone(tx);
+}
+async function loadProfile() {
+  const database = await openDB();
+  const tx = database.transaction(STORE_PROFILE, "readonly");
+  return (await idbReq(tx.objectStore(STORE_PROFILE).get("user"))) || {};
+}
+async function getAllFolders() {
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readonly");
+  const all = await idbReq(tx.objectStore(STORE_FOLDERS).getAll());
+  return (all || []).sort((a, b) => {
+    const oa = a.sortOrder != null ? a.sortOrder : (a.createdAt || a.id || 0);
+    const ob = b.sortOrder != null ? b.sortOrder : (b.createdAt || b.id || 0);
+    return oa - ob;
+  });
+}
+async function getFolderByCardName(cardName) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readonly");
+  return await idbReq(tx.objectStore(STORE_FOLDERS).index("cardName").get(cardName));
+}
+async function addFolder(folder) {
+  const database = await openDB();
+  if (folder.sortOrder == null) {
+    const existing = await getAllFolders();
+    const maxOrder = existing.reduce((m, f) => Math.max(m, f.sortOrder != null ? f.sortOrder : 0), 0);
+    folder.sortOrder = maxOrder + 1;
+  }
+  const tx = database.transaction(STORE_FOLDERS, "readwrite");
+  const id = await idbReq(tx.objectStore(STORE_FOLDERS).add(folder));
+  await txDone(tx);
+  return id;
+}
+async function moveFolder(folderId, direction) {
+  const folders = await getAllFolders();
+  const idx = folders.findIndex(f => f.id === folderId);
+  if (idx < 0) return false;
+  const newIdx = idx + direction;
+  if (newIdx < 0 || newIdx >= folders.length) return false;
+  const arr = folders.slice();
+  const tmp = arr[idx];
+  arr[idx] = arr[newIdx];
+  arr[newIdx] = tmp;
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readwrite");
+  const store = tx.objectStore(STORE_FOLDERS);
+  for (let i = 0; i < arr.length; i++) {
+    const f = arr[i];
+    f.sortOrder = i;
+    f.updatedAt = Date.now();
+    store.put(f);
+  }
+  await txDone(tx);
+  return true;
+}
+async function touchFolder(id) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readwrite");
+  const store = tx.objectStore(STORE_FOLDERS);
+  const f = await idbReq(store.get(id));
+  if (f) { f.updatedAt = Date.now(); store.put(f); }
+  await txDone(tx);
+}
+async function addRecord(rec) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_RECORDS, "readwrite");
+  await idbReq(tx.objectStore(STORE_RECORDS).add(rec));
+  await txDone(tx);
+}
+async function getRecordsByFolder(folderId) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_RECORDS, "readonly");
+  const all = await idbReq(tx.objectStore(STORE_RECORDS).index("folderId").getAll(folderId));
+  return (all || []).sort((a, b) => (b.time || 0) - (a.time || 0));
+}
+async function getRecordById(id) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_RECORDS, "readonly");
+  return await idbReq(tx.objectStore(STORE_RECORDS).get(id));
+}
+async function getAllRecords() {
+  const database = await openDB();
+  const tx = database.transaction(STORE_RECORDS, "readonly");
+  return (await idbReq(tx.objectStore(STORE_RECORDS).getAll())) || [];
+}
+async function delRecord(id) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_RECORDS, "readwrite");
+  tx.objectStore(STORE_RECORDS).delete(id);
+  await txDone(tx);
+}
+async function clearAllData() {
+  const database = await openDB();
+  const tx = database.transaction([STORE_FOLDERS, STORE_RECORDS], "readwrite");
+  tx.objectStore(STORE_FOLDERS).clear();
+  tx.objectStore(STORE_RECORDS).clear();
+  await txDone(tx);
+}
+async function updateRecord(id, patch) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_RECORDS, "readwrite");
+  const store = tx.objectStore(STORE_RECORDS);
+  const rec = await idbReq(store.get(id));
+  if (!rec) return;
+  Object.assign(rec, patch);
+  store.put(rec);
+  await txDone(tx);
+}
+async function setFolderCover(folderId, coverBase64) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readwrite");
+  const store = tx.objectStore(STORE_FOLDERS);
+  const f = await idbReq(store.get(folderId));
+  if (!f) return;
+  f.coverBase64 = coverBase64;
+  f.updatedAt = Date.now();
+  store.put(f);
+  await txDone(tx);
+}
+async function setFolderStatus(folderId, status) {
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readwrite");
+  const store = tx.objectStore(STORE_FOLDERS);
+  const f = await idbReq(store.get(folderId));
+  if (!f) return;
+  f.status = status;
+  f.updatedAt = Date.now();
+  store.put(f);
+  await txDone(tx);
+  await renderFolders();
+}
+async function deleteFolder(folderId) {
+  const database = await openDB();
+  const tx = database.transaction([STORE_FOLDERS, STORE_RECORDS], "readwrite");
+  tx.objectStore(STORE_FOLDERS).delete(folderId);
+  const idx = tx.objectStore(STORE_RECORDS).index("folderId");
+  const req = idx.openCursor(IDBKeyRange.only(folderId));
+  req.onsuccess = (e) => {
+    const cur = e.target.result;
+    if (cur) { cur.delete(); cur.continue(); }
+  };
+  await txDone(tx);
+  await renderFolders();
+  showPage(pageFolders);
+}
+
+/* ============ Toast / 确认弹窗 ============ */
+function showToast(msg, type) {
+  const wrap = document.getElementById("toastWrap");
+  if (!wrap) return;
+  const el = document.createElement("div");
+  el.className = "toast" + (type === "success" ? " t-success" : type === "danger" ? " t-danger" : "");
+  el.innerHTML = (type === "success" ? icon("check", "icon-sm") : type === "danger" ? icon("alert", "icon-sm") : "") +
+    "<span>" + escapeHtml(msg) + "</span>";
+  wrap.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("show"));
+  setTimeout(() => {
+    el.classList.remove("show");
+    setTimeout(() => el.remove(), 320);
+  }, 2400);
+}
+function askConfirm(opts) {
+  opts = opts || {};
+  return new Promise(resolve => {
+    const modal = document.getElementById("confirmModal");
+    document.getElementById("confirmTitle").textContent = opts.title || "提示";
+    document.getElementById("confirmMsg").textContent = opts.msg || "";
+    const okBtn = document.getElementById("confirmOk");
+    okBtn.textContent = opts.okText || "确定";
+    okBtn.classList.toggle("danger", !!opts.danger);
+    const cancelBtn = document.getElementById("confirmCancel");
+    cancelBtn.textContent = opts.cancelText || "取消";
+    cancelBtn.style.display = "";
+    let done = false;
+    const finish = (val) => { if (done) return; done = true; modal.classList.remove("show"); resolve(val); };
+    okBtn.onclick = () => finish(true);
+    cancelBtn.onclick = () => finish(false);
+    modal.onclick = (e) => { if (e.target === modal) finish(false); };
+    modal.classList.add("show");
+  });
+}
+function showAlert(msg, title) {
+  return new Promise(resolve => {
+    const modal = document.getElementById("confirmModal");
+    document.getElementById("confirmTitle").textContent = title || "提示";
+    document.getElementById("confirmMsg").textContent = msg || "";
+    const okBtn = document.getElementById("confirmOk");
+    okBtn.textContent = "知道了";
+    okBtn.classList.remove("danger");
+    const cancelBtn = document.getElementById("confirmCancel");
+    cancelBtn.style.display = "none";
+    let done = false;
+    const finish = () => { if (done) return; done = true; modal.classList.remove("show"); cancelBtn.style.display = ""; resolve(); };
+    okBtn.onclick = finish;
+    modal.onclick = (e) => { if (e.target === modal) finish(); };
+    modal.classList.add("show");
+  });
+}
+
+/* ============ 灯箱 ============ */
+function openLightbox(recs, idx) {
+  lightboxList = recs || [];
+  lightboxIndex = Math.max(0, Math.min(idx || 0, lightboxList.length - 1));
+  updateLightbox();
+  lightbox.classList.add("show");
+}
+function updateLightbox() {
+  const rec = lightboxList[lightboxIndex];
+  if (!rec) return;
+  lbImg.src = rec.imgBase64 || "";
+  lbCount.textContent = (lightboxIndex + 1) + " / " + lightboxList.length;
+  lbPrev.disabled = lightboxIndex <= 0;
+  lbNext.disabled = lightboxIndex >= lightboxList.length - 1;
+}
+function lbNav(dir) {
+  const ni = lightboxIndex + dir;
+  if (ni < 0 || ni >= lightboxList.length) return;
+  lightboxIndex = ni;
+  updateLightbox();
+}
+
+/* ============ 主题 ============ */
+function hexToRgba(hex, a) {
+  const h = String(hex || "#ffffff").replace("#", "");
+  if (h.length !== 6) return "rgba(255,255,255," + a + ")";
+  const r = parseInt(h.slice(0,2), 16);
+  const g = parseInt(h.slice(2,4), 16);
+  const b = parseInt(h.slice(4,6), 16);
+  return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+}
+function normalizeHex(v) {
+  v = String(v || "").trim();
+  if (!v) return null;
+  if (v[0] !== "#") v = "#" + v;
+  if (/^#[0-9a-fA-F]{6}$/.test(v)) return v.toLowerCase();
+  if (/^#[0-9a-fA-F]{3}$/.test(v)) {
+    return ("#" + v[1]+v[1]+v[2]+v[2]+v[3]+v[3]).toLowerCase();
+  }
+  return null;
+}
+function applyTheme(theme) {
+  theme = theme || {};
+  const bg1 = theme.bg1 || "#eef0f4";
+  const bg2 = theme.bg2 || "#e2e6ec";
+  const text = theme.text || "#333a47";
+  const btn = theme.btn || "#ffffff";
+  const btnText = theme.btnText || "#465064";
+  const useGradient = theme.gradient !== false;
+  const subtitle = theme.subtitle || "本机保存 · 可备份";
+
+  document.documentElement.style.setProperty("--bg1", bg1);
+  document.documentElement.style.setProperty("--bg2", bg2);
+  document.documentElement.style.setProperty("--text", text);
+  document.documentElement.style.setProperty("--btn", btn.length === 7 ? hexToRgba(btn, 0.8) : btn);
+  document.documentElement.style.setProperty("--btn-text", btnText);
+
+  if (useGradient) {
+    document.body.style.background =
+      "radial-gradient(ellipse 80% 50% at 10% -10%, rgba(255,255,255,0.95) 0%, transparent 55%)," +
+      "radial-gradient(ellipse 70% 45% at 95% 5%, rgba(200,214,235,0.5) 0%, transparent 50%)," +
+      "radial-gradient(ellipse 60% 40% at 50% 100%, rgba(178,190,210,0.35) 0%, transparent 45%)," +
+      "linear-gradient(165deg, " + bg1 + " 0%, " + bg2 + " 55%, " + bg2 + " 100%)";
+  } else {
+    document.body.style.background = bg1;
+  }
+
+  const el = id => document.getElementById(id);
+  if (el("colorBg1")) el("colorBg1").value = bg1;
+  if (el("colorBg2")) el("colorBg2").value = bg2;
+  if (el("colorText")) el("colorText").value = text;
+  if (el("colorBtn")) el("colorBtn").value = (btn && btn[0] === "#") ? btn : "#ffffff";
+  if (el("colorBtnText")) el("colorBtnText").value = btnText;
+  if (el("colorGradient")) el("colorGradient").checked = useGradient;
+  if (el("colorBg1Hex")) el("colorBg1Hex").value = bg1;
+  if (el("colorBg2Hex")) el("colorBg2Hex").value = bg2;
+  if (el("colorTextHex")) el("colorTextHex").value = text;
+  if (el("colorBtnHex")) el("colorBtnHex").value = (btn && btn[0] === "#") ? btn : "#ffffff";
+  if (el("colorBtnTextHex")) el("colorBtnTextHex").value = btnText;
+  if (el("subtitleInput")) el("subtitleInput").value = subtitle;
+  const subEl = document.querySelector(".subtitle");
+  if (subEl) subEl.textContent = subtitle;
+}
+
+/* ============ 头像 / 设置图标 ============ */
+function renderAvatar(b64) {
+  if (!b64) {
+    avatarImg.style.display = "none";
+    avatarPlaceholder.style.display = "flex";
+    return;
+  }
+  avatarImg.src = b64;
+  avatarImg.style.display = "block";
+  avatarPlaceholder.style.display = "none";
+}
+function renderSettingsIcon(b64) {
+  const emoji = document.getElementById("settingsIconEmoji");
+  const img = document.getElementById("settingsIconImg");
+  if (!emoji || !img) return;
+  if (!b64) {
+    img.style.display = "none";
+    emoji.style.display = "inline";
+    return;
+  }
+  img.src = b64;
+  img.style.display = "block";
+  emoji.style.display = "none";
+}
+/* ============ DOM 引用 ============ */
+const nameScreen = document.getElementById("nameScreen");
+const shell = document.getElementById("shell");
+const nameInput = document.getElementById("nameInput");
+const confirmName = document.getElementById("confirmName");
+const screenTitle = document.getElementById("screenTitle");
+const screenTip = document.getElementById("screenTip");
+const mainTitle = document.getElementById("mainTitle");
+const avatarInput = document.getElementById("avatarInput");
+const avatarImg = document.getElementById("avatarImg");
+const avatarPlaceholder = document.getElementById("avatarPlaceholder");
+const folderGrid = document.getElementById("folderGrid");
+const statsStrip = document.getElementById("statsStrip");
+const searchInput = document.getElementById("searchInput");
+const searchClear = document.getElementById("searchClear");
+const btnImport = document.getElementById("btnImport");
+const btnFilter = document.getElementById("btnFilter");
+const btnSettings = document.getElementById("btnSettings");
+const pageFolders = document.getElementById("pageFolders");
+const pageImport = document.getElementById("pageImport");
+const pageDetail = document.getElementById("pageDetail");
+const backFromImport = document.getElementById("backFromImport");
+const backFromDetail = document.getElementById("backFromDetail");
+const previewBox = document.getElementById("previewBox");
+const importImage = document.getElementById("importImage");
+const fCardName = document.getElementById("fCardName");
+const fMeetName = document.getElementById("fMeetName");
+const fPrice = document.getElementById("fPrice");
+const fHelper = document.getElementById("fHelper");
+const btnSaveImport = document.getElementById("btnSaveImport");
+const detailTitle = document.getElementById("detailTitle");
+const detailBody = document.getElementById("detailBody");
+const filterModal = document.getElementById("filterModal");
+const settingsModal = document.getElementById("settingsModal");
+const chipMeets = document.getElementById("chipMeets");
+const chipHelpers = document.getElementById("chipHelpers");
+const lightbox = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbCount = document.getElementById("lbCount");
+const lbClose = document.getElementById("lbClose");
+const lbPrev = document.getElementById("lbPrev");
+const lbNext = document.getElementById("lbNext");
+
+/* ============ 页面切换 ============ */
+function showPage(page) {
+  [pageFolders, pageImport, pageDetail].forEach(p => p.classList.remove("active"));
+  page.classList.add("active");
+  const scroller = page.querySelector(".page") || page;
+  page.scrollTop = 0;
+}
+function enterShell() {
+  nameScreen.style.display = "none";
+  shell.classList.add("show");
+  showPage(pageFolders);
+  renderFolders();
+}
+
+/* ============ 统计条 / 状态筛选 ============ */
+async function renderStats() {
+  try {
+    const folders = await getAllFolders();
+    const records = await getAllRecords();
+    const sold = folders.filter(f => f.status === "已出").length;
+    const pending = folders.filter(f => f.status === "待出").length;
+    if (!statsStrip) return;
+    statsStrip.innerHTML =
+      '<div class="stat-tile"><div class="s-label">色卡</div><div class="s-value num">' + folders.length + '</div></div>' +
+      '<div class="stat-tile"><div class="s-label">图片</div><div class="s-value num">' + records.length + '</div></div>' +
+      '<div class="stat-tile"><div class="s-label" style="color:var(--ok)">已出</div><div class="s-value num" style="color:var(--ok)">' + sold + '</div></div>' +
+      '<div class="stat-tile"><div class="s-label" style="color:var(--warn)">待出</div><div class="s-value num" style="color:var(--warn)">' + pending + '</div></div>';
+  } catch (e) { console.error(e); }
+}
+function renderStatusChips() {
+  const wrap = document.getElementById("statusChips");
+  if (!wrap) return;
+  const opts = [["", "全部"], ["已出", "已出"], ["待出", "待出"]];
+  wrap.innerHTML = "";
+  opts.forEach(([v, label]) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip" + (statusFilter === v ? " on" : "");
+    b.textContent = label;
+    b.dataset.status = v;
+    b.onclick = () => { statusFilter = v; renderFolders(); };
+    wrap.appendChild(b);
+  });
+}
+
+/* ============ 主页渲染 ============ */
+function emptyTip(title, sub) {
+  return '<div class="empty-tip">' + icon("folder") +
+    '<div style="font-weight:600;color:var(--text);font-size:14px;margin-top:10px">' + title + '</div>' + (sub || "") + '</div>';
+}
+function buildFolderCard(f) {
+  const card = document.createElement("div");
+  card.className = "folder-card";
+  const cover = f.coverBase64
+    ? '<img class="folder-cover" loading="lazy" src="' + f.coverBase64 + '" alt="">'
+    : '<div class="folder-cover-empty">' + icon("folder") + '<span>暂无封面</span></div>';
+  let statusHtml = "";
+  if (f.status === "已出" || f.status === "待出") {
+    statusHtml = '<div class="folder-status-tag st-' + (f.status === "已出" ? "sold" : "pending") + '" data-folder="' + f.id + '" data-status="' + escapeHtml(f.status) + '">' + escapeHtml(f.status) + '</div>';
+  }
+  card.innerHTML = cover + statusHtml +
+    '<button type="button" class="folder-edit-btn" data-folder="' + f.id + '" title="操作" aria-label="色卡操作">' + icon("more") + '</button>' +
+    '<div class="folder-name-tag">' + escapeHtml(f.cardName) + '</div>';
+  card.onclick = () => openFolder(f.id);
+  const eb = card.querySelector(".folder-edit-btn");
+  if (eb) eb.onclick = (e) => { e.stopPropagation(); openFolderActionModal(f.id); };
+  card.querySelectorAll(".folder-status-tag").forEach(tag => {
+    tag.onclick = (e) => { e.stopPropagation(); openStatusCancelModal(f.id, tag.getAttribute("data-status")); };
+  });
+  return card;
+}
+function recordMeet(r, f) { return r.meetName != null ? r.meetName : ((f || {}).meetName || ""); }
+function recordHelper(r, f) { return r.helper != null ? r.helper : ((f || {}).helper || ""); }
+function buildRecordRow(r, f) {
+  const meet = recordMeet(r, f);
+  const helper = recordHelper(r, f);
+  const priceTxt = hasPrice(r) ? '¥' + escapeHtml(String(r.price)) : '私调图';
+  const wrap = document.createElement("div");
+  wrap.className = "record-wrap";
+  wrap.innerHTML =
+    '<input type="checkbox" class="record-checkbox' + (multiSelect ? ' show' : '') + '" data-id="' + r.id + '"' + (selectedRecordIds.has(r.id) ? ' checked' : '') + ' aria-label="选择此条">' +
+    '<div class="record-item' + (multiSelect ? ' multi-on' : '') + '" data-id="' + r.id + '">' +
+      '<div class="record-main">' +
+        (r.imgBase64
+          ? '<img class="record-thumb" loading="lazy" src="' + (r.thumbBase64 || r.imgBase64 || "") + '" data-id="' + r.id + '" alt="私调图">'
+          : '<div class="record-thumb-empty">' + icon("image") + '</div>') +
+        '<div class="record-body">' +
+          '<div class="n num">' + priceTxt + '</div>' +
+          '<div class="m">会名 ' + escapeHtml(meet || "—") + ' · 助手 ' + escapeHtml(helper || "—") + '</div>' +
+          (r.note ? '<div class="note"><span>备注 ' + escapeHtml(r.note) + '</span></div>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="record-actions">' +
+        '<button class="btn edit-btn" data-id="' + r.id + '" data-folder="' + (r.folderId || "") + '">' + icon("edit", "icon-sm") + '编辑</button>' +
+        '<button class="btn save-btn" data-id="' + r.id + '">' + icon("download", "icon-sm") + '保存</button>' +
+        '<button class="btn btn-danger del-btn" data-id="' + r.id + '">' + icon("trash", "icon-sm") + '删除</button>' +
+      '</div>' +
+    '</div>';
+  return wrap;
+}
+function bindRecordList(container, folderId) {
+  container.querySelectorAll(".record-thumb[data-id]").forEach(el => {
+    el.onclick = async (e) => {
+      e.stopPropagation();
+      const id = Number(el.getAttribute("data-id"));
+      const rec = await getRecordById(id);
+      if (!rec || !rec.imgBase64) return;
+      const ids = [...container.querySelectorAll(".record-thumb[data-id]")].map(x => Number(x.getAttribute("data-id")));
+      const recs = [];
+      for (const rid of ids) {
+        const rr = await getRecordById(rid);
+        if (rr && rr.imgBase64) recs.push(rr);
+      }
+      openLightbox(recs, recs.findIndex(x => x.id === id));
+    };
+  });
+  container.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const rid = Number(btn.getAttribute("data-id"));
+      const fidAttr = btn.getAttribute("data-folder");
+      const fid = (fidAttr != null && fidAttr !== "") ? Number(fidAttr) : folderId;
+      openEditRecord(rid, fid);
+    };
+  });
+  container.querySelectorAll(".save-btn").forEach(btn => {
+    btn.onclick = async (e) => {
+      e.stopPropagation();
+      const id = Number(btn.getAttribute("data-id"));
+      const database = await openDB();
+      const tx = database.transaction(STORE_RECORDS, "readonly");
+      const rec = await idbReq(tx.objectStore(STORE_RECORDS).get(id));
+      if (!rec || !rec.imgBase64) { showToast("没有可保存的图片", "danger"); return; }
+      try {
+        await saveImageToDevice(rec.imgBase64, (rec.note || "私调图") + ".png");
+        showToast("已保存到设备", "success");
+      } catch (err) {
+        console.error(err);
+        showToast("保存失败，请长按图片另存", "danger");
+      }
+    };
+  });
+  container.querySelectorAll(".del-btn").forEach(btn => {
+    btn.onclick = async (e) => {
+      e.stopPropagation();
+      const id = Number(btn.getAttribute("data-id"));
+      const ok = await askConfirm({ title: "删除这张私调图？", msg: "删除后无法恢复。", danger: true, okText: "删除" });
+      if (!ok) return;
+      await delRecord(id);
+      showToast("已删除", "success");
+      renderFolders();
+      if (currentDetailFolderId != null) openFolder(currentDetailFolderId, folderMeetFilter);
+    };
+  });
+  container.querySelectorAll(".record-checkbox").forEach(cb => {
+    cb.onchange = function() {
+      const rid = Number(this.dataset.id);
+      if (this.checked) selectedRecordIds.add(rid); else selectedRecordIds.delete(rid);
+    };
+  });
+}
+
+async function renderFolders() {
+  let folders = [];
+  try { folders = await getAllFolders(); } catch (e) { console.error(e); }
+  const hasMeet = filterState.meets.size > 0;
+  const hasHelper = filterState.helpers.size > 0;
+  const filtering = hasMeet || hasHelper;
+  const q = searchQuery.trim().toLowerCase();
+
+  renderStats();
+  renderStatusChips();
+  folderGrid.innerHTML = "";
+
+  if (filtering) {
+    const records = await getAllRecords();
+    const folderMap = {};
+    folders.forEach(f => folderMap[f.id] = f);
+    const matched = records.filter(r => {
+      const f = folderMap[r.folderId] || {};
+      const m = recordMeet(r, f);
+      const h = recordHelper(r, f);
+      const cn = f.cardName || "";
+      const okMeet = !hasMeet || filterState.meets.has(m);
+      const okHelper = !hasHelper || filterState.helpers.has(h);
+      const okQ = qMatch(cn, q) || qMatch(m, q) || qMatch(h, q);
+      return okMeet && okHelper && okQ;
+    });
+    if (!matched.length) {
+      folderGrid.innerHTML = emptyTip("暂无匹配的私调条目", '<div>点「重置」或清除筛选查看全部</div>');
+      recalcTotalAll();
+      return;
+    }
+    folderGrid.classList.remove("folder-grid");
+    const list = document.createElement("div");
+    list.className = "record-list";
+    matched.forEach(r => list.appendChild(buildRecordRow(r, folderMap[r.folderId] || {})));
+    folderGrid.appendChild(list);
+    bindRecordList(list);
+    recalcTotalAll();
+    return;
+  }
+
+  folderGrid.classList.add("folder-grid");
+  let shown = folders;
+  if (statusFilter) shown = shown.filter(f => f.status === statusFilter);
+  if (q) shown = shown.filter(f => qMatch(f.cardName, q) || qMatch(f.meetName, q) || qMatch(f.helper, q));
+
+  if (!shown.length) {
+    const emptyMsg = !folders.length ? "暂无色卡" : (q ? "未找到匹配的色卡" : "该状态下暂无色卡");
+    folderGrid.innerHTML = emptyTip(emptyMsg, '<div>' + (q ? "换个关键词试试" : "点击「导入私调」开始") + '</div>');
+    recalcTotalAll();
+    return;
+  }
+  shown.forEach(f => folderGrid.appendChild(buildFolderCard(f)));
+  recalcTotalAll();
+}
+
+/* ============ 详情页 ============ */
+async function openFolder(folderId, meetFilter) {
+  currentDetailFolderId = folderId;
+  folderMeetFilter = meetFilter || new Set();
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readonly");
+  const folder = await idbReq(tx.objectStore(STORE_FOLDERS).get(folderId));
+  if (!folder) return;
+  detailTitle.textContent = folder.cardName;
+  let records = await getRecordsByFolder(folderId);
+  const allMeets = [...new Set(records.map(r => recordMeet(r, folder)).filter(Boolean))];
+  if (folderMeetFilter.size) {
+    records = records.filter(r => folderMeetFilter.has(recordMeet(r, folder)));
+  }
+  const total = Number(records.reduce((s, r) => s + parsePrice(r.price), 0).toFixed(2));
+  const cardPrice = parsePrice(folder.cardPrice);
+  const statusChip = folder.status
+    ? '<span class="st st-' + (folder.status === "已出" ? "sold" : "pending") + '">' + escapeHtml(folder.status) + '</span>'
+    : "";
+
+  let html =
+    '<div class="detail-actions">' +
+      '<button type="button" class="btn" id="btnFolderFilter">' + icon("filter", "icon-sm") + '筛选会名</button>' +
+      '<button type="button" class="btn" id="btnMultiToggle">' + icon("check", "icon-sm") + (multiSelect ? '退出多选' : '多选') + '</button>' +
+    '</div>' +
+    '<div class="multi-bar' + (multiSelect ? ' show' : '') + '" id="multiBar">' +
+      '<button class="btn btn-ok" id="mSave">保存</button>' +
+      '<button class="btn" id="mEdit">编辑</button>' +
+      '<button class="btn btn-danger" id="mDel">删除</button>' +
+      '<button class="btn btn-ghost" id="mCancel">取消</button>' +
+    '</div>' +
+    '<div class="detail-meta">' +
+      '<div><span>会名</span>' + (allMeets.length ? allMeets.map(escapeHtml).join('、') : escapeHtml(folder.meetName || "—")) + '</div>' +
+      (folder.helper ? '<div><span>助手</span>' + escapeHtml(folder.helper) + '</div>' : '') +
+      '<div><span>张数</span>' + records.length + ' 张' + statusChip + '</div>' +
+    '</div>' +
+    '<div class="card-price-row" id="cardPriceRow">' +
+      '<span class="label">' + icon("coin", "icon-sm") + '裸卡价格</span>' +
+      '<span class="value num" id="cardPriceValue">' + (cardPrice ? '¥' + Number(cardPrice.toFixed(2)) : '点击填写') + '</span>' +
+    '</div>' +
+    '<div class="card-price-row" id="cardStyleRow">' +
+      '<span class="label">色卡风格</span>' +
+      '<span class="value" id="cardStyleValue">' + (folder.cardStyle ? escapeHtml(folder.cardStyle) : '点击填写') + '</span>' +
+    '</div>' +
+    '<div class="total-bar">' +
+      '<span class="label">总金额</span>' +
+      '<span class="value num">¥' + total + '</span>' +
+    '</div>' +
+    '<div class="section-label">私调图片</div>' +
+    '<div class="record-list">';
+  if (!records.length) {
+    html += '<div class="empty-tip" style="padding:28px 0">' + icon("image") +
+      '<div style="font-weight:600;color:var(--text);font-size:14px;margin-top:10px">该色卡暂无图片</div></div>';
+  } else {
+    records.forEach(r => { html += buildRecordRow(r, folder).outerHTML; });
+  }
+  html += '</div>';
+  detailBody.innerHTML = html;
+
+  bindRecordList(detailBody, folderId);
+  const bf = document.getElementById("btnFolderFilter");
+  if (bf) bf.onclick = () => openFolderMeetFilter(folderId, allMeets);
+  const cpr = document.getElementById("cardPriceRow");
+  if (cpr) cpr.onclick = () => openCardPriceModal(folderId, folder.cardPrice || "");
+  const csr = document.getElementById("cardStyleRow");
+  if (csr) csr.onclick = () => openCardStyleModal(folderId, folder.cardStyle || "");
+  const bmt = document.getElementById("btnMultiToggle");
+  if (bmt) bmt.onclick = () => {
+    multiSelect = !multiSelect;
+    if (!multiSelect) selectedRecordIds.clear();
+    openFolder(folderId, folderMeetFilter);
+  };
+  const mCancel = document.getElementById("mCancel");
+  if (mCancel) mCancel.onclick = () => { multiSelect = false; selectedRecordIds.clear(); openFolder(folderId, folderMeetFilter); };
+  const mDel = document.getElementById("mDel");
+  if (mDel) mDel.onclick = async () => {
+    if (!selectedRecordIds.size) { showToast("请先勾选要删除的条目", "danger"); return; }
+    const ok = await askConfirm({ title: "删除选中条目", msg: "确定删除选中的 " + selectedRecordIds.size + " 条私调？删除后无法恢复。", danger: true, okText: "删除" });
+    if (!ok) return;
+    for (const rid of selectedRecordIds) await delRecord(rid);
+    multiSelect = false; selectedRecordIds.clear();
+    openFolder(folderId, folderMeetFilter);
+    renderFolders();
+  };
+  const mSave = document.getElementById("mSave");
+  if (mSave) mSave.onclick = async () => {
+    if (!selectedRecordIds.size) { showToast("请先勾选要保存的条目", "danger"); return; }
+    const database = await openDB();
+    let ok = 0;
+    for (const rid of selectedRecordIds) {
+      const tx = database.transaction(STORE_RECORDS, "readonly");
+      const rec = await idbReq(tx.objectStore(STORE_RECORDS).get(rid));
+      if (!rec || !rec.imgBase64) continue;
+      try { await saveImageToDevice(rec.imgBase64, (rec.note || "私调_" + rid) + ".png"); ok++; }
+      catch (e) { console.error(e); }
+    }
+    showToast(ok ? "已保存 " + ok + " 张图片" : "没有可保存的图片", ok ? "success" : "danger");
+  };
+  const mEdit = document.getElementById("mEdit");
+  if (mEdit) mEdit.onclick = () => {
+    if (!selectedRecordIds.size) { showToast("请先勾选要编辑的条目", "danger"); return; }
+    batchEditMode = true;
+    document.getElementById("editRecId").value = "";
+    document.getElementById("editFolderId").value = String(folderId);
+    document.getElementById("editPrice").value = "";
+    document.getElementById("editMeet").value = "";
+    document.getElementById("editHelper").value = "";
+    document.getElementById("editNote").value = "";
+    document.querySelector("#editModal h3").textContent = "批量编辑（留空不改）";
+    document.getElementById("editSetCover").style.display = "none";
+    document.getElementById("editModal").classList.add("show");
+  };
+  showPage(pageDetail);
+}
+
+function openFolderMeetFilter(folderId, allMeets) {
+  const modal = document.getElementById("folderMeetModal");
+  const wrap = document.getElementById("folderMeetChips");
+  if (!modal || !wrap) return;
+  wrap.innerHTML = "";
+  if (!allMeets.length) {
+    wrap.innerHTML = '<span style="font-size:12px;color:var(--muted)">暂无可筛选会名</span>';
+  } else {
+    allMeets.forEach(v => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip" + (folderMeetFilter.has(v) ? " on" : "");
+      chip.textContent = v;
+      chip.onclick = () => {
+        if (folderMeetFilter.has(v)) folderMeetFilter.delete(v); else folderMeetFilter.add(v);
+        chip.classList.toggle("on");
+      };
+      wrap.appendChild(chip);
+    });
+  }
+  modal.classList.add("show");
+  document.getElementById("folderMeetApply").onclick = () => {
+    modal.classList.remove("show");
+    openFolder(folderId, folderMeetFilter);
+  };
+  document.getElementById("folderMeetReset").onclick = () => {
+    folderMeetFilter = new Set();
+    modal.classList.remove("show");
+    openFolder(folderId, new Set());
+  };
+}
+
+/* ============ 编辑 / 弹窗辅助 ============ */
+async function openEditRecord(recordId, folderId) {
+  const database = await openDB();
+  const tx = database.transaction([STORE_RECORDS, STORE_FOLDERS], "readonly");
+  const rec = await idbReq(tx.objectStore(STORE_RECORDS).get(recordId));
+  const folder = await idbReq(tx.objectStore(STORE_FOLDERS).get(folderId));
+  if (!rec) return;
+  document.getElementById("editRecId").value = String(recordId);
+  document.getElementById("editFolderId").value = String(folderId);
+  document.getElementById("editPrice").value = rec.price || "";
+  document.getElementById("editMeet").value = rec.meetName != null ? rec.meetName : ((folder || {}).meetName || "");
+  document.getElementById("editHelper").value = rec.helper != null ? rec.helper : ((folder || {}).helper || "");
+  document.getElementById("editNote").value = rec.note || "";
+  document.querySelector("#editModal h3").textContent = "编辑私调";
+  document.getElementById("editSetCover").style.display = "";
+  document.getElementById("editModal").classList.add("show");
+}
+function resetEditModalState() {
+  document.getElementById("editModal").classList.remove("show");
+  batchEditMode = false;
+  document.querySelector("#editModal h3").textContent = "编辑私调";
+  document.getElementById("editSetCover").style.display = "";
+}
+function openFolderActionModal(folderId) {
+  actionFolderId = folderId;
+  document.getElementById("folderActionModal").classList.add("show");
+}
+function openCardPriceModal(folderId, current) {
+  priceFolderId = folderId;
+  const input = document.getElementById("cardPriceInput");
+  input.value = current || "";
+  document.getElementById("cardPriceModal").classList.add("show");
+  setTimeout(() => input.focus(), 60);
+}
+function openCardStyleModal(folderId, current) {
+  styleFolderId = folderId;
+  const input = document.getElementById("cardStyleInput");
+  input.value = current || "";
+  document.getElementById("cardStyleModal").classList.add("show");
+  setTimeout(() => input.focus(), 60);
+}
+function openStatusCancelModal(folderId, status) {
+  cancelStatusFolderId = folderId;
+  document.getElementById("statusCancelText").textContent = "是否取消「" + status + "」状态？";
+  document.getElementById("statusCancelModal").classList.add("show");
+}
+
+/* ============ 总金额 ============ */
+async function recalcTotalAll() {
+  try {
+    const folders = await getAllFolders();
+    const records = await getAllRecords();
+    const rSum = records.reduce((s, r) => s + parsePrice(r.price), 0);
+    const fSum = folders.reduce((s, f) => s + parsePrice(f.cardPrice), 0);
+    const el = document.getElementById("totalAllAmount");
+    if (el) el.textContent = "¥" + Number((rSum + fSum).toFixed(2));
+  } catch (e) { console.error(e); }
+}
+
+/* ============ 导入表单 ============ */
+function resetImportForm() {
+  pendingImages = [];
+  importImage.value = "";
+  fCardName.value = "";
+  fMeetName.value = "";
+  fPrice.value = "";
+  fHelper.value = "";
+  previewBox.classList.remove("grid");
+  previewBox.innerHTML = '<div class="p-hint">' + icon("image") + '<span>点击选择图片</span></div>';
+}
+
+/* ============ 筛选弹窗 ============ */
+async function openFilterModal() {
+  const folders = await getAllFolders();
+  const records = await getAllRecords();
+  const folderMap = {};
+  folders.forEach(f => folderMap[f.id] = f);
+  const meetSet = new Set();
+  const helperSet = new Set();
+  records.forEach(r => {
+    const f = folderMap[r.folderId] || {};
+    const m = recordMeet(r, f);
+    const h = recordHelper(r, f);
+    if (m) meetSet.add(m);
+    if (h) helperSet.add(h);
+  });
+  function fillChips(el, list, set) {
+    el.innerHTML = "";
+    if (!list.length) {
+      el.innerHTML = '<span style="font-size:12px;color:var(--muted)">暂无</span>';
+      return;
+    }
+    list.forEach(v => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip" + (set.has(v) ? " on" : "");
+      chip.textContent = v;
+      chip.onclick = () => {
+        if (set.has(v)) set.delete(v); else set.add(v);
+        chip.classList.toggle("on");
+      };
+      el.appendChild(chip);
+    });
+  }
+  fillChips(chipMeets, [...meetSet], filterState.meets);
+  fillChips(chipHelpers, [...helperSet], filterState.helpers);
+  filterModal.classList.add("show");
+}
+
+/* ============ 导出 ============ */
+async function openExportSelectModal() {
+  const folders = await getAllFolders();
+  const list = document.getElementById("exportFolderList");
+  const selectAll = document.getElementById("exportSelectAll");
+  const countEl = document.getElementById("exportSelectedCount");
+  list.innerHTML = "";
+  if (!folders.length) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:12px 0;text-align:center">暂无色卡可导出</div>';
+    selectAll.checked = false;
+    selectAll.disabled = true;
+    countEl.textContent = "0 个";
+  } else {
+    selectAll.disabled = false;
+    selectAll.checked = true;
+    folders.forEach(f => {
+      const row = document.createElement("label");
+      row.className = "export-row";
+      row.innerHTML =
+        '<input type="checkbox" class="export-folder-cb" data-id="' + f.id + '" checked>' +
+        '<span class="e-name">' + escapeHtml(f.cardName) + '</span>';
+      list.appendChild(row);
+    });
+    const updateCount = () => {
+      const n = list.querySelectorAll(".export-folder-cb:checked").length;
+      countEl.textContent = "已选 " + n + " / " + folders.length;
+      selectAll.checked = n === folders.length && folders.length > 0;
+    };
+    list.querySelectorAll(".export-folder-cb").forEach(cb => { cb.onchange = updateCount; });
+    selectAll.onchange = () => {
+      list.querySelectorAll(".export-folder-cb").forEach(cb => { cb.checked = selectAll.checked; });
+      updateCount();
+    };
+    updateCount();
+  }
+  document.getElementById("exportSelectModal").classList.add("show");
+}
+
+async function doExportBackup(selectedIds) {
+  const btn = document.getElementById("btnExportJson");
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  await new Promise(r => setTimeout(r, 30));
+  showLoading("正在打包备份…", "数据较多时请耐心等待，勿关闭页面");
+  try {
+    const allFolders = await getAllFolders();
+    const idSet = new Set(selectedIds.map(Number));
+    const folders = allFolders.filter(f => idSet.has(f.id));
+    const allRecords = await getAllRecords();
+    const records = allRecords.filter(r => idSet.has(r.folderId));
+    const profile = await loadProfile();
+    const totalPics = records.length;
+    const totalFolders = folders.length;
+
+    if (totalPics > 60) {
+      hideLoading();
+      const ok = await askConfirm({
+        title: "数据量较大",
+        msg: "本次将导出 " + totalFolders + " 个色卡、" + totalPics + " 张图片。\n\n数据量较大，手机上可能仍会因内存不足失败。\n\n建议：\n1. 少选几个色卡再导出\n2. 或在电脑浏览器打开此页面导出\n\n是否继续？",
+        okText: "继续导出",
+        cancelText: "取消"
+      });
+      if (!ok) { btn.disabled = false; btn.textContent = originalText; return; }
+      showLoading("正在打包备份…", "共 " + totalPics + " 张图片，请耐心等待");
+      await new Promise(r => setTimeout(r, 40));
+    }
+
+    showLoading("正在生成备份文件…", "共 " + totalFolders + " 个色卡 · " + totalPics + " 张图片");
+    const payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      profile: {
+        name: profile.name || currentName,
+        theme: profile.theme || null,
+        avatar: profile.avatar || "",
+        settingsIcon: profile.settingsIcon || ""
+      },
+      folders: folders,
+      records: records
+    };
+    await new Promise(r => setTimeout(r, 20));
+    const jsonStr = JSON.stringify(payload);
+    const blob = new Blob([jsonStr], { type: "application/json;charset=utf-8" });
+    const filename = "私调记录备份_" + (profile.name || currentName || "backup") + ".json";
+
+    hideLoading();
+    showLoading("准备保存…", "即将唤起系统分享或下载");
+    let shared = false;
+    if (navigator.canShare) {
+      try {
+        const file = new File([blob], filename, { type: "application/json" });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: filename });
+          shared = true;
+        }
+      } catch (e) {
+        if (e && e.name === "AbortError") {
+          hideLoading(); btn.disabled = false; btn.textContent = originalText;
+          return;
+        }
+      }
+    }
+    if (!shared) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 5000);
+      hideLoading();
+      showToast("已触发下载，请在「下载」中查找", "success");
+    }
+  } catch (err) {
+    console.error(err);
+    hideLoading();
+    if (err && err.name === "AbortError") return;
+    let tip = "导出失败。";
+    const msg = String((err && err.message) || err || "");
+    if (/out of memory|内存|allocation|Maximum call stack|QuotaExceeded/i.test(msg)) {
+      tip = "内存不足，无法一次导出这么多图片。";
+    }
+    await showAlert(tip + "\n\n建议：\n1. 少选几个色卡再导出\n2. 用电脑浏览器打开此页面导出\n3. 平时分批备份\n\n" + (msg ? "错误信息：" + msg.slice(0, 120) : ""), "导出失败");
+  } finally {
+    hideLoading();
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
+/* ============ 事件绑定 ============ */
+avatarInput.onchange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const b64 = await compressImage(file, 200, 0.85);
+  await saveProfile({ name: currentName, avatar: b64 });
+  renderAvatar(b64);
+  showToast("头像已更新", "success");
+};
+
+btnImport.onclick = () => { resetImportForm(); showPage(pageImport); };
+backFromImport.onclick = () => showPage(pageFolders);
+backFromDetail.onclick = () => {
+  multiSelect = false; selectedRecordIds.clear();
+  currentDetailFolderId = null; folderMeetFilter = new Set();
+  showPage(pageFolders);
+  renderFolders();
+};
+btnFilter.onclick = () => openFilterModal();
+btnSettings.onclick = async () => {
+  const profile = await loadProfile();
+  applyTheme(profile.theme || {});
+  const nick = document.getElementById("nicknameInput");
+  if (nick) nick.value = profile.name || currentName || "";
+  settingsModal.classList.add("show");
+};
+
+document.getElementById("filterApply").onclick = () => {
+  filterModal.classList.remove("show");
+  renderFolders();
+};
+document.getElementById("filterReset").onclick = () => {
+  filterState = { meets: new Set(), helpers: new Set() };
+  filterModal.classList.remove("show");
+  renderFolders();
+};
+filterModal.onclick = e => { if (e.target === filterModal) filterModal.classList.remove("show"); };
+
+document.getElementById("settingsClose").onclick = () => settingsModal.classList.remove("show");
+settingsModal.onclick = e => { if (e.target === settingsModal) settingsModal.classList.remove("show"); };
+
+async function saveThemeFromInputs() {
+  const theme = {
+    bg1: document.getElementById("colorBg1").value,
+    bg2: document.getElementById("colorBg2").value,
+    text: document.getElementById("colorText").value,
+    btn: document.getElementById("colorBtn").value,
+    btnText: document.getElementById("colorBtnText").value,
+    gradient: document.getElementById("colorGradient").checked,
+    subtitle: document.getElementById("subtitleInput").value.trim() || "本机保存 · 可备份"
+  };
+  applyTheme(theme);
+  await saveProfile({ theme });
+}
+function bindColorPair(colorId, hexId) {
+  const c = document.getElementById(colorId);
+  const h = document.getElementById(hexId);
+  c.oninput = () => { h.value = c.value; saveThemeFromInputs(); };
+  h.onchange = () => {
+    const n = normalizeHex(h.value);
+    if (n) { c.value = n; h.value = n; saveThemeFromInputs(); }
+    else { showToast("请输入有效色号，例如 #f3f5f8", "danger"); h.value = c.value; }
+  };
+}
+["Bg1","Bg2","Text","Btn","BtnText"].forEach(k => bindColorPair("color"+k, "color"+k+"Hex"));
+document.getElementById("colorGradient").onchange = saveThemeFromInputs;
+document.getElementById("subtitleInput").onchange = saveThemeFromInputs;
+document.getElementById("nicknameInput").onchange = async () => {
+  const val = document.getElementById("nicknameInput").value.trim();
+  if (!val) { showToast("昵称不能为空", "danger"); document.getElementById("nicknameInput").value = currentName; return; }
+  currentName = val;
+  mainTitle.textContent = currentName + "の私调记录";
+  await saveProfile({ name: currentName });
+  showToast("昵称已更新", "success");
+};
+document.getElementById("btnResetTheme").onclick = async () => {
+  const theme = {
+    bg1: "#eef0f4", bg2: "#e2e6ec", text: "#333a47",
+    btn: "#ffffff", btnText: "#465064", gradient: true,
+    subtitle: "本机保存 · 可备份"
+  };
+  applyTheme(theme);
+  await saveProfile({ theme });
+  showToast("已恢复默认颜色", "success");
+};
+document.getElementById("btnClearAll").onclick = async () => {
+  const ok1 = await askConfirm({
+    title: "清空所有内容",
+    msg: "这会删除全部色卡文件夹、私调图片和设置，且无法恢复。确定继续吗？",
+    danger: true, okText: "清空"
+  });
+  if (!ok1) return;
+  const ok2 = await askConfirm({
+    title: "再次确认",
+    msg: "真的要全部清空吗？所有数据将永久删除。",
+    danger: true, okText: "确认清空"
+  });
+  if (!ok2) return;
+  await clearAllData();
+  settingsModal.classList.remove("show");
+  await renderFolders();
+  showToast("已清空全部内容", "success");
+};
+document.getElementById("btnSettingsAvatar").onclick = () => document.getElementById("settingsAvatarInput").click();
+document.getElementById("settingsAvatarInput").onchange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const b64 = await compressImage(file, 200, 0.85);
+  await saveProfile({ name: currentName, avatar: b64 });
+  renderAvatar(b64);
+  showToast("头像已更新", "success");
+};
+document.getElementById("btnSettingsIcon").onclick = () => document.getElementById("settingsIconInput").click();
+document.getElementById("settingsIconInput").onchange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const b64 = await compressImage(file, 100, 0.85);
+  await saveProfile({ settingsIcon: b64 });
+  renderSettingsIcon(b64);
+  showToast("设置图标已更新", "success");
+};
+document.getElementById("btnResetAvatar").onclick = async () => {
+  await saveProfile({ avatar: "" });
+  renderAvatar("");
+  showToast("头像已恢复默认", "success");
+};
+document.getElementById("btnResetIcon").onclick = async () => {
+  await saveProfile({ settingsIcon: "" });
+  renderSettingsIcon("");
+  showToast("设置图标已恢复默认", "success");
+};
+
+/* —— 导出 / 导入备份 —— */
+document.getElementById("btnExportJson").onclick = () => openExportSelectModal();
+document.getElementById("exportSelectCancel").onclick = () => document.getElementById("exportSelectModal").classList.remove("show");
+document.getElementById("exportSelectModal").onclick = e => { if (e.target.id === "exportSelectModal") e.target.classList.remove("show"); };
+document.getElementById("exportSelectOk").onclick = async () => {
+  const checked = [...document.querySelectorAll(".export-folder-cb:checked")].map(cb => Number(cb.dataset.id));
+  if (!checked.length) { showToast("请至少选择一个色卡", "danger"); return; }
+  document.getElementById("exportSelectModal").classList.remove("show");
+  await doExportBackup(checked);
+};
+document.getElementById("btnImportJson").onclick = () => document.getElementById("jsonFileInput").click();
+document.getElementById("jsonFileInput").onchange = async e => {
+  const file = e.target.files[0];
+  e.target.value = "";
+  if (!file) return;
+  try {
+    showLoading("正在读取备份文件…", "请稍候");
+    const text = await file.text();
+    const data = JSON.parse(text);
+    hideLoading();
+    if (!data || !Array.isArray(data.folders) || !Array.isArray(data.records)) {
+      await showAlert("备份文件格式不正确，请确认选择的是「私调记录备份」JSON 文件。", "导入失败");
+      return;
+    }
+    const ok = await askConfirm({
+      title: "导入将覆盖现有数据",
+      msg: "导入将覆盖当前全部色卡与记录，确定继续？\n\n色卡：" + data.folders.length + " 个\n图片：" + data.records.length + " 张",
+      okText: "覆盖导入", danger: true
+    });
+    if (!ok) return;
+    showLoading("正在导入数据…", "共 " + data.records.length + " 张图片，请勿关闭");
+    await clearAllData();
+    const database = await openDB();
+    const tx = database.transaction([STORE_FOLDERS, STORE_RECORDS], "readwrite");
+    const fs = tx.objectStore(STORE_FOLDERS);
+    const rs = tx.objectStore(STORE_RECORDS);
+    const idMap = {};
+    for (const f of data.folders) {
+      const oldId = f.id;
+      const copy = { ...f };
+      delete copy.id;
+      const newId = await idbReq(fs.add(copy));
+      idMap[oldId] = newId;
+    }
+    for (const r of data.records) {
+      const copy = { ...r };
+      delete copy.id;
+      if (copy.folderId != null && idMap[copy.folderId] != null) {
+        copy.folderId = idMap[copy.folderId];
+      }
+      await idbReq(rs.add(copy));
+    }
+    await txDone(tx);
+    if (data.profile) {
+      await saveProfile({
+        name: data.profile.name || currentName,
+        avatar: data.profile.avatar || "",
+        theme: data.profile.theme || null,
+        settingsIcon: data.profile.settingsIcon || ""
+      });
+      if (data.profile.name) {
+        currentName = data.profile.name;
+        mainTitle.textContent = currentName + "の私调记录";
+      }
+      if (data.profile.avatar) renderAvatar(data.profile.avatar);
+      if (data.profile.theme) applyTheme(data.profile.theme);
+      if (data.profile.settingsIcon) renderSettingsIcon(data.profile.settingsIcon);
+    }
+    settingsModal.classList.remove("show");
+    showPage(pageFolders);
+    await renderFolders();
+    hideLoading();
+    showToast("导入成功", "success");
+  } catch (err) {
+    console.error(err);
+    hideLoading();
+    await showAlert("导入失败，请检查文件是否为有效的备份 JSON。", "导入失败");
+  }
+};
+
+/* —— 导入页 —— */
+previewBox.onclick = () => importImage.click();
+importImage.onchange = async e => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+  pendingImages = [];
+  if (files.length > 3) showLoading("正在处理图片…", "共 " + files.length + " 张，请稍候");
+  try {
+    for (const f of files) {
+      const orig = await compressImage(f, 1600, 0.85);
+      const thumb = await makeThumb(orig, 120);
+      const cover = await makeThumb(orig, 500);
+      pendingImages.push({ orig, thumb, cover });
+    }
+    if (pendingImages.length === 1) {
+      previewBox.classList.remove("grid");
+      previewBox.innerHTML = '<img src="' + pendingImages[0].thumb + '" alt="">';
+    } else {
+      previewBox.classList.add("grid");
+      previewBox.innerHTML = pendingImages.map(p => '<img src="' + p.thumb + '" alt="">').join("");
+    }
+  } finally {
+    hideLoading();
+  }
+};
+btnSaveImport.onclick = async () => {
+  const cardName = fCardName.value.trim();
+  const meetName = fMeetName.value.trim();
+  const price = fPrice.value.trim();
+  const helper = fHelper.value.trim();
+  if (!cardName) { showToast("请填写色卡名", "danger"); return; }
+  if (!pendingImages.length) { showToast("请选择图片", "danger"); return; }
+  btnSaveImport.disabled = true;
+  showLoading("正在保存私调…", "共 " + pendingImages.length + " 张，请稍候");
+  try {
+    let folder = await getFolderByCardName(cardName);
+    let folderId;
+    if (folder) {
+      folderId = folder.id;
+      await touchFolder(folderId);
+    } else {
+      folderId = await addFolder({
+        cardName, meetName, price, helper,
+        coverBase64: pendingImages[0].cover,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+    }
+    for (const p of pendingImages) {
+      await addRecord({
+        folderId, imgBase64: p.orig, thumbBase64: p.thumb, note: cardName, price,
+        meetName, helper, time: Date.now()
+      });
+    }
+    resetImportForm();
+    showPage(pageFolders);
+    await renderFolders();
+    showToast("导入成功", "success");
+  } catch (err) {
+    console.error(err);
+    showToast("导入失败，请重试", "danger");
+  } finally {
+    hideLoading();
+    btnSaveImport.disabled = false;
+  }
+};
+
+/* —— 灯箱 —— */
+lbClose.onclick = () => lightbox.classList.remove("show");
+lightbox.onclick = e => { if (e.target === lightbox) lightbox.classList.remove("show"); };
+lbPrev.onclick = () => lbNav(-1);
+lbNext.onclick = () => lbNav(1);
+
+/* —— 文件夹操作 —— */
+document.getElementById("actCancel").onclick = () => document.getElementById("folderActionModal").classList.remove("show");
+document.getElementById("folderActionModal").onclick = e => { if (e.target.id === "folderActionModal") e.target.classList.remove("show"); };
+document.getElementById("actMoveUp").onclick = async () => {
+  const id = actionFolderId;
+  document.getElementById("folderActionModal").classList.remove("show");
+  if (id == null) return;
+  const ok = await moveFolder(id, -1);
+  if (ok) await renderFolders();
+  else showToast("已经是第一个了", "danger");
+};
+document.getElementById("actMoveDown").onclick = async () => {
+  const id = actionFolderId;
+  document.getElementById("folderActionModal").classList.remove("show");
+  if (id == null) return;
+  const ok = await moveFolder(id, 1);
+  if (ok) await renderFolders();
+  else showToast("已经是最后一个了", "danger");
+};
+document.getElementById("actSold").onclick = async () => {
+  const id = actionFolderId;
+  document.getElementById("folderActionModal").classList.remove("show");
+  if (id != null) { await setFolderStatus(id, "已出"); showToast("已标记为「已出」", "success"); }
+};
+document.getElementById("actPending").onclick = async () => {
+  const id = actionFolderId;
+  document.getElementById("folderActionModal").classList.remove("show");
+  if (id != null) { await setFolderStatus(id, "待出"); showToast("已标记为「待出」", "success"); }
+};
+document.getElementById("actDeleteFolder").onclick = async () => {
+  const id = actionFolderId;
+  document.getElementById("folderActionModal").classList.remove("show");
+  if (id == null) return;
+  const ok = await askConfirm({
+    title: "删除该色卡？",
+    msg: "该文件夹及其中的所有私调图片都会一起删除，且无法恢复。",
+    danger: true, okText: "删除"
+  });
+  if (!ok) return;
+  await deleteFolder(id);
+  showToast("已删除色卡", "success");
+};
+
+/* —— 裸卡价格 —— */
+document.getElementById("cardPriceCancel").onclick = () => document.getElementById("cardPriceModal").classList.remove("show");
+document.getElementById("cardPriceModal").onclick = e => { if (e.target.id === "cardPriceModal") e.target.classList.remove("show"); };
+document.getElementById("cardPriceOk").onclick = async () => {
+  const id = priceFolderId;
+  const val = document.getElementById("cardPriceInput").value.trim();
+  document.getElementById("cardPriceModal").classList.remove("show");
+  if (id == null) return;
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readwrite");
+  const f = await idbReq(tx.objectStore(STORE_FOLDERS).get(id));
+  if (f) {
+    f.cardPrice = val;
+    tx.objectStore(STORE_FOLDERS).put(f);
+    await txDone(tx);
+    openFolder(id, folderMeetFilter);
+    recalcTotalAll();
+    showToast("已保存裸卡价格", "success");
+  }
+};
+
+/* —— 取消状态 —— */
+document.getElementById("statusCancelNo").onclick = () => document.getElementById("statusCancelModal").classList.remove("show");
+document.getElementById("statusCancelModal").onclick = e => { if (e.target.id === "statusCancelModal") e.target.classList.remove("show"); };
+document.getElementById("statusCancelYes").onclick = async () => {
+  const id = cancelStatusFolderId;
+  document.getElementById("statusCancelModal").classList.remove("show");
+  if (id != null) { await setFolderStatus(id, ""); showToast("已取消状态", "success"); }
+};
+
+/* —— 色卡风格 —— */
+document.getElementById("cardStyleCancel").onclick = () => document.getElementById("cardStyleModal").classList.remove("show");
+document.getElementById("cardStyleModal").onclick = e => { if (e.target.id === "cardStyleModal") e.target.classList.remove("show"); };
+document.getElementById("cardStyleOk").onclick = async () => {
+  const id = styleFolderId;
+  const val = document.getElementById("cardStyleInput").value.trim();
+  document.getElementById("cardStyleModal").classList.remove("show");
+  if (id == null) return;
+  const database = await openDB();
+  const tx = database.transaction(STORE_FOLDERS, "readwrite");
+  const f = await idbReq(tx.objectStore(STORE_FOLDERS).get(id));
+  if (f) {
+    f.cardStyle = val;
+    tx.objectStore(STORE_FOLDERS).put(f);
+    await txDone(tx);
+    openFolder(id, folderMeetFilter);
+    showToast("已保存色卡风格", "success");
+  }
+};
+
+/* —— 编辑私调 —— */
+document.getElementById("editCancel").onclick = () => resetEditModalState();
+document.getElementById("editModal").onclick = e => { if (e.target && e.target.id === "editModal") resetEditModalState(); };
+document.getElementById("editSave").onclick = async () => {
+  const folderId = Number(document.getElementById("editFolderId").value);
+  const priceVal = document.getElementById("editPrice").value.trim();
+  const meetVal = document.getElementById("editMeet").value.trim();
+  const helperVal = document.getElementById("editHelper").value.trim();
+  const noteVal = document.getElementById("editNote").value.trim();
+  if (batchEditMode) {
+    for (const rid of selectedRecordIds) {
+      const patch = {};
+      if (priceVal !== "") patch.price = priceVal;
+      if (meetVal !== "") patch.meetName = meetVal;
+      if (helperVal !== "") patch.helper = helperVal;
+      if (noteVal !== "") patch.note = noteVal;
+      if (Object.keys(patch).length) await updateRecord(rid, patch);
+    }
+    selectedRecordIds.clear();
+    multiSelect = false;
+    resetEditModalState();
+    openFolder(folderId, folderMeetFilter);
+    renderFolders();
+    showToast("已批量更新", "success");
+    return;
+  }
+  const id = Number(document.getElementById("editRecId").value);
+  await updateRecord(id, { price: priceVal, meetName: meetVal, helper: helperVal, note: noteVal });
+  resetEditModalState();
+  openFolder(folderId, folderMeetFilter);
+  renderFolders();
+  showToast("已保存", "success");
+};
+document.getElementById("editSetCover").onclick = async () => {
+  const id = Number(document.getElementById("editRecId").value);
+  const folderId = Number(document.getElementById("editFolderId").value);
+  const database = await openDB();
+  const tx = database.transaction(STORE_RECORDS, "readonly");
+  const rec = await idbReq(tx.objectStore(STORE_RECORDS).get(id));
+  if (!rec || !rec.imgBase64) { showToast("该条目没有图片", "danger"); return; }
+  await setFolderCover(folderId, rec.imgBase64);
+  resetEditModalState();
+  showToast("已设为色卡封面", "success");
+  renderFolders();
+  openFolder(folderId, folderMeetFilter);
+};
+
+/* —— 圈名确认 —— */
+confirmName.onclick = async () => {
+  if (nameInput.style.display === "none" && currentName) {
+    mainTitle.textContent = currentName + "の私调记录";
+    enterShell();
+    return;
+  }
+  const val = nameInput.value.trim();
+  if (!val) { showToast("请输入圈名", "danger"); return; }
+  currentName = val;
+  mainTitle.textContent = currentName + "の私调记录";
+  const profile = await loadProfile();
+  await saveProfile({ name: currentName, avatar: profile.avatar || "" });
+  enterShell();
+};
+
+/* —— 搜索 —— */
+searchInput.oninput = () => {
+  searchQuery = searchInput.value;
+  searchClear.hidden = !searchQuery;
+  renderFolders();
+};
+searchClear.onclick = () => {
+  searchInput.value = "";
+  searchQuery = "";
+  searchClear.hidden = true;
+  renderFolders();
+};
+
+/* —— 键盘操作 —— */
+document.addEventListener("keydown", e => {
+  const lbOpen = lightbox.classList.contains("show");
+  if (e.key === "Escape") {
+    if (lbOpen) { lightbox.classList.remove("show"); return; }
+    const modals = [...document.querySelectorAll(".modal-mask.show")];
+    if (modals.length) {
+      const top = modals[modals.length - 1];
+      if (top.id === "editModal") resetEditModalState();
+      else top.classList.remove("show");
+    }
+    return;
+  }
+  if (lbOpen && e.key === "ArrowLeft") lbNav(-1);
+  if (lbOpen && e.key === "ArrowRight") lbNav(1);
+});
+
+/* —— 弹窗/遮罩打开时锁定背景滚动 —— */
+new MutationObserver(() => {
+  const anyOpen = document.querySelector(".modal-mask.show, .lightbox.show, #loadingOverlay.show");
+  document.body.classList.toggle("modal-lock", !!anyOpen);
+}).observe(document.body, { attributes: true, childList: true, subtree: true, attributeFilter: ["class"] });
+
+/* ============ 初始化 ============ */
+(async function init() {
+  try {
+    await openDB();
+    const profile = await loadProfile();
+    if (profile.theme) applyTheme(profile.theme);
+    if (profile.settingsIcon) renderSettingsIcon(profile.settingsIcon);
+    if (profile.name) {
+      currentName = profile.name;
+      nameInput.value = currentName;
+      nameInput.style.display = "none";
+      screenTitle.textContent = currentName + "の私调记录";
+      screenTip.textContent = "欢迎回来";
+      confirmName.textContent = "登陆";
+      mainTitle.textContent = currentName + "の私调记录";
+      if (profile.avatar) renderAvatar(profile.avatar);
+    }
+  } catch (e) {
+    console.error(e);
+    screenTip.textContent = "本地存储初始化失败";
+  }
+})();
+</script>
+<script>
+/* PWA：注册 Service Worker（需 https 或 localhost；本地 file:// 打开时静默跳过） */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "id": "./",
+  "name": "私调记录",
+  "short_name": "私调记录",
+  "description": "色卡/私调图管理：图集展示、导入、筛选、编辑、备份",
+  "lang": "zh-CN",
+  "start_url": "./私调记录.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eef0f4",
+  "theme_color": "#5c6f9e",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
