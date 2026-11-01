@@ -1,18 +1,17 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="color-scheme" content="light">
-<meta name="theme-color" content="#eef2f8">
 <meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#e8edf5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="私调记录">
 <meta name="format-detection" content="telephone=no">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2374b8ff'/%3E%3Cstop offset='.52' stop-color='%238f7bff'/%3E%3Cstop offset='1' stop-color='%23ff9cc2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Crect x='26' y='30' width='48' height='40' rx='8' fill='none' stroke='%23fff' stroke-width='6'/%3E%3Ccircle cx='42' cy='46' r='5' fill='%23fff'/%3E%3Cpath d='M32 68l10-10 7 7 6-6 13 13v4H32z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2387b4ff'/%3E%3Cstop offset='.55' stop-color='%23a98bff'/%3E%3Cstop offset='1' stop-color='%23ff9cc2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Crect x='26' y='30' width='48' height='40' rx='8' fill='none' stroke='%23fff' stroke-width='6'/%3E%3Ccircle cx='42' cy='46' r='5' fill='%23fff'/%3E%3Cpath d='M32 68l10-10 7 7 6-6 13 13v4H32z' fill='%23fff'/%3E%3C/svg%3E">
 <title>私调记录</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -44,7 +43,7 @@ html,body{
   font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
   overflow-x:hidden;
 }
-body.modal-lock{overflow:hidden}
+body.modal-lock{overflow:hidden;touch-action:none}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none}
 input,textarea{outline:none}
@@ -134,7 +133,7 @@ input,textarea{outline:none}
 .upload-input{display:none}
 .title-area{flex:1;min-width:0}
 .main-title{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.subtitle{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subtitle{font-size:11px;color:var(--muted);margin-top:2px}
 .icon-btn{
   width:36px;height:36px;border-radius:14px;
   background:linear-gradient(160deg, rgba(255,255,255,0.5), rgba(255,255,255,0.2));
@@ -200,9 +199,8 @@ input,textarea{outline:none}
 .folder-cover{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:rgba(230,234,240,0.6)}
 .folder-cover-empty{
   width:100%;aspect-ratio:1;background:rgba(230,234,240,0.5);
-  display:flex;align-items:center;justify-content:center;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:26px;
 }
-.folder-cover-empty svg,.hero-cover-empty svg{width:30px;height:30px;opacity:.9}
 .folder-name-tag{
   position:absolute;left:8px;bottom:8px;z-index:2;
   max-width:calc(100% - 16px);
@@ -303,7 +301,7 @@ input,textarea{outline:none}
 .record-thumb{width:56px;height:56px;border-radius:12px;object-fit:cover;background:rgba(230,234,240,0.6);flex-shrink:0;cursor:zoom-in}
 .record-body{flex:1;min-width:0}
 .record-wrap{position:relative;margin-bottom:8px}
-.record-checkbox{position:absolute;top:10px;left:10px;width:20px;height:20px;z-index:2;accent-color:#0a84ff;display:none}
+.record-checkbox{position:absolute;top:10px;left:10px;width:20px;height:20px;z-index:2;accent-color:#8892a0;display:none}
 .record-checkbox.show{display:block}
 .multi-bar{display:none;gap:8px;margin-bottom:10px}
 .multi-bar.show{display:flex}
@@ -472,7 +470,7 @@ img, .folder-cover, .record-thumb, .avatar-wrap img{
 }
 .loading-box .lt{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px}
 .loading-box .ls{font-size:12px;color:var(--muted);line-height:1.5}
-body.modal-lock{overflow:hidden}
+body.modal-lock{overflow:hidden;touch-action:none}
 .stats-bar{
   display:flex;gap:6px;padding:0 12px 8px;flex-wrap:nowrap;
   align-items:stretch;
@@ -595,6 +593,25 @@ body.modal-lock{overflow:hidden}
 .folder-card.move-dst{
   opacity:0.9;
   filter:brightness(1.05);
+}
+.folder-card{
+  content-visibility:auto;
+  contain:layout style paint;
+  will-change:auto;
+}
+.folder-cover,.record-thumb{
+  content-visibility:auto;
+  contain:strict;
+}
+.glass{
+  backdrop-filter:blur(var(--blur)) saturate(1.15);
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(1.15);
+}
+@media (max-width:500px){
+  .glass,.folder-card,.tool-btn,.import-btn,.record-item,.form-card,.modal,.stat-chip,.move-tip-bar{
+    backdrop-filter:blur(10px) saturate(1.1) !important;
+    -webkit-backdrop-filter:blur(10px) saturate(1.1) !important;
+  }
 }
 img.lazy-pending{background:rgba(230,234,240,0.55);min-height:40px}
 html,body{
@@ -740,1003 +757,120 @@ html,body{
 }
 
 /* ============================================================
-   iOS Liquid Glass — visual layer
-   ============================================================ */
-:root{
-  --bg1:#eef2f8;
-  --bg2:#e1e8f2;
-  --text:#1d2028;
-  --muted:#6b7280;
-  --glass:rgba(255,255,255,0.32);
-  --glass-strong:rgba(255,255,255,0.46);
-  --glass-border:rgba(255,255,255,0.58);
-  --btn:rgba(255,255,255,0.18);
-  --btn-text:#2c3038;
-  --accent-color:#0a84ff;
-  --accent-ink:#0064d2;
-  --accent-soft:rgba(10,132,255,0.14);
-  --hairline:rgba(35,45,65,0.1);
-  --float-shadow:0 22px 48px -32px rgba(25,45,80,0.5), 0 2px 10px rgba(25,45,80,0.04), inset 0 1px 0 rgba(255,255,255,0.72), inset 0 -1px 0 rgba(255,255,255,0.16);
-  --blur:30px;
-  --specular:linear-gradient(115deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 30%,rgba(255,255,255,.18) 36%,rgba(255,255,255,.03) 43%,rgba(255,255,255,0) 50%);
-  --radius:24px;
-  --ease-spring:cubic-bezier(.22,1,.36,1);
-}
-html{height:100%}
-body{
-  min-height:100%;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(115% 75% at 10% -12%, rgba(137,180,255,0.62) 0%, rgba(137,180,255,0) 62%),
-    radial-gradient(95% 65% at 96% 0%, rgba(205,163,255,0.52) 0%, rgba(205,163,255,0) 60%),
-    radial-gradient(85% 60% at 50% 112%, rgba(255,166,190,0.3) 0%, rgba(255,166,190,0) 62%),
-    radial-gradient(72% 55% at 56% 38%, rgba(160,188,255,0.46) 0%, rgba(160,188,255,0) 66%),
-    radial-gradient(60% 48% at 18% 82%, rgba(255,178,206,0.32) 0%, rgba(255,178,206,0) 66%),
-    linear-gradient(165deg,var(--bg1) 0%,var(--bg2) 100%);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  text-rendering:optimizeLegibility;
-  letter-spacing:-0.01em;
-}
-body.no-gradient{background:var(--bg1)}
-body.no-gradient .ambient{display:none}
-button{-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-input::placeholder{color:rgba(123,130,144,.72)}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid rgba(10,132,255,0.55);outline-offset:2px}
-
-/* 环境光 */
-.ambient{
-  position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
-  -webkit-transform:translateZ(0);transform:translateZ(0);
-}
-.ambient .orb{
-  position:absolute;border-radius:50%;filter:blur(72px);opacity:.72;
-  will-change:transform;animation:orbFloat 26s ease-in-out infinite alternate;
-}
-.ambient .o1{width:clamp(300px,82vw,540px);height:clamp(300px,82vw,540px);left:-24%;top:-16%;background:radial-gradient(circle at 36% 36%,rgba(112,172,255,.9),rgba(112,172,255,0) 66%)}
-.ambient .o2{width:clamp(260px,70vw,470px);height:clamp(260px,70vw,470px);right:-22%;top:-6%;background:radial-gradient(circle at 42% 42%,rgba(196,156,255,.78),rgba(196,156,255,0) 66%);animation-delay:-7s}
-.ambient .o3{width:clamp(280px,76vw,500px);height:clamp(280px,76vw,500px);left:-10%;bottom:-28%;background:radial-gradient(circle at 40% 40%,rgba(255,176,190,.58),rgba(255,176,190,0) 66%);animation-delay:-13s}
-.ambient .o4{width:clamp(240px,66vw,430px);height:clamp(240px,66vw,430px);right:-14%;bottom:-20%;background:radial-gradient(circle at 40% 40%,rgba(140,238,208,.7),rgba(140,238,208,0) 66%);animation-delay:-19s}
-.ambient .o5{width:clamp(280px,78vw,520px);height:clamp(280px,78vw,520px);left:18%;top:24%;background:radial-gradient(circle at 44% 44%,rgba(132,160,255,.62),rgba(132,160,255,0) 66%);animation-delay:-4s}
-.ambient .o6{width:clamp(220px,58vw,400px);height:clamp(220px,58vw,400px);right:14%;bottom:20%;background:radial-gradient(circle at 44% 44%,rgba(255,164,198,.4),rgba(255,164,198,0) 66%);animation-delay:-10s}
-.ambient .grain{
-  position:absolute;inset:0;opacity:.16;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-  background-size:140px 140px;
-}
-@keyframes orbFloat{
-  0%{transform:translate3d(0,0,0) scale(1)}
-  50%{transform:translate3d(2%,3%,0) scale(1.06)}
-  100%{transform:translate3d(-2%,-2%,0) scale(0.97)}
-}
-
-/* 主框架 */
-.app{
-  position:relative;z-index:1;
-  padding:0;
-  min-height:100vh;min-height:100dvh;
-}
-.shell-wrap{max-width:480px;min-height:100vh;min-height:100dvh}
-.glass{
-  background:linear-gradient(180deg,rgba(255,255,255,0.26),rgba(255,255,255,0.08));
-  border:none;
-  box-shadow:none;
-  backdrop-filter:none;-webkit-backdrop-filter:none;
-  min-height:100vh;min-height:100dvh;
-  border-radius:0;
-}
-.glass::before{display:none}
-.shell{
-  height:100vh;height:100dvh;min-height:0;max-height:100vh;max-height:100dvh;
-  overflow:hidden;
-  background:linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04));
-}
-.page{min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.page::-webkit-scrollbar{display:none}
-
-/* 玻璃材质 */
-:where(.form-card,.record-item,.stat-chip,.card-price-row,.total-bar,.detail-meta,.detail-hero,.toast-card,.loading-box,.move-tip-bar,.folder-action-chip,.back-btn,.icon-btn,.chip,.type-chip,.cover-change-btn,.multi-bar button,.modal-actions button,.setting-actions button,.amount-filter-btn,.lb-close,.lb-actions button,.mini-pill,.glass-btn,.icon-action){
-  background:
-    radial-gradient(130% 100% at 10% 0%,rgba(255,255,255,.3) 0%,rgba(255,255,255,0) 55%),
-    linear-gradient(145deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,.04) 46%,rgba(255,255,255,.12) 100%);
-  border:1px solid rgba(255,255,255,.46);
-  box-shadow:0 22px 48px -32px rgba(25,45,80,0.5), 0 2px 10px rgba(25,45,80,0.04), inset 0 1px 0 rgba(255,255,255,0.88), inset 1px 0 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(255,255,255,0.18), inset 0 -16px 26px -24px rgba(30,50,90,0.2);
-  backdrop-filter:blur(var(--blur)) saturate(2.25);
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(2.25);
-}
-
-/* 登录页 */
-.name-screen{
-  padding:calc(40px + env(safe-area-inset-top)) 24px calc(36px + env(safe-area-inset-bottom));
-  background:transparent;border:none;box-shadow:none;
-}
-.brand-mark{
-  width:92px;height:92px;border-radius:28px;margin-bottom:26px;
-  display:grid;place-items:center;color:#fff;font-size:34px;font-weight:800;
-  background:linear-gradient(145deg,#74b8ff 0%,#8f7bff 52%,#ff9cc2 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -10px 24px rgba(30,20,80,.18);
-  position:relative;overflow:hidden;
-}
-.brand-mark::after{
-  content:"";position:absolute;inset:0;border-radius:inherit;
-  background:linear-gradient(160deg,rgba(255,255,255,.5),transparent 42%,transparent 70%,rgba(255,255,255,.22));
-}
-.name-screen h1{font-size:29px;font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
-.name-screen p{font-size:14px;color:var(--muted);margin-bottom:26px}
-.name-screen input{
-  max-width:330px;height:52px;border-radius:18px;
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.5);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.62), 0 12px 26px -22px rgba(25,45,80,.5);
-  text-align:center;font-size:16px;margin-bottom:12px;
-  backdrop-filter:blur(26px) saturate(2);-webkit-backdrop-filter:blur(26px) saturate(2);
-}
-.name-screen input:focus{border-color:rgba(10,132,255,.5);box-shadow:0 0 0 4px rgba(10,132,255,.12), inset 0 1px 0 rgba(255,255,255,.8)}
-.primary-btn{
-  max-width:330px;height:52px;border-radius:18px;
-  background:linear-gradient(180deg,#43a3ff 0%,#0a84ff 55%,#0071e3 100%);
-  border:1px solid rgba(255,255,255,.3);
-  color:#fff;font-size:16px;font-weight:700;letter-spacing:-.01em;
-  box-shadow:0 14px 26px -16px rgba(10,132,255,.5), inset 0 1px 0 rgba(255,255,255,.5), inset 0 -1px 0 rgba(0,50,120,.18);
-  text-shadow:0 1px 1px rgba(0,40,90,.18);
-  transition:transform .22s var(--ease-spring),filter .22s;
-}
-.primary-btn:active{transform:scale(.972);filter:brightness(.97)}
-.primary-btn:disabled{opacity:.5}
-
-/* 顶栏 */
-.topbar{
-  padding:calc(10px + env(safe-area-inset-top)) 16px 12px;
-  gap:12px;
-  background:
-    var(--specular),
-    radial-gradient(120% 160% at 8% 0%,rgba(255,255,255,.42) 0%,rgba(255,255,255,0) 60%),
-    linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.12));
-  backdrop-filter:blur(26px) saturate(2.1);-webkit-backdrop-filter:blur(26px) saturate(2.1);
-  border-bottom:1px solid rgba(255,255,255,.42);
-  box-shadow:0 12px 30px -26px rgba(20,35,60,.4), inset 0 1px 0 rgba(255,255,255,.55);
-  position:relative;z-index:10;
-}
-.avatar-wrap{
-  width:44px;height:44px;border-radius:50%;
-  border:1.5px solid rgba(255,255,255,.7);
-  background:rgba(255,255,255,.32);
-  box-shadow:0 10px 20px -14px rgba(25,45,80,.5), inset 0 1px 0 rgba(255,255,255,.7);
-  position:relative;
-}
-.avatar-wrap::after{
-  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:linear-gradient(155deg,rgba(255,255,255,.55),transparent 46%);
-}
-.avatar-placeholder{font-size:17px;display:flex;align-items:center;justify-content:center}
-.avatar-placeholder svg{width:20px;height:20px;color:var(--muted)}
-#settingsIconEmoji{display:inline-flex;align-items:center;justify-content:center}
-#settingsIconEmoji svg{width:19px;height:19px}
-.main-title{font-size:16px;font-weight:750;letter-spacing:-.02em}
-.subtitle{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.topbar-total{
-  padding:5px 11px;border-radius:14px;margin-right:0;
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 8px 18px -16px rgba(25,45,80,.4), inset 0 1px 0 rgba(255,255,255,.6);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-}
-.topbar-total .t-label{font-size:9px;font-weight:750;letter-spacing:.08em;color:var(--muted)}
-.topbar-total .t-value{font-size:14px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.icon-btn{
-  width:40px;height:40px;border-radius:14px;
-  background:rgba(255,255,255,.24);border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 10px 20px -16px rgba(25,45,80,.5), inset 0 1px 0 rgba(255,255,255,.62);
-  font-size:17px;color:var(--btn-text);backdrop-filter:blur(24px) saturate(2.1);-webkit-backdrop-filter:blur(24px) saturate(2.1);
-  transition:transform .2s var(--ease-spring);
-}
-.icon-btn:active{transform:scale(.94)}
-.amount-filter-btn{
-  max-width:none;height:30px;padding:0 11px;border-radius:999px;
-  font-size:11px;font-weight:750;color:var(--accent-ink);
-  background:var(--accent-soft);border:1px solid rgba(10,132,255,.16);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-}
-.amount-filter-btn:active{transform:scale(.95)}
-
-/* 统计 */
-.stats-bar{
-  gap:0;padding:4px;margin:12px 0 2px;
-  border-radius:22px;
-  background:
-    var(--specular),
-    radial-gradient(120% 180% at 12% 0%,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 58%),
-    linear-gradient(145deg,rgba(255,255,255,.36),rgba(255,255,255,.12));
-  border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 18px 40px -32px rgba(25,45,80,.5), inset 0 1px 0 rgba(255,255,255,.68), inset 0 -1px 0 rgba(255,255,255,.14);
-  backdrop-filter:blur(26px) saturate(2.05);-webkit-backdrop-filter:blur(26px) saturate(2.05);
-}
-.stat-chip{
-  background:transparent;border:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
-  border-radius:18px;padding:9px 2px;position:relative;
-}
-.stat-chip + .stat-chip::before{
-  content:"";position:absolute;left:0;top:24%;height:52%;width:1px;
-  background:linear-gradient(180deg,transparent,rgba(50,65,90,.14),transparent);
-}
-.stat-chip .sv{font-size:18px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.stat-chip .sl{font-size:10px;font-weight:650;color:var(--muted);letter-spacing:.02em}
-.stat-chip .sv.red{color:#e4473f}
-.stat-chip .sv.yellow{color:#c98a12}
-
-/* 工具条 */
-.toolbar{
-  position:sticky;top:6px;z-index:9;
-  gap:4px;margin:10px 0 14px;padding:4px;
-  border-radius:20px;
-  background:
-    var(--specular),
-    radial-gradient(120% 170% at 10% 0%,rgba(255,255,255,.38) 0%,rgba(255,255,255,0) 60%),
-    linear-gradient(145deg,rgba(255,255,255,.36),rgba(255,255,255,.1));
-  border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 20px 42px -32px rgba(25,45,80,.55), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(255,255,255,.14);
-  backdrop-filter:blur(28px) saturate(2.1);-webkit-backdrop-filter:blur(28px) saturate(2.1);
-}
-.tool-btn,.import-btn{
-  flex:1;min-height:44px;padding:0 10px;
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  border:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
-  background:transparent;border-radius:16px;
-  font-size:13px;font-weight:680;letter-spacing:-.01em;color:var(--text);
-  transition:background .2s,transform .2s var(--ease-spring),color .2s;
-}
-.tool-btn.compact{flex:0 0 auto;min-width:74px;max-width:none}
-.tool-btn:active{transform:scale(.96);background:rgba(255,255,255,.55)}
-.tool-btn.on-move{background:var(--accent-soft);color:var(--accent-ink);font-weight:750}
-.import-btn{
-  flex:1.18;
-  color:#fff;font-weight:750;
-  background:linear-gradient(180deg,#43a3ff,#0a84ff 60%,#0071e3);
-  box-shadow:0 10px 20px -14px rgba(10,132,255,.5), inset 0 1px 0 rgba(255,255,255,.4);
-}
-.import-btn:active{transform:scale(.96);filter:brightness(.97)}
-.toolbar .ico{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px}
-.toolbar .ico svg{width:17px;height:17px}
-
-/* 色卡网格 */
-.page{padding:0 14px calc(24px + env(safe-area-inset-bottom))}
-.folder-grid{grid-template-columns:1fr 1fr;gap:12px;padding-bottom:8px}
-.folder-card{
-  border-radius:24px;isolation:isolate;
-  background:rgba(255,255,255,.16);
-  border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 22px 44px -34px rgba(20,40,80,.42), 0 2px 10px rgba(20,40,80,.04), inset 0 1px 0 rgba(255,255,255,.72);
-  backdrop-filter:blur(22px) saturate(1.9);-webkit-backdrop-filter:blur(22px) saturate(1.9);
-  transform:translateZ(0);
-  animation:cardIn .55s var(--ease-spring) both;
-  animation-delay:calc(var(--i,0) * 45ms);
-  transition:transform .28s var(--ease-spring),box-shadow .28s;
-}
-.folder-card::after{
-  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:
-    radial-gradient(120% 80% at 10% 0%,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 48%),
-    linear-gradient(180deg,rgba(255,255,255,.12),transparent 26%,transparent 62%,rgba(14,20,32,.16));
-}
-.folder-card:active{transform:scale(.972);box-shadow:0 10px 24px -22px rgba(20,35,65,.45)}
-.folder-cover{aspect-ratio:1;transition:transform .55s var(--ease-spring);background:linear-gradient(135deg,#dfe8f4,#ece2fa)}
-.folder-name-tag{
-  left:8px;bottom:8px;z-index:3;
-  max-width:calc(100% - 16px);
-  padding:6px 11px;border-radius:12px;
-  background:rgba(255,255,255,.42);
-  border:1px solid rgba(255,255,255,.58);
-  box-shadow:0 10px 20px -14px rgba(20,30,50,.36), inset 0 1px 0 rgba(255,255,255,.7);
-  backdrop-filter:blur(24px) saturate(2.1);-webkit-backdrop-filter:blur(24px) saturate(2.1);
-  font-size:14px;font-weight:750;letter-spacing:-.01em;color:#1b2029;
-}
-.folder-edit-btn{
-  width:32px;height:32px;top:8px;right:8px;z-index:4;
-  background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.55);
-  box-shadow:0 8px 16px -12px rgba(20,30,50,.36), inset 0 1px 0 rgba(255,255,255,.7);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-  font-size:14px;font-weight:750;color:#2a2f38;
-}
-.folder-status-tag{
-  z-index:4;padding:6px 12px;font-size:11px;font-weight:750;letter-spacing:.02em;
-  background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.55);
-  box-shadow:0 10px 22px -16px rgba(20,30,50,.4), inset 0 1px 0 rgba(255,255,255,.7);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-}
-.folder-status-tag[data-status="已出"],.folder-status-tag[data-status="已完结"]{
-  background:rgba(52,199,123,.2);border-color:rgba(52,199,123,.3);color:#087443;
-}
-.folder-status-tag[data-status="待出"],.folder-status-tag[data-status="待退款"]{
-  background:rgba(255,176,32,.2);border-color:rgba(255,176,32,.3);color:#8a5a00;
-}
-.folder-status-tag[data-status="已退款"]{
-  background:rgba(255,90,90,.18);border-color:rgba(255,90,90,.28);color:#a52a2a;
-}
-.empty-tip{
-  display:block;text-align:center;
-  padding:64px 16px;margin:10px 0;border-radius:24px;
-  background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.6);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  font-size:13px;line-height:1.7;color:var(--muted);
-}
-.empty-tip::before{content:"";display:block;width:34px;height:34px;margin:0 auto 10px}
-@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
-
-/* 页头 / 返回 */
-.page-head{
-  position:sticky;top:0;z-index:8;
-  margin:0 -14px 6px;padding:12px 14px 10px;gap:12px;
-  background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.22) 72%,rgba(255,255,255,0));
-  backdrop-filter:blur(16px) saturate(1.6);-webkit-backdrop-filter:blur(16px) saturate(1.6);
-}
-.back-btn{
-  width:40px;height:40px;border-radius:14px;flex-shrink:0;
-  display:grid;place-items:center;color:var(--text);
-  background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.7);
-  box-shadow:0 10px 22px -16px rgba(25,40,70,.5), inset 0 1px 0 rgba(255,255,255,.85);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  transition:transform .2s var(--ease-spring);
-}
-.back-btn:active{transform:scale(.92)}
-.back-btn svg{width:18px;height:18px}
-.page-head h2{font-size:17px;font-weight:750;letter-spacing:-.02em}
-
-/* 表单 / 导入 */
-.form-card{padding:18px;border-radius:26px}
-.form-row{margin-bottom:16px}
-.form-row label{font-size:12px;font-weight:750;letter-spacing:.05em;color:var(--muted);margin-bottom:7px}
-.form-row input{
-  height:50px;border-radius:16px;padding:0 16px;font-size:16px;
-  background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.58);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.65), 0 10px 20px -20px rgba(25,45,80,.5);
-  backdrop-filter:blur(18px) saturate(1.9);-webkit-backdrop-filter:blur(18px) saturate(1.9);
-  transition:border-color .2s,box-shadow .2s,background .2s;
-}
-.form-row input:focus{
-  border-color:rgba(10,132,255,.5);
-  background:rgba(255,255,255,.52);
-  box-shadow:0 0 0 4px rgba(10,132,255,.12), inset 0 1px 0 rgba(255,255,255,.7);
-}
-.preview-box{
-  aspect-ratio:1.45;border-radius:18px;
-  border:1.5px dashed rgba(80,100,130,.26);
-  background:rgba(255,255,255,.3);
-  font-size:13px;font-weight:600;color:var(--muted);
-  transition:border-color .2s,background .2s,transform .2s var(--ease-spring);
-}
-.preview-box:active{transform:scale(.99);border-color:rgba(10,132,255,.4)}
-.preview-box img{border-radius:14px}
-.preview-box.grid{gap:6px;padding:6px}
-.type-chip-wrap{gap:8px}
-.type-chip{
-  min-height:38px;padding:0 16px;border-radius:999px;
-  font-size:13px;font-weight:650;color:var(--text);
-  background:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.55);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.62), 0 8px 18px -18px rgba(25,45,80,.5);
-  backdrop-filter:blur(20px) saturate(2);-webkit-backdrop-filter:blur(20px) saturate(2);
-  transition:transform .2s var(--ease-spring),background .2s,color .2s;
-}
-.type-chip:active{transform:scale(.94)}
-.type-chip.on{
-  background:var(--accent-soft);border-color:rgba(10,132,255,.22);
-  color:var(--accent-ink);font-weight:750;
-}
-.hint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:10px}
-
-/* 详情：顶部卡片 */
-.detail-hero{
-  display:flex;align-items:center;gap:14px;padding:14px;margin-bottom:12px;
-  border-radius:26px;
-}
-.hero-cover{
-  width:82px;height:82px;border-radius:22px;overflow:hidden;flex-shrink:0;
-  background:rgba(230,235,245,.6);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);
-}
-.hero-cover img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-cover-empty{width:100%;height:100%;display:grid;place-items:center;color:var(--muted)}
-.hero-main{flex:1;min-width:0}
-.hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
-.hero-pill{
-  display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;
-  font-size:10px;font-weight:750;letter-spacing:.02em;
-  background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);color:var(--muted);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.58);
-  backdrop-filter:blur(20px) saturate(2.1);-webkit-backdrop-filter:blur(20px) saturate(2.1);
-  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.hero-pill.tone-accent{background:var(--accent-soft);border-color:rgba(10,132,255,.18);color:var(--accent-ink)}
-.hero-pill.tone-ok{background:rgba(52,199,123,.16);border-color:rgba(52,199,123,.24);color:#087443}
-.hero-pill.tone-warn{background:rgba(255,176,32,.18);border-color:rgba(255,176,32,.26);color:#8a5a00}
-.hero-pill.tone-danger{background:rgba(255,90,90,.16);border-color:rgba(255,90,90,.26);color:#a52a2a}
-.hero-title{font-size:26px;font-weight:800;letter-spacing:-.035em;line-height:1.12;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hero-sub{font-size:12px;color:var(--muted);margin-top:5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.detail-meta{padding:2px 16px;border-radius:20px;margin-bottom:12px;font-size:14px}
-.detail-meta > div{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:12px 0;border-bottom:1px solid var(--hairline);
-  font-size:14px;font-weight:650;line-height:1.5;color:var(--text);
-}
-.detail-meta > div:last-child{border-bottom:none}
-.detail-meta span{flex-shrink:0;font-size:12px;font-weight:650;color:var(--muted);margin-right:0}
-.detail-meta b{font-weight:750;color:var(--text);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.detail-hero,.detail-meta{
-  background:
-    var(--specular),
-    radial-gradient(130% 130% at 10% 0%,rgba(255,255,255,.14) 0%,rgba(255,255,255,0) 58%),
-    linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.015));
-  border-color:rgba(255,255,255,.58);
-  box-shadow:0 24px 50px -34px rgba(25,45,80,.5), 0 1px 2px rgba(30,50,80,.05), inset 0 1.5px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.4), inset 0 -1px 0 rgba(255,255,255,.2), inset 0 -18px 28px -24px rgba(30,50,90,.2);
-  backdrop-filter:blur(36px) saturate(2.35);-webkit-backdrop-filter:blur(36px) saturate(2.35);
-}
-.detail-actions{display:flex;gap:8px;margin:0 0 12px;flex-wrap:wrap}
-.mini-pill{
-  display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:999px;
-  font-size:12px;font-weight:680;color:var(--text);
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 8px 18px -16px rgba(25,45,80,.45), inset 0 1px 0 rgba(255,255,255,.6);
-  backdrop-filter:blur(24px) saturate(2.1);-webkit-backdrop-filter:blur(24px) saturate(2.1);
-  transition:transform .2s var(--ease-spring),background .2s;
-}
-.mini-pill:active{transform:scale(.94)}
-.mini-pill.on{background:var(--accent-soft);color:var(--accent-ink);font-weight:750}
-
-/* 封面选择 */
-.cover-change-btn{
-  width:100%;height:46px;margin:0 0 6px;border-radius:16px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  font-size:14px;font-weight:680;color:var(--text);
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 12px 24px -22px rgba(25,45,80,.5), inset 0 1px 0 rgba(255,255,255,.6);
-  backdrop-filter:blur(26px) saturate(2.1);-webkit-backdrop-filter:blur(26px) saturate(2.1);
-  transition:transform .2s var(--ease-spring),background .2s;
-}
-.cover-change-btn:active{transform:scale(.98)}
-.cover-change-btn svg{width:18px;height:18px}
-.cover-change-btn.picking{
-  background:var(--accent-soft);border-color:rgba(10,132,255,.24);
-  color:var(--accent-ink);font-weight:750;
-}
-.cover-hint{
-  display:none;text-align:center;font-size:11px;font-weight:650;color:var(--accent-ink);
-  padding:8px 0 4px;
-}
-.cover-hint.show{display:block;animation:fadeIn .25s ease}
-.record-list.cover-pick .record-item{
-  cursor:pointer;
-  box-shadow:0 0 0 2px rgba(10,132,255,.35), var(--float-shadow);
-}
-.record-list.cover-pick .record-item:active{transform:scale(.99)}
-.record-list.cover-pick .record-actions,.record-list.cover-pick .del-btn{display:none}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-/* 详情：价格 / 总额 / 记录 */
-.card-price-row{
-  height:58px;padding:0 16px;border-radius:18px;margin-bottom:10px;
-  background:
-    var(--specular),
-    radial-gradient(130% 180% at 8% 0%,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 60%),
-    linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.015));
-  border:1px solid rgba(255,255,255,.55);
-  box-shadow:0 16px 32px -30px rgba(25,45,80,.45), 0 1px 2px rgba(30,50,80,.04), inset 0 1.5px 0 rgba(255,255,255,.92), inset 1px 0 0 rgba(255,255,255,.36), inset 0 -1px 0 rgba(255,255,255,.18);
-  backdrop-filter:blur(34px) saturate(2.35);-webkit-backdrop-filter:blur(34px) saturate(2.35);
-}
-.card-price-row .label{font-size:13px;font-weight:680;color:var(--text)}
-.card-price-right{display:flex;align-items:center;gap:4px;min-width:0}
-.card-price-row .value{font-size:14px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.card-price-row .chev{font-size:18px;line-height:1;color:rgba(60,70,90,.28);margin-left:6px}
-.total-bar{
-  padding:16px 18px;border-radius:22px;margin-bottom:16px;
-  background:linear-gradient(135deg,rgba(10,132,255,.11),rgba(150,120,255,.09));
-  border:1px solid rgba(255,255,255,.5);
-  box-shadow:0 18px 38px -30px rgba(50,70,140,.5), inset 0 1px 0 rgba(255,255,255,.66);
-  backdrop-filter:blur(28px) saturate(2.1);-webkit-backdrop-filter:blur(28px) saturate(2.1);
-}
-.total-bar .label{font-size:11px;font-weight:750;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
-.total-bar .value{font-size:26px;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
-.section-label{font-size:10px;font-weight:750;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin:18px 4px 10px}
-.record-list{gap:10px}
-.record-item{
-  padding:10px 12px;border-radius:20px;gap:12px;align-items:center;
-  background:
-    var(--specular),
-    radial-gradient(130% 160% at 8% 0%,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 58%),
-    linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.015));
-  border:1px solid rgba(255,255,255,.55);
-  box-shadow:0 18px 34px -30px rgba(25,45,80,.5), 0 1px 2px rgba(30,50,80,.04), inset 0 1.5px 0 rgba(255,255,255,.92), inset 1px 0 0 rgba(255,255,255,.36), inset 0 -1px 0 rgba(255,255,255,.18), inset 0 -14px 22px -20px rgba(30,50,90,.16);
-  backdrop-filter:blur(34px) saturate(2.35);-webkit-backdrop-filter:blur(34px) saturate(2.35);
-  transition:transform .2s var(--ease-spring);
-}
-.record-thumb{width:58px;height:58px;border-radius:16px;box-shadow:0 6px 14px -10px rgba(20,30,50,.32)}
-.record-body .n{font-size:15px;font-weight:750;letter-spacing:-.01em;font-variant-numeric:tabular-nums;margin-bottom:3px}
-.record-body .m{font-size:11px;line-height:1.45;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.record-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
-.icon-action{
-  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
-  padding:0;margin:0;line-height:1;flex-shrink:0;
-  background:rgba(255,255,255,.24);border:1px solid rgba(255,255,255,.48);
-  box-shadow:0 8px 16px -14px rgba(25,45,80,.35), inset 0 1px 0 rgba(255,255,255,.58);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-  color:#3a414d;transition:transform .18s var(--ease-spring),background .18s;
-}
-.icon-action svg{width:16px;height:16px}
-.icon-action:active{transform:scale(.88);background:rgba(255,255,255,.8)}
-.icon-action.del{color:#d84343;background:rgba(255,238,238,.6);border-color:rgba(255,210,210,.7)}
-.del-btn{
-  min-height:34px;padding:0 12px;border-radius:999px;font-size:12px;font-weight:650;
-  background:rgba(255,238,238,.6);border:1px solid rgba(255,210,210,.7);color:#c0392b;
-}
-.multi-bar{gap:8px}
-.multi-bar button{
-  min-height:42px;border-radius:14px;font-size:12px;font-weight:680;
-  background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.7);color:var(--text);
-}
-.multi-bar button.primary{background:var(--accent-soft);color:var(--accent-ink)}
-.multi-bar button.danger{color:#c0392b}
-
-/* 弹窗 / 底部抽屉 */
-.modal-mask{
-  padding:0;align-items:flex-end;justify-content:center;
-  background:rgba(18,28,45,.26);
-  backdrop-filter:blur(10px) saturate(1.4);-webkit-backdrop-filter:blur(10px) saturate(1.4);
-}
-.modal-mask.show .modal{animation:sheetIn .42s var(--ease-spring)}
-.modal{
-  width:100%;max-width:100%;max-height:min(88vh,88dvh);overflow:auto;
-  border-radius:28px 28px 0 0;
-  padding:8px 18px calc(20px + env(safe-area-inset-bottom));
-  background:
-    var(--specular),
-    radial-gradient(120% 90% at 12% 0%,rgba(255,255,255,.42) 0%,rgba(255,255,255,0) 55%),
-    linear-gradient(180deg,rgba(250,253,255,.78),rgba(240,247,255,.62));
-  border:1px solid rgba(255,255,255,.7);border-bottom:none;
-  box-shadow:0 -28px 80px -36px rgba(15,30,55,.55), inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.2);
-  backdrop-filter:blur(46px) saturate(2.1);-webkit-backdrop-filter:blur(46px) saturate(2.1);
-  overscroll-behavior:contain;
-  scrollbar-width:none;
-}
-.modal::-webkit-scrollbar{display:none}
-.modal::before{
-  content:"";display:block;width:38px;height:5px;border-radius:3px;
-  background:rgba(50,65,90,.18);margin:2px auto 12px;
-}
-.modal h3{font-size:19px;font-weight:800;letter-spacing:-.025em;margin-bottom:14px}
-.modal-section{margin-bottom:16px}
-.modal-section .label{font-size:11px;font-weight:750;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:9px}
-.chip{
-  min-height:38px;padding:0 14px;border-radius:999px;
-  font-size:13px;font-weight:650;color:var(--text);
-  background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.5);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 8px 18px -18px rgba(25,45,80,.5);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-  transition:transform .18s var(--ease-spring),background .18s,color .18s;
-}
-.chip:active{transform:scale(.94)}
-.chip.on{background:var(--accent-soft);border-color:rgba(10,132,255,.22);color:var(--accent-ink);font-weight:750}
-.modal-actions{gap:10px;margin-top:16px}
-.modal-actions button{min-height:50px;border-radius:16px;font-size:15px;font-weight:700}
-.modal-actions .cancel{background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.52);color:var(--muted);box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
-.modal-actions .ok{
-  background:linear-gradient(180deg,#43a3ff,#0a84ff 60%,#0071e3);color:#fff;
-  border:1px solid rgba(255,255,255,.28);
-  box-shadow:0 14px 28px -14px rgba(10,132,255,.5), inset 0 1px 0 rgba(255,255,255,.4);
-}
-.modal-actions .ok:active,.modal-actions .cancel:active{transform:scale(.97)}
-@keyframes sheetIn{from{transform:translateY(28px);opacity:.4}to{transform:none;opacity:1}}
-
-/* 操作面板 */
-#folderActionModal .modal{
-  max-width:100%;display:flex;flex-direction:column;gap:8px;align-items:stretch;
-  padding-bottom:calc(16px + env(safe-area-inset-bottom));
-}
-#folderActionModal h3{text-align:center;margin-bottom:6px}
-#statusCancelModal{align-items:center;padding:24px}
-#statusCancelModal .modal{
-  max-width:320px;border-radius:26px;border-bottom:1px solid rgba(255,255,255,.7);
-  padding:22px 20px 18px;text-align:center;
-  box-shadow:0 34px 80px -36px rgba(15,30,55,.6), inset 0 1px 0 rgba(255,255,255,.85);
-}
-#statusCancelModal .modal::before{display:none}
-#statusCancelModal h3{margin-bottom:16px;font-size:17px;line-height:1.5}
-.folder-action-chip{
-  width:100%;min-height:50px;border-radius:15px;padding:0 16px;
-  font-size:15px;font-weight:680;color:var(--text);
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.48);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.58);
-  backdrop-filter:blur(26px) saturate(2.1);-webkit-backdrop-filter:blur(26px) saturate(2.1);
-  transition:transform .18s var(--ease-spring),background .18s;
-}
-.folder-action-chip:active{transform:scale(.97);background:rgba(255,255,255,.75)}
-.folder-action-chip.danger{color:#d13c3c}
-#actCancel{color:var(--accent-ink);font-weight:750}
-
-/* 设置 */
-.settings-scroll{display:flex;flex-direction:column;gap:18px}
-.settings-section{
-  padding:14px;border-radius:20px;
-  background:var(--specular),rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.48);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -1px 0 rgba(255,255,255,.14);
-  backdrop-filter:blur(26px) saturate(2.15);-webkit-backdrop-filter:blur(26px) saturate(2.15);
-}
-.settings-section-title{
-  font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);margin:0 2px 12px;
-}
-.setting-row{margin-bottom:14px}
-.setting-row:last-child{margin-bottom:0}
-.setting-row label{display:block;font-size:12px;font-weight:680;color:var(--muted);margin-bottom:7px}
-.field{
-  width:100%;height:48px;border-radius:15px;padding:0 14px;font-size:16px;
-  background:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.55);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.68), 0 8px 18px -18px rgba(25,45,80,.45);
-  transition:border-color .2s,box-shadow .2s,background .2s;
-}
-.field:focus{border-color:rgba(10,132,255,.5);box-shadow:0 0 0 4px rgba(10,132,255,.12),inset 0 1px 0 rgba(255,255,255,.8)}
-.btn-pair{display:flex;gap:8px}
-.glass-btn{
-  flex:1;min-height:44px;border-radius:14px;font-size:13px;font-weight:680;color:var(--text);
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.5);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 8px 16px -16px rgba(25,45,80,.45);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-  transition:transform .18s var(--ease-spring);
-}
-.glass-btn:active{transform:scale(.95)}
-.glass-btn.subtle{color:var(--muted)}
-.color-field{display:flex;align-items:center;gap:10px}
-.color-swatch{
-  width:48px;height:44px;border-radius:13px;padding:0;border:1px solid rgba(255,255,255,.8);
-  background:transparent;overflow:hidden;flex-shrink:0;
-  box-shadow:0 6px 14px -10px rgba(25,40,70,.4);
-}
-.setting-row .color-field input.color-swatch{
-  width:48px;height:44px;flex:0 0 48px;padding:0;border-radius:13px;
-}
-.setting-row .color-field input.color-hex{width:auto;flex:1;min-width:0}
-.color-swatch::-webkit-color-swatch-wrapper{padding:0}
-.color-swatch::-webkit-color-swatch{border:none;border-radius:12px}
-.color-hex{flex:1;height:44px;border-radius:13px;padding:0 14px;font-size:16px;font-variant-numeric:tabular-nums;
-  background:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.68)}
-.setting-row-inline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-.setting-row-inline label{margin:0;font-size:14px;font-weight:650;color:var(--text)}
-.switch{
-  appearance:none;-webkit-appearance:none;width:52px;height:32px;border-radius:999px;
-  background:rgba(120,130,145,.28);position:relative;flex-shrink:0;cursor:pointer;
-  transition:background .25s;border:none;box-shadow:inset 0 1px 3px rgba(20,30,50,.15);
-}
-.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(20,30,50,.25);transition:transform .25s var(--ease-spring)}
-.switch:checked{background:linear-gradient(180deg,#43a3ff,#0a84ff)}
-.switch:checked::after{transform:translateX(20px)}
-.settings-footer{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-.settings-footer button{
-  min-height:46px;border-radius:14px;font-size:14px;font-weight:650;
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.5);color:var(--text);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-}
-.settings-footer button:active{transform:scale(.98)}
-.settings-footer .danger{color:#d13c3c}
-#settingsClose{
-  display:block;width:100%;position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));z-index:3;
-  margin-top:12px;min-height:50px;border-radius:16px;font-size:15px;font-weight:750;
-  background:linear-gradient(180deg,#43a3ff,#0a84ff 60%,#0071e3);color:#fff;
-  border:1px solid rgba(255,255,255,.28);
-  box-shadow:0 14px 28px -14px rgba(10,132,255,.5), inset 0 1px 0 rgba(255,255,255,.4);
-}
-
-/* 编辑 / 价格 / 风格弹窗 */
-.setting-row input[type="text"],.setting-row input:not([type]){
-  width:100%;height:48px;border-radius:15px;padding:0 14px;font-size:16px;
-  background:rgba(255,255,255,.38);border:1px solid rgba(255,255,255,.6);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
-}
-.setting-row input[type="text"]:focus{border-color:rgba(10,132,255,.5);box-shadow:0 0 0 4px rgba(10,132,255,.12)}
-.setting-actions{gap:8px;margin-top:10px}
-.setting-actions button{
-  min-height:48px;border-radius:14px;font-size:14px;font-weight:680;
-  background:rgba(255,255,255,.26);border:1px solid rgba(255,255,255,.5);color:var(--text);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-  transition:transform .18s var(--ease-spring);
-}
-.setting-actions button:active{transform:scale(.97)}
-#editSave{background:linear-gradient(180deg,#43a3ff,#0a84ff 60%,#0071e3);color:#fff;border-color:rgba(255,255,255,.28);box-shadow:0 12px 24px -12px rgba(10,132,255,.45)}
-#cardPriceOk,#cardStyleOk{background:linear-gradient(180deg,#43a3ff,#0a84ff 60%,#0071e3);color:#fff;border-color:rgba(255,255,255,.28)}
-
-/* 导出选择 */
-#exportFolderList{gap:8px!important;margin-bottom:14px!important;scrollbar-width:none}
-#exportFolderList::-webkit-scrollbar{display:none}
-#exportSelectAll{accent-color:#0a84ff}
-.export-row{
-  display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer;
-  border-radius:15px;background:rgba(255,255,255,.22);
-  border:1px solid rgba(255,255,255,.46);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.58);
-  backdrop-filter:blur(22px) saturate(2.1);-webkit-backdrop-filter:blur(22px) saturate(2.1);
-}
-.export-row input[type="checkbox"]{width:20px;height:20px;accent-color:#0a84ff;flex-shrink:0}
-.export-row .export-name{flex:1;font-size:13px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.export-row .export-kind{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0;padding:3px 7px;border-radius:999px;background:rgba(120,130,145,.1)}
-
-/* Toast / 加载 */
-.toast-mask{
-  background:rgba(12,18,28,.4);
-  backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
-}
-.toast-card{
-  max-width:320px;border-radius:26px;padding:24px 20px 18px;
-  background:
-    radial-gradient(130% 100% at 14% 0%,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 55%),
-    linear-gradient(180deg,rgba(250,253,255,.7),rgba(240,247,255,.52));
-  border:1px solid rgba(255,255,255,.7);
-  box-shadow:0 34px 80px -36px rgba(15,30,55,.6), inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.2);
-  backdrop-filter:blur(42px) saturate(2.1);-webkit-backdrop-filter:blur(42px) saturate(2.1);
-  animation:popIn .32s var(--ease-spring);
-}
-.toast-card .toast-msg{font-size:15px;font-weight:650;line-height:1.6;margin-bottom:18px;letter-spacing:-.01em}
-.toast-card .toast-actions{gap:10px}
-.toast-card .toast-actions button{min-height:48px;border-radius:15px;font-size:15px;font-weight:700}
-.toast-card .toast-ok{background:linear-gradient(180deg,#43a3ff,#0a84ff 60%,#0071e3);color:#fff;border-color:rgba(255,255,255,.28);box-shadow:0 12px 24px -12px rgba(10,132,255,.45)}
-.toast-card .toast-cancel{background:rgba(255,255,255,.34);border:1px solid rgba(255,255,255,.6);color:var(--muted);box-shadow:none}
-@keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
-#loadingOverlay{background:rgba(12,18,28,.42);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-.loading-box{
-  border-radius:26px;padding:26px 24px;max-width:300px;
-  background:
-    radial-gradient(130% 100% at 14% 0%,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 55%),
-    linear-gradient(180deg,rgba(250,253,255,.72),rgba(240,247,255,.54));
-  border:1px solid rgba(255,255,255,.7);
-  box-shadow:0 34px 80px -36px rgba(15,30,55,.6), inset 0 1px 0 rgba(255,255,255,.85);
-  backdrop-filter:blur(42px) saturate(2.1);-webkit-backdrop-filter:blur(42px) saturate(2.1);
-}
-.loading-box::before{
-  content:"";display:block;width:30px;height:30px;margin:0 auto 14px;border-radius:50%;
-  border:3px solid rgba(10,132,255,.18);border-top-color:#0a84ff;
-  animation:spin .8s linear infinite;
-}
-.loading-box .lt{font-size:15px;font-weight:750}
-.loading-box .ls{font-size:12px;color:var(--muted)}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* 查看大图 */
-.lightbox{
-  background:rgba(16,18,24,.6);
-  backdrop-filter:blur(34px) saturate(1.3);-webkit-backdrop-filter:blur(34px) saturate(1.3);
-  padding:16px;
-}
-.lightbox img{
-  border-radius:24px;
-  box-shadow:0 30px 80px -20px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.14);
-}
-.lb-close{
-  width:44px;height:44px;border-radius:16px;
-  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);
-  color:#fff;font-size:20px;
-  box-shadow:0 12px 28px -12px rgba(0,0,0,.6);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-}
-.lb-actions button{
-  min-height:44px;border-radius:999px;padding:0 20px;font-size:13px;font-weight:650;
-  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.26);color:#fff;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-}
-.lb-actions button:active{transform:scale(.95)}
-
-/* 移动提示 */
-.move-tip-bar{
-  margin:8px 0 10px;padding:12px 14px;border-radius:18px;
-  background:linear-gradient(145deg,rgba(255,255,255,.7),rgba(255,255,255,.36));
-  border:1px solid rgba(255,255,255,.7);
-  box-shadow:0 14px 30px -24px rgba(25,40,70,.5), inset 0 1px 0 rgba(255,255,255,.9);
-  font-size:12px;font-weight:650;color:var(--text);
-}
-.move-tip-bar .mt-cancel,.move-tip-bar .mt-ok{
-  min-height:32px;padding:0 14px;border-radius:999px;font-size:11px;font-weight:750;
-  background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.75);color:var(--muted);
-}
-.move-tip-bar .mt-ok{background:var(--accent-soft);color:var(--accent-ink);border-color:rgba(10,132,255,.2)}
-
-/* 自定义按钮颜色以柔和底色参与玻璃质感 */
-.glass-btn,.mini-pill,.chip,.type-chip,.cover-change-btn,.icon-action{background-color:var(--btn);color:var(--btn-text)}
-
-/* 响应式细节 */
-@media (hover:hover){
-  .folder-card:hover{transform:translateY(-3px);box-shadow:0 26px 48px -30px rgba(20,35,65,.45), 0 2px 8px rgba(20,35,65,.05), inset 0 1px 0 rgba(255,255,255,.9)}
-  .folder-card:hover .folder-cover{transform:scale(1.035)}
-  .icon-btn:hover{background:rgba(255,255,255,.65)}
-  .glass-btn:hover,.mini-pill:hover,.cover-change-btn:hover{background:rgba(255,255,255,.68)}
-}
-@media (max-width:380px){
-  .main-title{font-size:15px}
-  .topbar{padding-left:12px;padding-right:12px;gap:8px}
-  .topbar-total{padding:4px 8px}
-  .hero-title{font-size:23px}
-  .record-thumb{width:52px;height:52px}
-  .icon-action{width:34px;height:34px}
-  .toolbar{padding:3px}
-  .tool-btn.compact{min-width:66px}
-}
-@media (min-width:640px){
-  .app{padding:24px 20px}
-  .shell-wrap{max-width:460px;min-height:0;height:calc(100dvh - 48px)}
-  .glass{min-height:calc(100dvh - 48px);border-radius:34px;overflow:hidden;border:1px solid rgba(255,255,255,.55);box-shadow:0 40px 90px -40px rgba(20,30,55,.45), inset 0 1px 0 rgba(255,255,255,.85)}
-  .shell{height:calc(100dvh - 48px);min-height:0;max-height:calc(100dvh - 48px)}  .name-screen{min-height:calc(100dvh - 48px)}
-  .topbar{border-radius:34px 34px 0 0}
-  .modal-mask{padding:18px;align-items:center}
-  .modal{
-    max-width:460px;border-radius:30px;border-bottom:1px solid rgba(255,255,255,.8);
-    padding:18px 22px 20px;
-    box-shadow:0 40px 90px -40px rgba(20,30,55,.55), inset 0 1px 0 rgba(255,255,255,.95);
-  }
-  .modal::before{display:none}
-  #folderActionModal .modal{max-width:360px}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  .ambient .orb{animation:none}
-}
-
-/* ============================================================
    iOS 26 Liquid Glass 精修层
    更透明 / 更饱和 / 彩色边缘辉光 / 全屏安全区
    ============================================================ */
 :root{
-  --glow-1:rgba(120,150,255,.16);
-  --glow-2:rgba(255,120,190,.10);
-  --glass-edge:inset 0 1px 0 rgba(255,255,255,.92), inset 1px 0 0 rgba(255,255,255,.30), inset 0 -1px 0 rgba(255,255,255,.20), inset -1px 0 0 rgba(255,255,255,.18);
+  --liquid-edge:inset 0 1px 0 rgba(255,255,255,.9), inset 1px 0 0 rgba(255,255,255,.3), inset 0 -1px 0 rgba(255,255,255,.18), inset -1px 0 0 rgba(255,255,255,.16);
 }
-/* 背景：环境光斑更浓、更饱和，让玻璃背后有色彩可透 */
-body{
+/* 背景：半透明白色（无彩色环境光） */
+html,body{
   background:
-    radial-gradient(120% 80% at 8% -14%, rgba(96,166,255,.80) 0%, rgba(96,166,255,0) 60%),
-    radial-gradient(100% 70% at 96% 0%, rgba(196,142,255,.72) 0%, rgba(196,142,255,0) 58%),
-    radial-gradient(90% 65% at 50% 112%, rgba(255,118,168,.46) 0%, rgba(255,118,168,0) 62%),
-    radial-gradient(80% 60% at 56% 38%, rgba(112,188,255,.52) 0%, rgba(112,188,255,0) 64%),
-    radial-gradient(70% 55% at 16% 84%, rgba(255,170,200,.40) 0%, rgba(255,170,200,0) 64%),
-    radial-gradient(60% 48% at 88% 78%, rgba(96,216,196,.34) 0%, rgba(96,216,196,0) 62%),
-    linear-gradient(165deg,var(--bg1) 0%,var(--bg2) 100%);
+    radial-gradient(120% 85% at 50% -8%, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 62%),
+    radial-gradient(100% 70% at 8% 108%, rgba(255,255,255,.7) 0%, rgba(255,255,255,0) 60%),
+    linear-gradient(180deg, rgba(252,253,255,.96) 0%, rgba(244,246,250,.94) 55%, rgba(238,241,246,.92) 100%);
 }
-.ambient .o1{width:clamp(340px,90vw,620px);height:clamp(340px,90vw,620px);left:-20%;top:-14%;opacity:.9;background:radial-gradient(circle at 36% 36%,rgba(96,166,255,.95),rgba(96,166,255,0) 66%)}
-.ambient .o2{width:clamp(300px,80vw,540px);height:clamp(300px,80vw,540px);right:-18%;top:-6%;opacity:.85;background:radial-gradient(circle at 42% 42%,rgba(196,142,255,.9),rgba(196,142,255,0) 66%)}
-.ambient .o3{width:clamp(320px,86vw,580px);height:clamp(320px,86vw,580px);left:-8%;bottom:-26%;opacity:.8;background:radial-gradient(circle at 40% 40%,rgba(255,118,168,.72),rgba(255,118,168,0) 66%)}
-.ambient .o4{width:clamp(280px,76vw,500px);height:clamp(280px,76vw,500px);right:-12%;bottom:-18%;opacity:.82;background:radial-gradient(circle at 40% 40%,rgba(96,216,196,.8),rgba(96,216,196,0) 66%)}
-.ambient .o5{width:clamp(320px,86vw,580px);height:clamp(320px,86vw,580px);left:16%;top:22%;opacity:.75;background:radial-gradient(circle at 44% 44%,rgba(120,150,255,.78),rgba(120,150,255,0) 66%)}
-.ambient .o6{width:clamp(260px,70vw,460px);height:clamp(260px,70vw,460px);right:12%;bottom:20%;opacity:.7;background:radial-gradient(circle at 44% 44%,rgba(255,140,190,.55),rgba(255,140,190,0) 66%)}
-.ambient .orb{filter:blur(64px)}
-.ambient .grain{opacity:.12}
-
-/* 玻璃材质统一精修：更透、更高饱和、彩色边缘 */
-:where(.form-card,.record-item,.stat-chip,.card-price-row,.total-bar,.detail-meta,.detail-hero,.toast-card,.loading-box,.move-tip-bar,.folder-action-chip,.back-btn,.icon-btn,.chip,.type-chip,.cover-change-btn,.multi-bar button,.modal-actions button,.setting-actions button,.amount-filter-btn,.lb-close,.lb-actions button,.mini-pill,.glass-btn,.icon-action){
-  background:
-    radial-gradient(140% 120% at 10% 0%,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 52%),
-    radial-gradient(80% 90% at 90% 14%,rgba(140,180,255,.10) 0%,rgba(140,180,255,0) 58%),
-    linear-gradient(145deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.02) 46%,rgba(255,255,255,.08) 100%);
-  border:1px solid rgba(255,255,255,.38);
-  box-shadow:
-    0 22px 48px -32px rgba(30,50,120,.42),
-    0 2px 10px rgba(30,50,100,.05),
-    0 0 0 1px var(--glow-1),
-    0 0 34px -12px var(--glow-2),
-    inset 0 1px 0 rgba(255,255,255,.86),
-    inset 1px 0 0 rgba(255,255,255,.28),
-    inset 0 -1px 0 rgba(255,255,255,.18),
-    inset -1px 0 0 rgba(255,255,255,.16),
-    inset 0 -16px 26px -24px rgba(60,90,200,.22);
-  backdrop-filter:blur(46px) saturate(2.9);
-  -webkit-backdrop-filter:blur(46px) saturate(2.9);
-}
-/* 主框架：玻璃完全透明，色彩全部来自背景 */
+/* 主玻璃：白色半透明 */
 .glass{
-  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+  background:linear-gradient(180deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.14) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(38px) saturate(2.2);
+  -webkit-backdrop-filter:blur(38px) saturate(2.2);
+  box-shadow:0 24px 60px -36px rgba(90,105,135,.35), var(--liquid-edge);
 }
-.shell{
-  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
-}
-/* 顶部栏：液态玻璃（状态栏深色承接仅在独立运行时出现） */
+/* 顶栏：白色半透明玻璃 */
 .topbar{
-  background:
-    var(--specular),
-    radial-gradient(130% 170% at 8% 0%,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 58%),
-    linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05));
-  backdrop-filter:blur(38px) saturate(2.6);
-  -webkit-backdrop-filter:blur(38px) saturate(2.6);
-  border-bottom:1px solid rgba(255,255,255,.30);
+  background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.16));
+  border-bottom:1px solid rgba(255,255,255,.5);
+  backdrop-filter:blur(36px) saturate(2.2);
+  -webkit-backdrop-filter:blur(36px) saturate(2.2);
 }
-/* 卡片：更透的液态玻璃 */
+/* 统一玻璃组件：白色半透明、中性阴影 */
+:where(.form-card,.record-item,.stat-chip,.card-price-row,.total-bar,.detail-meta,.detail-info,.toast-card,.loading-box,.move-tip-bar,.folder-action-chip,.back-btn,.icon-btn,.chip,.type-chip,.cover-change-btn,.multi-bar button,.modal-actions button,.setting-actions button,.amount-filter-btn,.lb-close,.lb-actions button,.edit-btn,.save-btn,.del-btn,.primary-btn,.tool-btn,.import-btn){
+  background:
+    radial-gradient(130% 110% at 12% 0%, rgba(255,255,255,.5) 0%, rgba(255,255,255,0) 55%),
+    linear-gradient(145deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.18) 48%, rgba(255,255,255,.3) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:
+    0 20px 44px -32px rgba(90,105,135,.35),
+    0 2px 10px rgba(80,95,120,.04),
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 1px 0 0 rgba(255,255,255,.34),
+    inset 0 -1px 0 rgba(255,255,255,.22),
+    inset -1px 0 0 rgba(255,255,255,.2);
+  backdrop-filter:blur(44px) saturate(2.4);
+  -webkit-backdrop-filter:blur(44px) saturate(2.4);
+}
+/* 色卡卡片：白色半透明 */
 .folder-card{
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.40);
+  background:rgba(255,255,255,.36);
+  border:1px solid rgba(255,255,255,.55);
   box-shadow:
-    0 26px 50px -34px rgba(30,50,120,.48),
-    0 2px 10px rgba(30,50,100,.05),
-    0 0 0 1px var(--glow-1),
-    0 0 40px -14px var(--glow-2),
-    inset 0 1px 0 rgba(255,255,255,.88),
-    inset 1px 0 0 rgba(255,255,255,.30),
-    inset 0 -1px 0 rgba(255,255,255,.18),
-    inset 0 -18px 30px -26px rgba(60,90,200,.25);
-  backdrop-filter:blur(38px) saturate(2.7);
-  -webkit-backdrop-filter:blur(38px) saturate(2.7);
+    0 24px 48px -34px rgba(90,105,135,.4),
+    0 2px 10px rgba(80,95,120,.04),
+    inset 0 1px 0 rgba(255,255,255,.92),
+    inset 1px 0 0 rgba(255,255,255,.34),
+    inset 0 -1px 0 rgba(255,255,255,.22),
+    inset 0 -18px 28px -26px rgba(120,140,170,.3);
+  backdrop-filter:blur(34px) saturate(2.3);
+  -webkit-backdrop-filter:blur(34px) saturate(2.3);
 }
-.folder-card::after{
-  background:
-    radial-gradient(130% 90% at 10% 0%,rgba(255,255,255,.20) 0%,rgba(255,255,255,0) 46%),
-    linear-gradient(180deg,rgba(255,255,255,.10),transparent 24%,transparent 64%,rgba(20,30,60,.10));
+/* 卡片文字标签：保持可读的浅玻璃 */
+.folder-name-tag{
+  background:linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,.28));
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(16px) saturate(1.6);
+  -webkit-backdrop-filter:blur(16px) saturate(1.6);
 }
-/* 统计条 / 工具条：整块玻璃容器更透 */
-.stats-bar,.toolbar{
-  background:
-    var(--specular),
-    radial-gradient(130% 180% at 12% 0%,rgba(255,255,255,.26) 0%,rgba(255,255,255,0) 56%),
-    linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.04));
-  border:1px solid rgba(255,255,255,.36);
-  box-shadow:
-    0 20px 44px -32px rgba(30,50,120,.42),
-    inset 0 1px 0 rgba(255,255,255,.72),
-    inset 0 -1px 0 rgba(255,255,255,.14);
-  backdrop-filter:blur(40px) saturate(2.7);
-  -webkit-backdrop-filter:blur(40px) saturate(2.7);
-}
-/* 弹窗 / Toast：真正的透明玻璃 */
+/* 弹窗：白色半透明玻璃 */
 .modal{
   background:
-    var(--specular),
-    radial-gradient(130% 100% at 12% 0%,rgba(255,255,255,.36) 0%,rgba(255,255,255,0) 55%),
-    linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.06));
-  border:1px solid rgba(255,255,255,.46);border-bottom:none;
-  box-shadow:0 -28px 80px -36px rgba(15,30,55,.5), inset 0 1px 0 rgba(255,255,255,.82), inset 0 -1px 0 rgba(255,255,255,.16);
-  backdrop-filter:blur(64px) saturate(2.8);
-  -webkit-backdrop-filter:blur(64px) saturate(2.8);
+    radial-gradient(130% 100% at 12% 0%, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.2));
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 -28px 80px -36px rgba(70,85,115,.4), inset 0 1px 0 rgba(255,255,255,.92), inset 0 -1px 0 rgba(255,255,255,.24);
+  backdrop-filter:blur(60px) saturate(2.4);
+  -webkit-backdrop-filter:blur(60px) saturate(2.4);
 }
+/* Toast / Loading：白色半透明玻璃 */
 .toast-card,.loading-box{
   background:
-    var(--specular),
-    radial-gradient(130% 100% at 14% 0%,rgba(255,255,255,.42) 0%,rgba(255,255,255,0) 54%),
-    linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.07));
-  box-shadow:0 34px 80px -36px rgba(15,30,55,.55), inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.18);
-  backdrop-filter:blur(60px) saturate(2.8);
-  -webkit-backdrop-filter:blur(60px) saturate(2.8);
+    radial-gradient(130% 100% at 14% 0%, rgba(255,255,255,.65) 0%, rgba(255,255,255,0) 54%),
+    linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.24));
+  box-shadow:0 34px 80px -36px rgba(70,85,115,.45), inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(255,255,255,.26);
+  backdrop-filter:blur(60px) saturate(2.4);
+  -webkit-backdrop-filter:blur(60px) saturate(2.4);
 }
-/* 空态提示：emoji 换为内联 SVG 气泡 */
-.empty-tip::before{
-  content:"";
-  display:block;
-  width:34px;height:34px;
-  margin:0 auto 10px;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa2b1' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 4a8 8 0 0 1 8 8c0 2.2-.9 4.2-2.3 5.7-.3.6-.6 1.5-.7 2.3h-10c-.1-.8-.4-1.7-.7-2.3A8 8 0 0 1 12 4Z'/%3E%3Cpath d='M9 19h6'/%3E%3C/svg%3E") center/contain no-repeat;
-  opacity:.8;
+/* 输入框：白色半透明 */
+.name-screen input,.form-row input{
+  background:linear-gradient(160deg, rgba(255,255,255,.5), rgba(255,255,255,.24));
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(30px) saturate(2.2);
+  -webkit-backdrop-filter:blur(30px) saturate(2.2);
 }
-/* 独立运行（添加到主屏幕）：全屏铺满 + 状态栏深色承接白字 */
+/* 覆盖移动端强制低 blur */
+@media (max-width:500px){
+  .glass,.folder-card,.tool-btn,.import-btn,.record-item,.form-card,.modal,.stat-chip,.move-tip-bar{
+    backdrop-filter:blur(34px) saturate(2.2) !important;
+    -webkit-backdrop-filter:blur(34px) saturate(2.2) !important;
+  }
+}
+/* 独立运行（添加到主屏幕）：全屏铺满 + 状态栏深色承接 */
 @media (display-mode:standalone){
   .app{padding:0}
-  .shell-wrap{min-height:100dvh}
   .topbar{
     padding-top:calc(env(safe-area-inset-top) + 10px);
     background:
-      linear-gradient(180deg,
-        rgba(14,24,46,.70) 0%,
-        rgba(14,24,46,.42) calc(env(safe-area-inset-top) * .55),
-        rgba(14,24,46,0) calc(env(safe-area-inset-top) + 6px)),
-      var(--specular),
-      radial-gradient(130% 170% at 8% 0%,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 58%),
-      linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05));
+      linear-gradient(180deg, rgba(14,24,46,.66) 0%, rgba(14,24,46,.38) calc(env(safe-area-inset-top)*.6), rgba(14,24,46,0) calc(env(safe-area-inset-top) + 6px)),
+      linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.16));
   }
 }
 </style>
 </head>
 <body>
-<div class="ambient" aria-hidden="true">
-  <span class="orb o1"></span>
-  <span class="orb o2"></span>
-  <span class="orb o3"></span>
-  <span class="orb o4"></span>
-  <span class="orb o5"></span>
-  <span class="orb o6"></span>
-  <span class="grain"></span>
-</div>
 <div class="app">
   <div class="shell-wrap">
     <div class="glass name-screen" id="nameScreen">
-      <div class="brand-mark" aria-hidden="true">私</div>
       <h1 id="screenTitle">私调记录</h1>
       <p id="screenTip">请输入您的圈名</p>
       <input type="text" id="nameInput" maxlength="20">
@@ -1745,7 +879,7 @@ body{
     <div class="glass shell" id="shell">
       <div class="topbar">
         <label class="avatar-wrap" for="avatarInput" title="点击上传头像">
-          <div class="avatar-placeholder" id="avatarPlaceholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
+          <div class="avatar-placeholder" id="avatarPlaceholder"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2L9 4h6l1.5 2h2A2.5 2.5 0 0 1 21 8.5v8A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5z"/><circle cx="12" cy="12.5" r="3.5"/></svg></div>
           <img id="avatarImg" style="display:none" alt="头像">
         </label>
         <input type="file" id="avatarInput" accept="image/*" class="upload-input">
@@ -1758,7 +892,7 @@ body{
           <div class="t-label" id="totalAllLabel">总金额</div>
           <div class="t-value" id="totalAllAmount">¥0</div>
         </div>
-        <button class="icon-btn" id="btnSettings" title="设置"><span id="settingsIconEmoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></span><img id="settingsIconImg" class="settings-icon-img" style="display:none" alt="设置"></button>
+        <button class="icon-btn" id="btnSettings" title="设置"><span id="settingsIconEmoji"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.08a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.08a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1.03z"/></svg></span><img id="settingsIconImg" class="settings-icon-img" style="display:none" alt="设置"></button>
       </div>
       <div class="page active" id="pageFolders">
         <div class="stats-bar" id="statsBar"></div>
@@ -1770,24 +904,15 @@ body{
           </div>
         </div>
         <div class="toolbar">
-          <button class="tool-btn compact" id="btnMove">
-            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4v16M8 4 5 7M8 4l3 3M16 20V4M16 20l-3-3M16 20l3-3"/></svg></span>
-            <span class="label">移动</span>
-          </button>
-          <button class="tool-btn" id="btnFilter">
-            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span>
-            <span class="label">筛选</span>
-          </button>
-          <button class="import-btn" id="btnImport">
-            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
-            <span class="label">导入私调</span>
-          </button>
+          <button class="tool-btn compact" id="btnMove">移动</button>
+          <button class="tool-btn" id="btnFilter">筛选</button>
+          <button class="import-btn" id="btnImport">导入私调</button>
         </div>
         <div class="folder-grid" id="folderGrid"></div>
       </div>
       <div class="page" id="pageImport">
         <div class="page-head">
-          <button class="back-btn" id="backFromImport" type="button" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+          <button class="back-btn" id="backFromImport" type="button">‹</button>
           <h2 id="importPageTitle">导入私调</h2>
         </div>
         <div class="form-card">
@@ -1807,8 +932,8 @@ body{
           <div class="form-row" id="rowMeetType" style="display:none">
             <label>类别</label>
             <div class="type-chip-wrap" id="meetTypeChips">
-              <button type="button" class="type-chip" data-v="年会">年会</button>
               <button type="button" class="type-chip" data-v="永会">永会</button>
+              <button type="button" class="type-chip" data-v="年会">年会</button>
               <button type="button" class="type-chip" data-v="套会">套会</button>
               <button type="button" class="type-chip" data-v="免费会">免费会</button>
             </div>
@@ -1816,7 +941,7 @@ body{
           </div>
           <div class="form-row">
             <label>价格</label>
-            <input type="text" id="fPrice" inputmode="decimal" maxlength="12" placeholder="请输入数字，最多两位小数">
+            <input type="text" id="fPrice" inputmode="decimal">
           </div>
           <div class="form-row" id="rowHelperPrivate">
             <label id="labelHelper">助手</label>
@@ -1828,7 +953,7 @@ body{
       </div>
       <div class="page" id="pageDetail">
         <div class="page-head">
-          <button class="back-btn" id="backFromDetail" type="button" aria-label="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+          <button class="back-btn" id="backFromDetail" type="button">‹</button>
           <h2 id="detailTitle">色卡详情</h2>
         </div>
         <div id="detailBody"></div>
@@ -1862,91 +987,78 @@ body{
 <div class="modal-mask" id="settingsModal">
   <div class="modal">
     <h3>设置</h3>
-    <div class="settings-scroll">
-      <section class="settings-section">
-        <div class="settings-section-title">个人资料</div>
-        <div class="setting-row">
-          <label>用户昵称</label>
-          <input type="text" class="field" id="nicknameInput" maxlength="20">
-        </div>
-        <div class="setting-row">
-          <label>标题下方文案</label>
-          <input type="text" class="field" id="subtitleInput" value="本机保存 · 可备份">
-        </div>
-        <div class="setting-row">
-          <label>头像</label>
-          <div class="btn-pair">
-            <button type="button" id="btnSettingsAvatar" class="glass-btn">选择图片</button>
-            <button type="button" id="btnResetAvatar" class="glass-btn subtle">恢复默认</button>
-          </div>
-          <input type="file" id="settingsAvatarInput" accept="image/*" class="upload-input">
-        </div>
-        <div class="setting-row">
-          <label>设置图标</label>
-          <div class="btn-pair">
-            <button type="button" id="btnSettingsIcon" class="glass-btn">选择图片</button>
-            <button type="button" id="btnResetIcon" class="glass-btn subtle">恢复默认</button>
-          </div>
-          <input type="file" id="settingsIconInput" accept="image/*" class="upload-input">
-        </div>
-      </section>
-
-      <section class="settings-section">
-        <div class="settings-section-title">外观</div>
-        <div class="setting-row">
-          <label>背景色 1</label>
-          <div class="color-field">
-            <input type="color" class="color-swatch" id="colorBg1" value="#eef2f8">
-            <input type="text" class="color-hex" id="colorBg1Hex" value="#eef2f8">
-          </div>
-        </div>
-        <div class="setting-row">
-          <label>背景色 2（渐变时使用）</label>
-          <div class="color-field">
-            <input type="color" class="color-swatch" id="colorBg2" value="#e1e8f2">
-            <input type="text" class="color-hex" id="colorBg2Hex" value="#e1e8f2">
-          </div>
-        </div>
-        <div class="setting-row-inline">
-          <label>背景使用渐变</label>
-          <input type="checkbox" class="switch" id="colorGradient" checked>
-        </div>
-        <div class="setting-row">
-          <label>文字色</label>
-          <div class="color-field">
-            <input type="color" class="color-swatch" id="colorText" value="#1d2028">
-            <input type="text" class="color-hex" id="colorTextHex" value="#1d2028">
-          </div>
-        </div>
-        <div class="setting-row">
-          <label>按钮颜色（不影响背景）</label>
-          <div class="color-field">
-            <input type="color" class="color-swatch" id="colorBtn" value="#ffffff">
-            <input type="text" class="color-hex" id="colorBtnHex" value="#ffffff">
-          </div>
-        </div>
-        <div class="setting-row">
-          <label>按钮文字色</label>
-          <div class="color-field">
-            <input type="color" class="color-swatch" id="colorBtnText" value="#2c3038">
-            <input type="text" class="color-hex" id="colorBtnTextHex" value="#2c3038">
-          </div>
-        </div>
-      </section>
-
-      <section class="settings-section">
-        <div class="settings-section-title">数据与备份</div>
-        <div class="settings-footer">
-          <button id="btnSwitchMode">切换门槛状态</button>
-          <button id="btnExportJson">导出备份文件</button>
-          <button id="btnImportJson">导入备份文件</button>
-          <input type="file" id="jsonFileInput" accept="application/json,.json" class="upload-input">
-          <button id="btnResetTheme">恢复默认颜色</button>
-          <button id="btnClearAll" class="danger">清空所有内容</button>
-        </div>
-      </section>
+    <div class="setting-row">
+      <label>用户昵称</label>
+      <input type="text" id="nicknameInput" maxlength="20" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:10px 12px;font-size:13px">
     </div>
-    <button id="settingsClose">完成</button>
+    <div class="setting-row">
+      <label>标题下方文案</label>
+      <input type="text" id="subtitleInput" value="本机保存 · 可备份" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:10px 12px;font-size:13px">
+    </div>
+    <div class="setting-row">
+      <label>上传头像</label>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="btnSettingsAvatar" class="primary-btn" style="flex:1">选择头像图片</button>
+        <button type="button" id="btnResetAvatar" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--glass-border);background:rgba(255,255,255,0.6);font-size:13px">恢复默认</button>
+      </div>
+      <input type="file" id="settingsAvatarInput" accept="image/*" class="upload-input">
+    </div>
+    <div class="setting-row">
+      <label>自定义设置图标</label>
+      <div style="display:flex;gap:8px">
+        <button type="button" id="btnSettingsIcon" class="primary-btn" style="flex:1">选择设置图标</button>
+        <button type="button" id="btnResetIcon" style="flex:1;padding:10px;border-radius:10px;border:1px solid var(--glass-border);background:rgba(255,255,255,0.6);font-size:13px">恢复默认</button>
+      </div>
+      <input type="file" id="settingsIconInput" accept="image/*" class="upload-input">
+    </div>
+    <div class="setting-row">
+      <label>背景色 1</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="colorBg1" value="#f3f5f8" style="width:48px;height:36px">
+        <input type="text" id="colorBg1Hex" value="#f3f5f8" style="flex:1;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:8px 10px;font-size:13px">
+      </div>
+    </div>
+    <div class="setting-row">
+      <label>背景色 2（渐变时使用）</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="colorBg2" value="#e8ecf1" style="width:48px;height:36px">
+        <input type="text" id="colorBg2Hex" value="#e8ecf1" style="flex:1;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:8px 10px;font-size:13px">
+      </div>
+    </div>
+    <div class="setting-row" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <label style="margin:0">背景使用渐变</label>
+      <input type="checkbox" id="colorGradient" checked style="width:20px;height:20px">
+    </div>
+    <div class="setting-row">
+      <label>文字色</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="colorText" value="#3a3f47" style="width:48px;height:36px">
+        <input type="text" id="colorTextHex" value="#3a3f47" style="flex:1;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:8px 10px;font-size:13px">
+      </div>
+    </div>
+    <div class="setting-row">
+      <label>按钮颜色（不影响背景）</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="colorBtn" value="#ffffff" style="width:48px;height:36px">
+        <input type="text" id="colorBtnHex" value="#ffffff" style="flex:1;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:8px 10px;font-size:13px">
+      </div>
+    </div>
+    <div class="setting-row">
+      <label>按钮文字色</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="colorBtnText" value="#4a5160" style="width:48px;height:36px">
+        <input type="text" id="colorBtnTextHex" value="#4a5160" style="flex:1;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:8px 10px;font-size:13px">
+      </div>
+    </div>
+    <div class="setting-actions">
+      <button id="btnSwitchMode">切换门槛状态</button>
+      <button id="btnExportJson">导出备份文件</button>
+      <button id="btnImportJson">导入备份文件</button>
+      <input type="file" id="jsonFileInput" accept="application/json,.json" class="upload-input">
+      <button id="btnResetTheme">恢复默认颜色</button>
+      <button id="btnClearAll" style="color:#c0392b">清空所有内容</button>
+      <button id="settingsClose">关闭</button>
+    </div>
   </div>
 </div>
 
@@ -1971,19 +1083,19 @@ body{
     <input type="hidden" id="editFolderId">
     <div class="setting-row">
       <label>价格</label>
-      <input type="text" class="field" id="editPrice" inputmode="decimal" maxlength="12" placeholder="请输入数字，最多两位小数">
+      <input type="text" id="editPrice" inputmode="decimal" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:10px 12px;font-size:14px">
     </div>
     <div class="setting-row">
       <label>会名</label>
-      <input type="text" class="field" id="editMeet">
+      <input type="text" id="editMeet" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:10px 12px;font-size:14px">
     </div>
     <div class="setting-row">
       <label>助手</label>
-      <input type="text" class="field" id="editHelper">
+      <input type="text" id="editHelper" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:10px 12px;font-size:14px">
     </div>
     <div class="setting-row">
       <label>备注</label>
-      <input type="text" class="field" id="editNote">
+      <input type="text" id="editNote" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:10px 12px;font-size:14px">
     </div>
     <div class="setting-actions">
       <button id="editSave">保存</button>
@@ -1994,15 +1106,15 @@ body{
 </div>
 
 <div class="modal-mask" id="folderActionModal">
-  <div class="modal">
-    <h3 id="folderActionTitle">色卡操作</h3>
+  <div class="modal" style="max-width:260px;display:flex;flex-direction:column;gap:10px;align-items:stretch">
+    <h3 id="folderActionTitle" style="text-align:center">色卡操作</h3>
     <button type="button" class="folder-action-chip" id="actMoveUp">上移</button>
     <button type="button" class="folder-action-chip" id="actMoveDown">下移</button>
     <button type="button" class="folder-action-chip" id="actSold">已出</button>
     <button type="button" class="folder-action-chip" id="actPending">待出</button>
     <button type="button" class="folder-action-chip" id="actRefunded" style="display:none">已退款</button>
     <button type="button" class="folder-action-chip danger" id="actDeleteFolder">删除</button>
-    <button type="button" class="folder-action-chip" id="actCancel">取消</button>
+    <button type="button" class="folder-action-chip" id="actCancel" style="background:transparent">取消</button>
   </div>
 </div>
 
@@ -2012,7 +1124,7 @@ body{
     <p style="font-size:12px;color:var(--muted);margin:-4px 0 12px;line-height:1.5">美化设置、昵称、头像会始终包含在备份中。下方可分别勾选「色卡」与「门槛」条目。</p>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer">
-        <input type="checkbox" id="exportSelectAll" checked style="width:18px;height:18px">
+        <input type="checkbox" id="exportSelectAll" checked style="width:18px;height:18px;accent-color:#8892a0">
         全选
       </label>
       <span id="exportSelectedCount" style="font-size:12px;color:var(--muted)"></span>
@@ -2026,10 +1138,10 @@ body{
 </div>
 
 <div class="modal-mask" id="cardPriceModal">
-  <div class="modal">
+  <div class="modal" style="max-width:300px">
     <h3>裸卡价格</h3>
     <div class="setting-row">
-      <input type="text" class="field" id="cardPriceInput" inputmode="decimal" maxlength="12" placeholder="请输入数字，最多两位小数">
+      <input type="text" id="cardPriceInput" inputmode="decimal" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:12px;font-size:15px">
     </div>
     <div class="modal-actions">
       <button class="cancel" id="cardPriceCancel">取消</button>
@@ -2039,8 +1151,8 @@ body{
 </div>
 
 <div class="modal-mask" id="statusCancelModal">
-  <div class="modal">
-    <h3 id="statusCancelText">是否取消该状态？</h3>
+  <div class="modal" style="max-width:300px;text-align:center">
+    <h3 id="statusCancelText" style="margin-bottom:14px">是否取消该状态？</h3>
     <div class="modal-actions">
       <button class="cancel" id="statusCancelNo">取消</button>
       <button class="ok" id="statusCancelYes">确认取消</button>
@@ -2049,10 +1161,10 @@ body{
 </div>
 
 <div class="modal-mask" id="cardStyleModal">
-  <div class="modal">
+  <div class="modal" style="max-width:300px">
     <h3>色卡风格</h3>
     <div class="setting-row">
-      <input type="text" class="field" id="cardStyleInput">
+      <input type="text" id="cardStyleInput" style="width:100%;border:1px solid var(--glass-border);background:rgba(255,255,255,0.7);border-radius:10px;padding:12px;font-size:15px">
     </div>
     <div class="modal-actions">
       <button class="cancel" id="cardStyleCancel">取消</button>
@@ -2060,6 +1172,8 @@ body{
     </div>
   </div>
 </div>
+
+<input type="file" id="coverChangeInput" accept="image/*" class="upload-input">
 
 <div class="lightbox" id="lightbox">
   <button class="lb-close" id="lbClose" type="button" aria-label="关闭">×</button>
@@ -2160,11 +1274,7 @@ function modeLabels() {
 function applyModeUI() {
   const L = modeLabels();
   const btnImport = document.getElementById("btnImport");
-  if (btnImport) {
-    const label = btnImport.querySelector(".label");
-    if (label) label.textContent = L.importBtn;
-    else btnImport.textContent = L.importBtn;
-  }
+  if (btnImport) btnImport.textContent = L.importBtn;
   const ipt = document.getElementById("importPageTitle");
   if (ipt) ipt.textContent = L.importPageTitle;
   const lcn = document.getElementById("labelCardName");
@@ -2215,9 +1325,7 @@ function applyModeUI() {
   document.title = isThreshold() ? "门槛记录" : "私调记录";
   const btnMove = document.getElementById("btnMove");
   if (btnMove) {
-    const moveLabel = btnMove.querySelector(".label");
-    if (moveLabel) moveLabel.textContent = movePickStep > 0 ? "取消移动" : "移动";
-    else btnMove.textContent = movePickStep > 0 ? "取消移动" : "移动";
+    btnMove.textContent = movePickStep > 0 ? "取消移动" : "移动";
     btnMove.classList.toggle("on-move", movePickStep > 0);
   }
   const af = document.getElementById("btnAmountFilter");
@@ -2228,13 +1336,6 @@ function applyModeUI() {
   const lab = document.getElementById("totalAllLabel");
   if (lab) lab.textContent = (isThreshold() && amountFilterMode === "yearForever") ? "年永金额" : "总金额";
   recalcTotalAll();
-}
-
-function statusTone(status) {
-  if (status === "已出" || status === "已完结") return "tone-ok";
-  if (status === "待出" || status === "待退款") return "tone-warn";
-  if (status === "已退款") return "tone-danger";
-  return "";
 }
 
 function statusOptionsForMode() {
@@ -2399,9 +1500,8 @@ function compressImage(file, maxSize, quality) {
   });
 }
 
-function makeThumb(dataUrl, maxSize, quality) {
+function makeThumb(dataUrl, maxSize) {
   maxSize = maxSize || 120;
-  quality = quality || 0.5;
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
@@ -2412,7 +1512,7 @@ function makeThumb(dataUrl, maxSize, quality) {
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, w, h);
-      resolve(canvas.toDataURL("image/jpeg", quality));
+      resolve(canvas.toDataURL("image/jpeg", 0.5));
     };
     img.onerror = reject;
     img.src = dataUrl;
@@ -2482,88 +1582,27 @@ function escapeHtml(s) {
     .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-/** 价格输入清洗：只保留数字和一个小数点，最多两位小数 */
-function sanitizePrice(raw, allowTrailingDot) {
-  let s = String(raw == null ? "" : raw).replace(/[^\d.]/g, "");
-  const dot = s.indexOf(".");
-  if (dot >= 0) s = s.slice(0, dot + 1) + s.slice(dot + 1).replace(/\./g, "");
-  if (!allowTrailingDot && s.endsWith(".")) s = s.slice(0, -1);
-  const parts = s.split(".");
-  let intPart = (parts[0] || "").replace(/^0+(?=\d)/, "");
-  if (intPart === "" && parts.length > 1) intPart = "0";
-  if (intPart.length > 9) intPart = intPart.slice(0, 9);
-  let out = intPart;
-  if (parts.length > 1) out += "." + parts[1].slice(0, 2);
-  return out;
-}
-
-/** 解析价格为数字：按分四舍五入，避免浮点误差 */
 function parsePrice(v) {
-  let s = String(v == null ? "" : v).replace(/[^\d.]/g, "");
-  const dot = s.indexOf(".");
-  if (dot >= 0) s = s.slice(0, dot + 1) + s.slice(dot + 1).replace(/\./g, "");
-  if (!s || s === ".") return 0;
-  const parts = s.split(".");
-  let intPart = (parts[0] || "").replace(/^0+(?=\d)/, "");
-  if (intPart === "") intPart = "0";
-  let cents = Number(intPart) * 100;
-  const frac = parts[1] || "";
-  if (frac) {
-    cents += Number((frac + "00").slice(0, 2));
-    if (frac.length > 2 && Number(frac[2]) >= 5) cents += 1;
-  }
-  return cents / 100;
-}
-
-/** 保存前统一成最多两位小数的字符串 */
-function normalizePrice(raw) {
-  const cleaned = String(raw == null ? "" : raw).replace(/[^\d.]/g, "");
-  if (!cleaned || cleaned === ".") return "";
-  return formatMoney(parsePrice(cleaned));
-}
-
-/** 按分累加，避免 0.1 + 0.2 这类浮点误差 */
-function sumPrices(list, getter) {
-  let cents = 0;
-  (list || []).forEach(item => {
-    const v = getter ? getter(item) : item;
-    cents += Math.round(parsePrice(v) * 100);
-  });
-  return cents / 100;
-}
-
-/** 金额展示：去掉多余的 0，最多两位小数 */
-function formatMoney(n) {
-  const cents = Math.round((Number(n) || 0) * 100);
-  return (cents / 100)
-    .toFixed(2)
-    .replace(/\.00$/, "")
-    .replace(/(\.\d)0$/, "$1");
+  const n = parseFloat(String(v || "").replace(/[^\d.]/g, ""));
+  if (isNaN(n)) return 0;
+  return Math.round(n * 100) / 100;
 }
 
 function limitPriceInput(inputEl) {
   if (!inputEl) return;
-  inputEl.setAttribute("inputmode", "decimal");
   inputEl.addEventListener("input", () => {
-    const next = sanitizePrice(inputEl.value, true);
-    if (inputEl.value !== next) inputEl.value = next;
+    let val = inputEl.value.replace(/[^\d.]/g, "");
+    const dotIdx = val.indexOf(".");
+    if (dotIdx >= 0) {
+      val = val.slice(0, dotIdx + 1) + val.slice(dotIdx + 1).replace(/\./g, "").slice(0, 2);
+    }
+    inputEl.value = val;
   });
   inputEl.addEventListener("blur", () => {
-    inputEl.value = normalizePrice(inputEl.value);
-  });
-  inputEl.addEventListener("paste", () => {
-    setTimeout(() => {
-      const next = sanitizePrice(inputEl.value, true);
-      if (inputEl.value !== next) inputEl.value = next;
-    }, 0);
+    const n = parsePrice(inputEl.value);
+    inputEl.value = n > 0 ? String(n) : "";
   });
 }
-
-/* 线性图标（SF Symbols 风格） */
-const SVG_EDIT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19.5 8.5a2.12 2.12 0 0 0-3-3L5 17v3Z"/><path d="m13.5 6.5 3 3"/></svg>';
-const SVG_SAVE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10"/><path d="m8 10 4 4 4-4"/><path d="M5 19h14"/></svg>';
-const SVG_TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14"/><path d="M9 7V5h6v2"/><path d="m7 7 1 13h8l1-13"/><path d="M10 11v5M14 11v5"/></svg>';
-const SVG_CAMERA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2h6l2 2h3v11H4V8Z"/><circle cx="12" cy="13" r="3.2"/></svg>';
 
 async function saveProfile(data) {
   const database = await openDB();
@@ -2737,12 +1776,8 @@ const lbImg = document.getElementById("lbImg");
 const lbClose = document.getElementById("lbClose");
 
 function showPage(page) {
-  const current = document.querySelector(".page.active");
   [pageFolders, pageImport, pageDetail].forEach(p => p.classList.remove("active"));
   page.classList.add("active");
-  if (current !== page && (page === pageImport || page === pageDetail)) {
-    page.scrollTop = 0;
-  }
 }
 
 function enterShell() {
@@ -2769,7 +1804,7 @@ function renderSettingsIcon(b64) {
   if (!emoji || !img) return;
   if (!b64) {
     img.style.display = "none";
-    emoji.style.display = "inline-flex";
+    emoji.style.display = "inline";
     return;
   }
   img.src = b64;
@@ -2779,22 +1814,26 @@ function renderSettingsIcon(b64) {
 
 function applyTheme(theme) {
   theme = theme || {};
-  const bg1 = theme.bg1 || "#eef2f8";
-  const bg2 = theme.bg2 || "#e1e8f2";
-  const text = theme.text || "#1d2028";
+  const bg1 = theme.bg1 || "#f0f1f3";
+  const bg2 = theme.bg2 || "#e4e6ea";
+  const text = theme.text || "#3a3f47";
   const btn = theme.btn || "#ffffff";
-  const btnText = theme.btnText || "#2c3038";
+  const btnText = theme.btnText || "#4a5160";
   const useGradient = theme.gradient !== false;
   const subtitle = theme.subtitle || "本机保存 · 可备份";
   document.documentElement.style.setProperty("--bg1", bg1);
   document.documentElement.style.setProperty("--bg2", bg2);
   document.documentElement.style.setProperty("--text", text);
-  document.documentElement.style.setProperty("--btn", btn.length === 7 ? hexToRgba(btn, 0.18) : btn);
+  document.documentElement.style.setProperty("--btn", btn.length === 7 ? hexToRgba(btn, 0.78) : btn);
   document.documentElement.style.setProperty("--btn-text", btnText);
-  document.body.style.background = "";
-  document.body.classList.toggle("no-gradient", !useGradient);
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) themeMeta.setAttribute("content", bg1);
+  if (useGradient) {
+    document.body.style.background =
+      "radial-gradient(120% 85% at 50% -8%, rgba(255,255,255,.95) 0%, transparent 62%)," +
+      "radial-gradient(100% 70% at 8% 108%, rgba(255,255,255,.7) 0%, transparent 60%)," +
+      "linear-gradient(180deg, " + bg1 + " 0%, " + bg2 + " 55%, " + bg2 + " 100%)";
+  } else {
+    document.body.style.background = bg1;
+  }
   const el = id => document.getElementById(id);
   if (el("colorBg1")) el("colorBg1").value = bg1;
   if (el("colorBg2")) el("colorBg2").value = bg2;
@@ -2863,7 +1902,7 @@ async function renderFolders() {
   const hasMeet = filterState.meets.size > 0;
   const hasHelper = !isThreshold() && filterState.helpers.size > 0;
   const hasStatus = filterState.statuses && filterState.statuses.size > 0;
-  const filtering = !isThreshold() && (hasMeet || hasHelper);
+  const filtering = hasMeet || hasHelper;
 
   if (hasStatus) {
     const opts = statusOptionsForMode();
@@ -2877,11 +1916,6 @@ async function renderFolders() {
     });
   }
 
-  // 门槛模式：按类别筛选文件夹卡片（不展开成私调条目）
-  if (isThreshold() && hasMeet) {
-    folders = folders.filter(f => filterState.meets.has(f.meetName || ""));
-  }
-
   folderGrid.innerHTML = "";
   updateStatsBar();
 
@@ -2890,8 +1924,7 @@ async function renderFolders() {
     const folderMap = {};
     folders.forEach(f => folderMap[f.id] = f);
     const matched = records.filter(r => {
-      if (!folderMap[r.folderId]) return false;
-      const f = folderMap[r.folderId];
+      const f = folderMap[r.folderId] || {};
       const m = r.meetName != null ? r.meetName : (f.meetName || "");
       const h = r.helper != null ? r.helper : (f.helper || "");
       const okMeet = !hasMeet || filterState.meets.has(m);
@@ -2916,14 +1949,14 @@ async function renderFolders() {
       row.innerHTML =
         (r.imgBase64 ? lazyImg(r.thumbBase64 || r.imgBase64, "record-thumb", 'data-id="' + r.id + '"') : '<div class="record-thumb"></div>') +
         '<div class="record-body">' +
-          '<div class="n">' + ((r.price !== "" && r.price != null) ? '¥' + escapeHtml(formatMoney(parsePrice(r.price))) : '未填写') + '</div>' +
+          '<div class="n">' + (r.price ? '¥' + escapeHtml(String(r.price)) : '私调图') + '</div>' +
           '<div class="m">会名 ' + escapeHtml(meet) + ' · 助手 ' + escapeHtml(helper) + '</div>' +
-          '<div class="m" style="opacity:.8;margin-top:2px">' + escapeHtml(f.cardName || "") + '</div>' +
+          '<div class="m" style="color:var(--muted);margin-top:2px">' + escapeHtml(f.cardName || "") + '</div>' +
         '</div>' +
-        '<div class="record-actions">' +
-          '<button class="icon-action edit-btn" data-id="' + r.id + '" data-folder="' + (r.folderId || "") + '" title="编辑" aria-label="编辑">' + SVG_EDIT + '</button>' +
-          '<button class="icon-action save-btn" data-id="' + r.id + '" title="保存" aria-label="保存">' + SVG_SAVE + '</button>' +
-          '<button class="icon-action del del-btn" data-id="' + r.id + '" title="删除" aria-label="删除">' + SVG_TRASH + '</button>' +
+        '<div style="display:flex;flex-direction:row;gap:5px;align-items:center;flex-shrink:0">' +
+          '<button class="edit-btn" data-id="' + r.id + '" data-folder="' + (r.folderId || "") + '">编辑</button>' +
+          '<button class="save-btn" data-id="' + r.id + '">保存</button>' +
+          '<button class="del-btn" data-id="' + r.id + '">删除</button>' +
         '</div>';
       list.appendChild(row);
     });
@@ -2974,24 +2007,23 @@ async function renderFolders() {
     return;
   }
   const picking = movePickStep > 0;
-  folders.forEach((f, idx) => {
+  folders.forEach(f => {
     const card = document.createElement("div");
     card.className = "folder-card";
-    card.style.setProperty("--i", Math.min(idx, 12));
     card.dataset.folderId = f.id;
     if (picking) card.classList.add("move-pick");
     if (moveSrcId === f.id) card.classList.add("move-src");
     if (moveDstId === f.id) card.classList.add("move-dst");
     const cover = f.coverBase64
       ? lazyImg(f.coverBase64, "folder-cover", 'alt=""')
-      : '<div class="folder-cover-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h3.2l2 2H18a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5v-9Z"/><path d="M3.5 11h17"/></svg></div>';
+      : '<div class="folder-cover-empty"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h2L9 4h6l1.5 2h2A2.5 2.5 0 0 1 21 8.5v8A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5z"/></svg></div>';
     let statusHtml = "";
     const marked = ["已出","待出","已完结","待退款","已退款"];
     if (f.status && marked.indexOf(f.status) >= 0) {
       statusHtml = '<div class="folder-status-tag" data-folder="' + f.id + '" data-status="' + escapeHtml(f.status) + '">' + escapeHtml(f.status) + '</div>';
     }
     card.innerHTML = cover + statusHtml +
-      '<button type="button" class="folder-edit-btn" data-folder="' + f.id + '" title="更多操作" aria-label="更多操作">⋯</button>' +
+      '<button type="button" class="folder-edit-btn" data-folder="' + f.id + '" title="编辑">⋯</button>' +
       '<div class="folder-name-tag">' + escapeHtml(f.cardName) + '</div>';
     if (!picking) {
       card.onclick = () => openFolder(f.id);
@@ -3056,50 +2088,29 @@ async function openFolder(folderId, meetFilter) {
 
   if (isThreshold()) {
     const records = await getRecordsByFolder(folderId);
-    const rawPrice = (folder.price !== "" && folder.price != null)
-      ? folder.price
-      : ((records[0] && records[0].price) || "");
-    const priceText = rawPrice !== "" ? "¥" + formatMoney(parsePrice(rawPrice)) : "未填写";
-    const meetType = folder.meetName || "未分类";
-    const status = folder.status || "在更";
-    const coverSrc = folder.coverBase64 || (records[0] && (records[0].thumbBase64 || records[0].imgBase64)) || "";
+    const priceShow = folder.price || (records[0] && records[0].price) || "";
+    const meetType = folder.meetName || "";
+    const remark = folder.helper || "";
     let html =
-      '<div class="detail-hero">' +
-        '<div class="hero-cover">' +
-          (coverSrc ? '<img src="' + escapeHtml(coverSrc) + '" alt="">' : '<div class="hero-cover-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m5.5 17 4.5-4.5 3 3 2.5-2.5 3 3"/></svg></div>') +
-        '</div>' +
-        '<div class="hero-main">' +
-          '<div class="hero-pills">' +
-            '<span class="hero-pill tone-accent">' + escapeHtml(meetType) + '</span>' +
-            '<span class="hero-pill ' + statusTone(status) + '">' + escapeHtml(status) + '</span>' +
-          '</div>' +
-          '<div class="hero-title">' + escapeHtml(folder.cardName) + '</div>' +
-          '<div class="hero-sub">' + records.length + ' 张图片 · ' + priceText + '</div>' +
-        '</div>' +
+      '<div class="detail-card-title">' + escapeHtml(folder.cardName) + '</div>' +
+      '<div class="detail-meta" style="line-height:1.85">' +
+        '<div><span>金额</span>' + (priceShow ? ("¥" + escapeHtml(String(priceShow))) : "—") + '</div>' +
+        '<div><span>类别</span>' + escapeHtml(meetType || "—") + '</div>' +
+        '<div><span>备注</span>' + escapeHtml(remark || "未填写") + '</div>' +
+        '<div><span>状态</span>' + escapeHtml(folder.status || "在更") + '</div>' +
       '</div>' +
-      '<div class="detail-meta">' +
-        '<div><span>金额</span><b>' + priceText + '</b></div>' +
-        '<div><span>备注</span><b>' + escapeHtml(folder.helper || "未填写") + '</b></div>' +
-      '</div>' +
-      '<button type="button" class="cover-change-btn" id="btnChangeCover">' + SVG_CAMERA + '<span>修改封面图片</span></button>' +
-      '<div class="cover-hint" id="coverHint">点击下方任意一张图片，将它设为封面</div>' +
-      '<div class="section-label">图片 · ' + records.length + ' 张</div>' +
+      '<button type="button" class="cover-change-btn" id="btnChangeCover">修改封面图片</button>' +
+      '<div class="section-label" style="margin-top:14px">图片 · ' + records.length + ' 张</div>' +
       '<div class="record-list">';
     if (!records.length) {
-      html += '<div class="empty-tip">暂无图片</div>';
+      html += '<div class="empty-tip" style="padding:24px 0">暂无图片</div>';
     } else {
       records.forEach(r => {
-        const hasPrice = r.price !== "" && r.price != null;
         html +=
           '<div class="record-item" data-id="' + r.id + '">' +
             (r.imgBase64 ? lazyImg(r.thumbBase64 || r.imgBase64, "record-thumb", 'data-id="' + r.id + '"') : '<div class="record-thumb"></div>') +
-            '<div class="record-body">' +
-              '<div class="n">' + (hasPrice ? "¥" + escapeHtml(formatMoney(parsePrice(r.price))) : "未填写") + '</div>' +
-              '<div class="m">' + escapeHtml(meetType) + ' · ' + escapeHtml(status) + '</div>' +
-            '</div>' +
-            '<div class="record-actions">' +
-              '<button class="icon-action del del-btn" data-id="' + r.id + '" title="删除" aria-label="删除">' + SVG_TRASH + '</button>' +
-            '</div>' +
+            '<div class="record-body"><div class="n">' + (r.price ? "¥" + escapeHtml(String(r.price)) : "图片") + '</div></div>' +
+            '<button class="del-btn" data-id="' + r.id + '">删除</button>' +
           '</div>';
       });
     }
@@ -3107,57 +2118,38 @@ async function openFolder(folderId, meetFilter) {
     detailBody.innerHTML = html;
 
     const bcc = document.getElementById("btnChangeCover");
-    const hint = document.getElementById("coverHint");
-    const listEl = detailBody.querySelector(".record-list");
-    const setPickUI = on => {
-      coverPickMode = on;
-      if (bcc) {
-        bcc.classList.toggle("picking", on);
-        const label = bcc.querySelector("span");
-        if (label) label.textContent = on ? "请选择想要修改的图片" : "修改封面图片";
-      }
-      if (hint) hint.classList.toggle("show", on);
-      if (listEl) listEl.classList.toggle("cover-pick", on);
-    };
-    const chooseCover = async rid => {
-      const rec = await getRecordById(rid);
-      if (!rec || !rec.imgBase64) return;
-      setPickUI(false);
-      showLoading("正在更新封面…", "请稍候");
-      try {
-        const cover = await makeThumb(rec.imgBase64, 720, 0.82);
-        await setFolderCover(folderId, cover);
-        hideLoading();
-        await openFolder(folderId);
-        await renderFolders();
-      } catch (err) {
-        console.error(err);
-        hideLoading();
-        await appAlert("更新封面失败");
-      }
-    };
     if (bcc) {
-      bcc.onclick = async () => {
-        if (!records.length) { await appAlert("暂无图片，无法设置封面"); return; }
-        setPickUI(!coverPickMode);
+      bcc.onclick = () => {
+        coverPickMode = !coverPickMode;
+        bcc.classList.toggle("picking", coverPickMode);
+        bcc.textContent = coverPickMode ? "请选择想要修改的图片" : "修改封面图片";
       };
     }
+
     detailBody.querySelectorAll(".record-thumb[data-id]").forEach(el => {
       el.onclick = async (e) => {
         e.stopPropagation();
         const rid = Number(el.getAttribute("data-id"));
-        if (coverPickMode) { await chooseCover(rid); return; }
+        if (coverPickMode) {
+          const rec = await getRecordById(rid);
+          if (rec && rec.imgBase64) {
+            await setFolderCover(folderId, rec.imgBase64);
+            coverPickMode = false;
+            if (bcc) {
+              bcc.classList.remove("picking");
+              bcc.textContent = "修改封面图片";
+            }
+            await appAlert("封面已修改");
+            openFolder(folderId);
+            renderFolders();
+          }
+          return;
+        }
         const rec = await getRecordById(rid);
         if (rec && rec.imgBase64) { lbImg.src = rec.imgBase64; lightbox.classList.add("show"); }
       };
     });
-    detailBody.querySelectorAll(".record-item[data-id]").forEach(item => {
-      item.onclick = async (e) => {
-        if (!coverPickMode) return;
-        e.stopPropagation();
-        await chooseCover(Number(item.getAttribute("data-id")));
-      };
-    });
+
     detailBody.querySelectorAll(".del-btn").forEach(btn => {
       btn.onclick = async (e) => {
         e.stopPropagation();
@@ -3183,71 +2175,56 @@ async function openFolder(folderId, meetFilter) {
       return window._folderMeetFilter.has(m);
     });
   }
-  const total = sumPrices(records, r => r.price);
-  const cardPriceRaw = folder.cardPrice;
-  const hasCardPrice = cardPriceRaw !== "" && cardPriceRaw != null;
-  const cardPrice = parsePrice(cardPriceRaw);
-  const coverSrc = folder.coverBase64 || (records[0] && (records[0].thumbBase64 || records[0].imgBase64)) || "";
-  const meetText = allMeets.length ? allMeets.join("、") : (folder.meetName || "未填写");
+  const total = Math.round(records.reduce((s, r) => s + parsePrice(r.price), 0) * 100) / 100;
+  const cardPrice = parsePrice(folder.cardPrice);
   window._folderAllMeets = allMeets;
   window._currentFolderId = folderId;
   let html =
-    '<div class="detail-hero">' +
-      '<div class="hero-cover">' +
-        (coverSrc ? '<img src="' + escapeHtml(coverSrc) + '" alt="">' : '<div class="hero-cover-empty">🖼</div>') +
-      '</div>' +
-      '<div class="hero-main">' +
-        '<div class="hero-pills">' +
-          '<span class="hero-pill tone-accent">' + escapeHtml(meetText) + '</span>' +
-        '</div>' +
-        '<div class="hero-title">' + escapeHtml(folder.cardName) + '</div>' +
-        '<div class="hero-sub">' + records.length + ' 张图片 · 总金额 ¥' + formatMoney(total) + '</div>' +
-      '</div>' +
-    '</div>' +
-    '<div class="detail-actions">' +
-      '<button type="button" class="mini-pill" id="btnFolderFilter">筛选会名</button>' +
-      '<button type="button" class="mini-pill' + (multiSelect ? ' on' : '') + '" id="btnMultiToggle">' + (multiSelect ? '退出多选' : '多选') + '</button>' +
-    '</div>' +
+    '<div class="detail-card-title">' + escapeHtml(folder.cardName) + '</div>' +
+    '<div style="margin:0 0 10px;display:flex;gap:8px;flex-wrap:wrap"><button type="button" id="btnFolderFilter" style="width:auto;padding:4px 10px;font-size:11px;border-radius:999px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.6);color:var(--btn-text);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)">筛选会名</button><button type="button" id="btnMultiToggle" style="width:auto;padding:4px 10px;font-size:11px;border-radius:999px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.6);color:var(--btn-text);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)">' + (multiSelect ? '退出多选' : '多选') + '</button></div>' +
     '<div class="multi-bar' + (multiSelect ? ' show' : '') + '" id="multiBar">' +
       '<button id="mSave" class="primary">保存</button>' +
       '<button id="mEdit">编辑</button>' +
       '<button id="mDel" class="danger">删除</button>' +
       '<button id="mCancel">取消</button>' +
     '</div>' +
+    '<div class="detail-meta">' +
+      '<div><span>会名</span>' + (allMeets.length ? allMeets.map(escapeHtml).join('、') : escapeHtml(folder.meetName || "—")) + '</div>' +
+      '<div><span>张数</span>' + records.length + ' 张</div>' +
+    '</div>' +
     '<div class="card-price-row" id="cardPriceRow">' +
       '<span class="label">裸卡价格</span>' +
-      '<span class="card-price-right"><span class="value" id="cardPriceValue">' + (hasCardPrice ? '¥' + formatMoney(cardPrice) : '点击填写') + '</span><span class="chev">›</span></span>' +
+      '<span class="value" id="cardPriceValue">' + (cardPrice ? '¥' + Number(cardPrice.toFixed(2)) : '点击填写') + '</span>' +
     '</div>' +
     '<div class="card-price-row" id="cardStyleRow">' +
       '<span class="label">色卡风格</span>' +
-      '<span class="card-price-right"><span class="value" id="cardStyleValue">' + (folder.cardStyle ? escapeHtml(folder.cardStyle) : '点击填写') + '</span><span class="chev">›</span></span>' +
+      '<span class="value" id="cardStyleValue">' + (folder.cardStyle ? escapeHtml(folder.cardStyle) : '点击填写') + '</span>' +
     '</div>' +
     '<div class="total-bar">' +
       '<span class="label">总金额</span>' +
-      '<span class="value">¥' + formatMoney(total) + '</span>' +
+      '<span class="value">¥' + total + '</span>' +
     '</div>' +
     '<div class="section-label">私调图片</div>' +
     '<div class="record-list">';
   if (!records.length) {
-    html += '<div class="empty-tip">该色卡暂无图片</div>';
+    html += '<div class="empty-tip" style="padding:24px 0">该色卡暂无图片</div>';
   } else {
     records.forEach(r => {
       const meet = r.meetName != null ? r.meetName : (folder.meetName || "");
       const helper = r.helper != null ? r.helper : (folder.helper || "");
-      const hasPrice = r.price !== "" && r.price != null;
       html +=
         '<div class="record-wrap">' +
           '<input type="checkbox" class="record-checkbox' + (multiSelect ? ' show' : '') + '" data-id="' + r.id + '"' + (selectedRecordIds.has(r.id) ? ' checked' : '') + '>' +
           '<div class="record-item" data-id="' + r.id + '">' +
             (r.imgBase64 ? lazyImg(r.thumbBase64 || r.imgBase64 || "", "record-thumb", 'data-id="' + r.id + '"') : '<div class="record-thumb"></div>') +
             '<div class="record-body">' +
-              '<div class="n">' + (hasPrice ? '¥' + escapeHtml(formatMoney(parsePrice(r.price))) : '未填写') + '</div>' +
+              '<div class="n">' + (r.price ? '¥' + escapeHtml(String(r.price)) : '私调图') + '</div>' +
               '<div class="m">会名 ' + escapeHtml(meet || "—") + ' · 助手 ' + escapeHtml(helper || "—") + '</div>' +
             '</div>' +
-            '<div class="record-actions">' +
-              '<button class="icon-action edit-btn" data-id="' + r.id + '" title="编辑" aria-label="编辑">' + SVG_EDIT + '</button>' +
-              '<button class="icon-action save-btn" data-id="' + r.id + '" title="保存" aria-label="保存">' + SVG_SAVE + '</button>' +
-              '<button class="icon-action del del-btn" data-id="' + r.id + '" title="删除" aria-label="删除">' + SVG_TRASH + '</button>' +
+            '<div style="display:flex;flex-direction:row;gap:5px;align-items:center;flex-wrap:nowrap;flex-shrink:0">' +
+              '<button class="edit-btn" data-id="' + r.id + '">编辑</button>' +
+              '<button class="save-btn" data-id="' + r.id + '">保存</button>' +
+              '<button class="del-btn" data-id="' + r.id + '">删除</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -3426,15 +2403,13 @@ async function deleteFolder(folderId) {
 
 function openFolderActionModal(folderId) {
   window._actionFolderId = folderId;
-  const title = document.getElementById("folderActionTitle");
-  if (title) title.textContent = isThreshold() ? "入会操作" : "色卡操作";
   document.getElementById("folderActionModal").classList.add("show");
 }
 
 function openCardPriceModal(folderId, current) {
   window._priceFolderId = folderId;
   const input = document.getElementById("cardPriceInput");
-  input.value = (current !== "" && current != null) ? normalizePrice(current) : "";
+  input.value = current || "";
   document.getElementById("cardPriceModal").classList.add("show");
   setTimeout(() => input.focus(), 50);
 }
@@ -3464,15 +2439,18 @@ async function recalcTotalAll() {
       total = useFolders.reduce((s, f) => {
         const p = parsePrice(f.price);
         if (p) return s + p;
-        return s + sumPrices(useRecords.filter(r => r.folderId === f.id), r => r.price);
+        const sub = useRecords.filter(r => r.folderId === f.id).reduce((a, r) => a + parsePrice(r.price), 0);
+        return s + sub;
       }, 0);
     } else {
-      total = sumPrices(useRecords, r => r.price) + sumPrices(useFolders, f => f.cardPrice);
+      const rSum = useRecords.reduce((s, r) => s + parsePrice(r.price), 0);
+      const fSum = useFolders.reduce((s, f) => s + parsePrice(f.cardPrice), 0);
+      total = rSum + fSum;
     }
     total = Math.round(total * 100) / 100;
     const el = document.getElementById("totalAllAmount");
     const lab = document.getElementById("totalAllLabel");
-    if (el) el.textContent = "¥" + formatMoney(total);
+    if (el) el.textContent = "¥" + total;
     if (lab) {
       if (isThreshold() && amountFilterMode === "yearForever") lab.textContent = "年永金额";
       else lab.textContent = "总金额";
@@ -3498,7 +2476,10 @@ async function updateRecord(id, patch) {
   const rec = await idbReq(store.get(id));
   if (!rec) return;
   Object.assign(rec, patch);
-  if (patch.price != null) rec.price = String(parsePrice(patch.price));
+  if (patch.price != null) {
+    const p = String(patch.price).trim();
+    rec.price = p === "" ? "" : String(parsePrice(p));
+  }
   store.put(rec);
   await txDone(tx);
 }
@@ -3523,7 +2504,7 @@ async function openEditRecord(recordId, folderId) {
   if (!rec) return;
   document.getElementById("editRecId").value = String(recordId);
   document.getElementById("editFolderId").value = String(folderId);
-  document.getElementById("editPrice").value = rec.price ? normalizePrice(rec.price) : "";
+  document.getElementById("editPrice").value = rec.price || "";
   document.getElementById("editMeet").value = rec.meetName != null ? rec.meetName : (folder.meetName || "");
   document.getElementById("editHelper").value = rec.helper != null ? rec.helper : (folder.helper || "");
   document.getElementById("editNote").value = rec.note || "";
@@ -3612,7 +2593,7 @@ async function openFilterModal() {
   if (fhl) fhl.textContent = L.helperLabel;
 
   if (isThreshold()) {
-    const fixedTypes = ["年会", "永会", "套会", "免费会"];
+    const fixedTypes = ["永会", "年会", "套会", "免费会"];
     chipMeets.innerHTML = "";
     fixedTypes.forEach(v => {
       const chip = document.createElement("button");
@@ -3663,9 +2644,6 @@ btnImport.onclick = async () => { resetImportForm(); applyModeUI(); showPage(pag
 backFromImport.onclick = () => showPage(pageFolders);
 backFromDetail.onclick = async () => { multiSelect = false; selectedRecordIds.clear(); coverPickMode = false; showPage(pageFolders); renderFolders(); };
 btnFilter.onclick = () => openFilterModal();
-nameInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") { e.preventDefault(); confirmName.click(); }
-});
 
 function setMoveUI() {
   const btn = document.getElementById("btnMove");
@@ -3674,9 +2652,7 @@ function setMoveUI() {
   const okBtn = document.getElementById("moveTipOk");
   const active = movePickStep > 0;
   if (btn) {
-    const label = btn.querySelector(".label");
-    if (label) label.textContent = active ? "取消移动" : "移动";
-    else btn.textContent = active ? "取消移动" : "移动";
+    btn.textContent = active ? "取消移动" : "移动";
     btn.classList.toggle("on-move", active);
   }
   if (bar) bar.classList.toggle("show", active);
@@ -3878,8 +2854,8 @@ document.getElementById("nicknameInput").onchange = async () => {
 
 document.getElementById("btnResetTheme").onclick = async () => {
   const theme = {
-    bg1: "#eef2f8", bg2: "#e1e8f2", text: "#1d2028",
-    btn: "#ffffff", btnText: "#2c3038", gradient: true,
+    bg1: "#f0f1f3", bg2: "#e4e6ea", text: "#3a3f47",
+    btn: "#ffffff", btnText: "#4a5160", gradient: true,
     subtitle: "本机保存 · 可备份"
   };
   applyTheme(theme);
@@ -3887,7 +2863,7 @@ document.getElementById("btnResetTheme").onclick = async () => {
 };
 
 document.getElementById("btnClearAll").onclick = async () => {
-  if (!await appConfirm("确定要清空所有内容吗？\n这会删除全部色卡文件夹与私调图片，且无法恢复。")) return;
+  if (!await appConfirm("确定要清空所有内容吗？\n这会删除全部色卡文件夹、私调图片和设置，且无法恢复。")) return;
   if (!await appConfirm("再次确认：真的要全部清空吗？")) return;
   await clearAllData();
   settingsModal.classList.remove("show");
@@ -3947,11 +2923,11 @@ async function openExportSelectModal() {
     }
     folders.forEach(f => {
       const row = document.createElement("label");
-      row.className = "export-row";
+      row.style.cssText = "display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.6);cursor:pointer;";
       row.innerHTML =
-        '<input type="checkbox" class="export-folder-cb" data-id="' + f.id + '" checked>' +
-        '<span class="export-name">' + escapeHtml(f.cardName) + '</span>' +
-        '<span class="export-kind">' + prefix + '</span>';
+        '<input type="checkbox" class="export-folder-cb" data-id="' + f.id + '" checked style="width:18px;height:18px;flex-shrink:0;accent-color:#8892a0">' +
+        '<span style="flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escapeHtml(f.cardName) + '</span>' +
+        '<span style="font-size:11px;color:var(--muted);flex-shrink:0">' + prefix + '</span>';
       list.appendChild(row);
     });
   }
@@ -4019,7 +2995,6 @@ async function doExportBackup(selectedIds) {
       exportedAt: new Date().toISOString(),
       profile: {
         name: profile.name || currentName,
-        appMode: appMode,
         theme: profile.theme || null,
         avatar: profile.avatar || "",
         settingsIcon: profile.settingsIcon || ""
@@ -4145,26 +3120,19 @@ document.getElementById("jsonFileInput").onchange = async e => {
     }
     await txDone(tx);
     if (data.profile) {
-      if (data.profile.appMode === "private" || data.profile.appMode === "threshold") {
-        appMode = data.profile.appMode;
-      }
       await saveProfile({
         name: data.profile.name || currentName,
-        appMode: appMode,
         avatar: data.profile.avatar || "",
         theme: data.profile.theme || null,
         settingsIcon: data.profile.settingsIcon || ""
       });
       if (data.profile.name) {
         currentName = data.profile.name;
+        mainTitle.textContent = currentName + "の私调记录";
       }
       if (data.profile.avatar) renderAvatar(data.profile.avatar);
       if (data.profile.theme) applyTheme(data.profile.theme);
       if (data.profile.settingsIcon) renderSettingsIcon(data.profile.settingsIcon);
-      applyModeUI();
-      if (currentName) {
-        mainTitle.textContent = isThreshold() ? (currentName + "の门槛记录") : (currentName + "の私调记录");
-      }
     }
     settingsModal.classList.remove("show");
     showPage(pageFolders);
@@ -4189,7 +3157,7 @@ importImage.onchange = async e => {
       const f = files[i];
       const orig = await compressImage(f, 1280, 0.78);
       const thumb = await makeThumb(orig, 100);
-      const cover = await makeThumb(orig, 360, 0.8);
+      const cover = await makeThumb(orig, 360);
       pendingImages.push({ orig, thumb, cover });
       if (i % 2 === 1) await new Promise(r => setTimeout(r, 0));
     }
@@ -4200,12 +3168,6 @@ importImage.onchange = async e => {
       previewBox.classList.add("grid");
       previewBox.innerHTML = pendingImages.map(p => '<img src="' + p.thumb + '" alt="">').join("");
     }
-  } catch (err) {
-    console.error(err);
-    pendingImages = [];
-    previewBox.classList.remove("grid");
-    previewBox.innerHTML = "点击选择图片";
-    await appAlert("图片读取失败，请换一张图片重试");
   } finally {
     hideLoading();
   }
@@ -4214,13 +3176,14 @@ importImage.onchange = async e => {
 btnSaveImport.onclick = async () => {
   const cardName = fCardName.value.trim();
   let meetName = fMeetName.value.trim();
-  const price = normalizePrice(fPrice.value);
+  const priceRaw = fPrice.value.trim();
   let helper = fHelper.value.trim();
+  const price = parsePrice(priceRaw);
 
   if (isThreshold()) {
     meetName = (document.getElementById("fMeetType") && document.getElementById("fMeetType").value) || pendingMeetType || "";
     if (!cardName) { await appAlert("请填写会名"); return; }
-    if (!meetName) { await appAlert("请选择类别（年会/永会/套会/免费会）"); return; }
+    if (!meetName) { await appAlert("请选择类别（永会/年会/套会/免费会）"); return; }
     if (!pendingImages.length) { await appAlert("请选择图片"); return; }
   } else {
     if (!cardName) { await appAlert("请填写色卡名"); return; }
@@ -4241,7 +3204,7 @@ btnSaveImport.onclick = async () => {
         if (f) {
           if (meetName) f.meetName = meetName;
           if (helper) f.helper = helper;
-          if (price) f.price = price;
+          if (price) f.price = String(price);
           if (pendingImages[0]) f.coverBase64 = pendingImages[0].cover;
           f.updatedAt = Date.now();
           tx.objectStore(STORE_FOLDERS).put(f);
@@ -4250,7 +3213,7 @@ btnSaveImport.onclick = async () => {
       }
     } else {
       folderId = await addFolder({
-        cardName, meetName, price, helper,
+        cardName, meetName, price: String(price), helper,
         coverBase64: pendingImages[0].cover,
         createdAt: Date.now(),
         updatedAt: Date.now()
@@ -4259,7 +3222,7 @@ btnSaveImport.onclick = async () => {
     for (let i = 0; i < pendingImages.length; i++) {
       const p = pendingImages[i];
       await addRecord({
-        folderId, imgBase64: p.orig, thumbBase64: p.thumb, note: cardName, price,
+        folderId, imgBase64: p.orig, thumbBase64: p.thumb, note: cardName, price: String(price),
         meetName, helper, time: Date.now()
       });
       if (i % 2 === 1) await new Promise(r => setTimeout(r, 0));
@@ -4279,8 +3242,7 @@ btnSaveImport.onclick = async () => {
 function closeLightbox() {
   lightbox.classList.remove("show");
   lbImg.removeAttribute("src");
-  const anyOpen = document.querySelector(".modal-mask.show, .lightbox.show, #toastMask.show, #loadingOverlay.show");
-  if (!anyOpen) document.body.classList.remove("modal-lock");
+  document.body.classList.remove("modal-lock");
 }
 
 lbClose.onclick = async (e) => { e.stopPropagation(); closeLightbox(); };
@@ -4300,7 +3262,7 @@ if (lbSaveBtn) {
     const src = lbImg.getAttribute("src");
     if (!src) { await appAlert("没有可保存的图片"); return; }
     try {
-      await saveImageToDevice(src, isThreshold() ? "门槛图片.png" : "私调图片.png");
+      await saveImageToDevice(src, "私调图.png");
     } catch (err) {
       console.error(err);
       await appAlert("保存失败，请截图保留");
@@ -4351,8 +3313,7 @@ document.getElementById("actDeleteFolder").onclick = async () => {
   const id = window._actionFolderId;
   document.getElementById("folderActionModal").classList.remove("show");
   if (id == null) return;
-  const kind = isThreshold() ? "入会记录" : "色卡";
-  if (!await appConfirm("是否确认删除该" + kind + "？里面的所有图片也会一起删除。")) return;
+  if (!await appConfirm("是否确认删除该文件夹？里面的所有私调图片也会一起删除。")) return;
   await deleteFolder(id);
 };
 
@@ -4360,14 +3321,14 @@ document.getElementById("cardPriceCancel").onclick = () => document.getElementBy
 document.getElementById("cardPriceModal").onclick = e => { if (e.target.id === "cardPriceModal") e.target.classList.remove("show"); };
 document.getElementById("cardPriceOk").onclick = async () => {
   const id = window._priceFolderId;
-  const val = normalizePrice(document.getElementById("cardPriceInput").value);
+  const val = parsePrice(document.getElementById("cardPriceInput").value.trim());
   document.getElementById("cardPriceModal").classList.remove("show");
   if (id == null) return;
   const database = await openDB();
   const tx = database.transaction(STORE_FOLDERS, "readwrite");
   const f = await idbReq(tx.objectStore(STORE_FOLDERS).get(id));
   if (f) {
-    f.cardPrice = val;
+    f.cardPrice = String(val);
     tx.objectStore(STORE_FOLDERS).put(f);
     await txDone(tx);
     openFolder(id);
@@ -4412,14 +3373,14 @@ document.getElementById("editModal").onclick = e => { if (e.target && e.target.i
 
 document.getElementById("editSave").onclick = async () => {
   const folderId = Number(document.getElementById("editFolderId").value);
-  const priceVal = normalizePrice(document.getElementById("editPrice").value);
+  const priceVal = document.getElementById("editPrice").value.trim();
   const meetVal = document.getElementById("editMeet").value.trim();
   const helperVal = document.getElementById("editHelper").value.trim();
   const noteVal = document.getElementById("editNote").value.trim();
   if (batchEditMode) {
     for (const rid of selectedRecordIds) {
       const patch = {};
-      if (priceVal !== "") patch.price = priceVal;
+      if (priceVal !== "") patch.price = String(parsePrice(priceVal));
       if (meetVal !== "") patch.meetName = meetVal;
       if (helperVal !== "") patch.helper = helperVal;
       if (noteVal !== "") patch.note = noteVal;
@@ -4449,8 +3410,7 @@ document.getElementById("editSetCover").onclick = async () => {
   const tx = database.transaction(STORE_RECORDS, "readonly");
   const rec = await idbReq(tx.objectStore(STORE_RECORDS).get(id));
   if (!rec || !rec.imgBase64) { await appAlert("该条目没有图片"); return; }
-  const cover = await makeThumb(rec.imgBase64, 720, 0.82);
-  await setFolderCover(folderId, cover);
+  await setFolderCover(folderId, rec.imgBase64);
   document.getElementById("editModal").classList.remove("show");
   await appAlert("已设为封面");
   renderFolders();
@@ -4459,8 +3419,7 @@ document.getElementById("editSetCover").onclick = async () => {
 
 confirmName.onclick = async () => {
   if (nameInput.style.display === "none" && currentName) {
-    mainTitle.textContent = isThreshold() ? (currentName + "の门槛记录") : (currentName + "の私调记录");
-    applyModeUI();
+    mainTitle.textContent = currentName + "の私调记录";
     enterShell();
     return;
   }
@@ -4514,8 +3473,8 @@ limitPriceInput(document.getElementById("cardPriceInput"));
         screenTitle.textContent = currentName + L.titleSuffix;
         mainTitle.textContent = currentName + L.titleSuffix;
       }
-      screenTip.textContent = "欢迎回来，" + currentName;
-      confirmName.textContent = "登录";
+      screenTip.textContent = "欢迎回来";
+      confirmName.textContent = "登陆";
       if (profile.avatar) renderAvatar(profile.avatar);
     } else if (isThreshold()) {
       screenTitle.textContent = "门槛记录";
@@ -4528,25 +3487,26 @@ limitPriceInput(document.getElementById("cardPriceInput"));
   }
 })();
 
-/* ===== PWA：Manifest 动态注入 + Service Worker 注册 + 独立运行模式 ===== */
-(function () {
+/* iOS 全屏 / PWA 接入 */
+(function injectPWA() {
   if (/^https?:$/.test(location.protocol)) {
-    var ml = document.createElement("link");
-    ml.rel = "manifest";
-    ml.href = "manifest.json";
-    document.head.appendChild(ml);
+    try {
+      const link = document.createElement("link");
+      link.rel = "manifest";
+      link.href = "manifest.webmanifest";
+      document.head.appendChild(link);
+    } catch (e) { console.warn(e); }
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js").catch(function (err) {
-          console.warn("SW 注册失败（file:// 或无网络时属正常）：", err);
-        });
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(err => console.warn("SW 注册失败", err));
       });
     }
   }
-  var standalone =
-    (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
-    (navigator.standalone === true);
-  if (standalone) document.documentElement.classList.add("standalone");
+  try {
+    if (window.matchMedia && matchMedia("(display-mode: standalone)").matches) {
+      document.documentElement.classList.add("standalone");
+    }
+  } catch (e) {}
 })();
 </script>
 </body>

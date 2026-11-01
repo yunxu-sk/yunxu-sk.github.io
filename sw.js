@@ -1,76 +1,63 @@
-/* ============================================================
-   私调记录 · Service Worker
-   - 版本化缓存：发布新版本时把 CACHE 版本号 +1（如 v1 → v2），
-     旧缓存会自动清理，页面下次打开即为新版。
-   - 页面导航走 network-first：有网时永远拿最新 HTML，
-     断网时回退到上次缓存的版本，保证离线可用。
-   - 静态资源（图标/清单）走 cache-first：离线也能打开。
-   - 新版本 SW 安装后立即接管（skipWaiting + clients.claim）。
-   ============================================================ */
-const CACHE = "sijiao-record-v3";
-
-const CORE = [
+/* 私调记录 PWA Service Worker
+ * 缓存版本号：每次发布新版本时 +1，浏览器会自动清理旧缓存并加载新页面 */
+const CACHE = "srtj-v4";
+const ASSETS = [
   "./",
   "./index.html",
-  "./私调记录.html",
-  "./manifest.json",
+  "./manifest.webmanifest",
   "./icon-180.png",
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable-512.png"
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
+self.addEventListener("install", e => {
+  e.waitUntil(
     caches.open(CACHE)
-      .then((cache) => cache.addAll(CORE))
+      .then(c => c.addAll(ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
+self.addEventListener("activate", e => {
+  e.waitUntil(
     caches.keys()
-      .then((keys) =>
-        Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-      )
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  const req = event.request;
+self.addEventListener("fetch", e => {
+  const req = e.request;
   if (req.method !== "GET") return;
-
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // 页面导航：network-first，保证更新发布后拿到最新版
+  // 页面导航：网络优先，失败回退缓存，保证离线可用
   if (req.mode === "navigate") {
-    event.respondWith(
+    e.respondWith(
       fetch(req)
-        .then((res) => {
+        .then(res => {
           const copy = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(req, copy));
+          caches.open(CACHE).then(c => c.put("./index.html", copy));
           return res;
         })
-        .catch(() =>
-          caches.match(req).then((m) => m || caches.match("./私调记录.html"))
-        )
+        .catch(() => caches.match("./index.html"))
     );
     return;
   }
 
-  // 静态资源：cache-first
-  event.respondWith(
-    caches.match(req).then(
-      (m) =>
-        m ||
-        fetch(req).then((res) => {
+  // 静态资源：缓存优先，网络兜底并回写缓存
+  e.respondWith(
+    caches.match(req).then(hit => {
+      if (hit) return hit;
+      return fetch(req).then(res => {
+        if (res && res.status === 200 && res.type === "basic") {
           const copy = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(req, copy));
-          return res;
-        })
-    )
+          caches.open(CACHE).then(c => c.put(req, copy));
+        }
+        return res;
+      });
+    })
   );
 });
