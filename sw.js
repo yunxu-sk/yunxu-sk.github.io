@@ -7,7 +7,7 @@
    - 静态资源（图标/清单）走 cache-first：离线也能打开。
    - 新版本 SW 安装后立即接管（skipWaiting + clients.claim）。
    ============================================================ */
-const CACHE = "sijiao-record-v2";
+const CACHE = "sijiao-record-v3";
 
 const CORE = [
   "./",

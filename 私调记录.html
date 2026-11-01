@@ -2,10 +2,17 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#eef2f8">
 <meta name="referrer" content="no-referrer">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="私调记录">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2374b8ff'/%3E%3Cstop offset='.52' stop-color='%238f7bff'/%3E%3Cstop offset='1' stop-color='%23ff9cc2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='url(%23g)'/%3E%3Crect x='26' y='30' width='48' height='40' rx='8' fill='none' stroke='%23fff' stroke-width='6'/%3E%3Ccircle cx='42' cy='46' r='5' fill='%23fff'/%3E%3Cpath d='M32 68l10-10 7 7 6-6 13 13v4H32z' fill='%23fff'/%3E%3C/svg%3E">
 <title>私调记录</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -193,8 +200,9 @@ input,textarea{outline:none}
 .folder-cover{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:rgba(230,234,240,0.6)}
 .folder-cover-empty{
   width:100%;aspect-ratio:1;background:rgba(230,234,240,0.5);
-  display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:26px;
+  display:flex;align-items:center;justify-content:center;color:var(--muted);
 }
+.folder-cover-empty svg,.hero-cover-empty svg{width:30px;height:30px;opacity:.9}
 .folder-name-tag{
   position:absolute;left:8px;bottom:8px;z-index:2;
   max-width:calc(100% - 16px);
@@ -1051,7 +1059,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   font-size:13px;line-height:1.7;color:var(--muted);
 }
-.empty-tip::before{content:"🫧";display:block;font-size:34px;line-height:1;filter:saturate(.7);opacity:.85;margin:0 auto 10px}
+.empty-tip::before{content:"";display:block;width:34px;height:34px;margin:0 auto 10px}
 @keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
 
 /* 页头 / 返回 */
@@ -1126,7 +1134,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);
 }
 .hero-cover img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-cover-empty{width:100%;height:100%;display:grid;place-items:center;font-size:28px;color:var(--muted)}
+.hero-cover-empty{width:100%;height:100%;display:grid;place-items:center;color:var(--muted)}
 .hero-main{flex:1;min-width:0}
 .hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
 .hero-pill{
@@ -1565,6 +1573,153 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .ambient .orb{animation:none}
+}
+
+/* ============================================================
+   iOS 26 Liquid Glass 精修层
+   更透明 / 更饱和 / 彩色边缘辉光 / 全屏安全区
+   ============================================================ */
+:root{
+  --glow-1:rgba(120,150,255,.16);
+  --glow-2:rgba(255,120,190,.10);
+  --glass-edge:inset 0 1px 0 rgba(255,255,255,.92), inset 1px 0 0 rgba(255,255,255,.30), inset 0 -1px 0 rgba(255,255,255,.20), inset -1px 0 0 rgba(255,255,255,.18);
+}
+/* 背景：环境光斑更浓、更饱和，让玻璃背后有色彩可透 */
+body{
+  background:
+    radial-gradient(120% 80% at 8% -14%, rgba(96,166,255,.80) 0%, rgba(96,166,255,0) 60%),
+    radial-gradient(100% 70% at 96% 0%, rgba(196,142,255,.72) 0%, rgba(196,142,255,0) 58%),
+    radial-gradient(90% 65% at 50% 112%, rgba(255,118,168,.46) 0%, rgba(255,118,168,0) 62%),
+    radial-gradient(80% 60% at 56% 38%, rgba(112,188,255,.52) 0%, rgba(112,188,255,0) 64%),
+    radial-gradient(70% 55% at 16% 84%, rgba(255,170,200,.40) 0%, rgba(255,170,200,0) 64%),
+    radial-gradient(60% 48% at 88% 78%, rgba(96,216,196,.34) 0%, rgba(96,216,196,0) 62%),
+    linear-gradient(165deg,var(--bg1) 0%,var(--bg2) 100%);
+}
+.ambient .o1{width:clamp(340px,90vw,620px);height:clamp(340px,90vw,620px);left:-20%;top:-14%;opacity:.9;background:radial-gradient(circle at 36% 36%,rgba(96,166,255,.95),rgba(96,166,255,0) 66%)}
+.ambient .o2{width:clamp(300px,80vw,540px);height:clamp(300px,80vw,540px);right:-18%;top:-6%;opacity:.85;background:radial-gradient(circle at 42% 42%,rgba(196,142,255,.9),rgba(196,142,255,0) 66%)}
+.ambient .o3{width:clamp(320px,86vw,580px);height:clamp(320px,86vw,580px);left:-8%;bottom:-26%;opacity:.8;background:radial-gradient(circle at 40% 40%,rgba(255,118,168,.72),rgba(255,118,168,0) 66%)}
+.ambient .o4{width:clamp(280px,76vw,500px);height:clamp(280px,76vw,500px);right:-12%;bottom:-18%;opacity:.82;background:radial-gradient(circle at 40% 40%,rgba(96,216,196,.8),rgba(96,216,196,0) 66%)}
+.ambient .o5{width:clamp(320px,86vw,580px);height:clamp(320px,86vw,580px);left:16%;top:22%;opacity:.75;background:radial-gradient(circle at 44% 44%,rgba(120,150,255,.78),rgba(120,150,255,0) 66%)}
+.ambient .o6{width:clamp(260px,70vw,460px);height:clamp(260px,70vw,460px);right:12%;bottom:20%;opacity:.7;background:radial-gradient(circle at 44% 44%,rgba(255,140,190,.55),rgba(255,140,190,0) 66%)}
+.ambient .orb{filter:blur(64px)}
+.ambient .grain{opacity:.12}
+
+/* 玻璃材质统一精修：更透、更高饱和、彩色边缘 */
+:where(.form-card,.record-item,.stat-chip,.card-price-row,.total-bar,.detail-meta,.detail-hero,.toast-card,.loading-box,.move-tip-bar,.folder-action-chip,.back-btn,.icon-btn,.chip,.type-chip,.cover-change-btn,.multi-bar button,.modal-actions button,.setting-actions button,.amount-filter-btn,.lb-close,.lb-actions button,.mini-pill,.glass-btn,.icon-action){
+  background:
+    radial-gradient(140% 120% at 10% 0%,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 52%),
+    radial-gradient(80% 90% at 90% 14%,rgba(140,180,255,.10) 0%,rgba(140,180,255,0) 58%),
+    linear-gradient(145deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.02) 46%,rgba(255,255,255,.08) 100%);
+  border:1px solid rgba(255,255,255,.38);
+  box-shadow:
+    0 22px 48px -32px rgba(30,50,120,.42),
+    0 2px 10px rgba(30,50,100,.05),
+    0 0 0 1px var(--glow-1),
+    0 0 34px -12px var(--glow-2),
+    inset 0 1px 0 rgba(255,255,255,.86),
+    inset 1px 0 0 rgba(255,255,255,.28),
+    inset 0 -1px 0 rgba(255,255,255,.18),
+    inset -1px 0 0 rgba(255,255,255,.16),
+    inset 0 -16px 26px -24px rgba(60,90,200,.22);
+  backdrop-filter:blur(46px) saturate(2.9);
+  -webkit-backdrop-filter:blur(46px) saturate(2.9);
+}
+/* 主框架：玻璃完全透明，色彩全部来自背景 */
+.glass{
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+}
+.shell{
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+}
+/* 顶部栏：液态玻璃（状态栏深色承接仅在独立运行时出现） */
+.topbar{
+  background:
+    var(--specular),
+    radial-gradient(130% 170% at 8% 0%,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 58%),
+    linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05));
+  backdrop-filter:blur(38px) saturate(2.6);
+  -webkit-backdrop-filter:blur(38px) saturate(2.6);
+  border-bottom:1px solid rgba(255,255,255,.30);
+}
+/* 卡片：更透的液态玻璃 */
+.folder-card{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.40);
+  box-shadow:
+    0 26px 50px -34px rgba(30,50,120,.48),
+    0 2px 10px rgba(30,50,100,.05),
+    0 0 0 1px var(--glow-1),
+    0 0 40px -14px var(--glow-2),
+    inset 0 1px 0 rgba(255,255,255,.88),
+    inset 1px 0 0 rgba(255,255,255,.30),
+    inset 0 -1px 0 rgba(255,255,255,.18),
+    inset 0 -18px 30px -26px rgba(60,90,200,.25);
+  backdrop-filter:blur(38px) saturate(2.7);
+  -webkit-backdrop-filter:blur(38px) saturate(2.7);
+}
+.folder-card::after{
+  background:
+    radial-gradient(130% 90% at 10% 0%,rgba(255,255,255,.20) 0%,rgba(255,255,255,0) 46%),
+    linear-gradient(180deg,rgba(255,255,255,.10),transparent 24%,transparent 64%,rgba(20,30,60,.10));
+}
+/* 统计条 / 工具条：整块玻璃容器更透 */
+.stats-bar,.toolbar{
+  background:
+    var(--specular),
+    radial-gradient(130% 180% at 12% 0%,rgba(255,255,255,.26) 0%,rgba(255,255,255,0) 56%),
+    linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.36);
+  box-shadow:
+    0 20px 44px -32px rgba(30,50,120,.42),
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 0 -1px 0 rgba(255,255,255,.14);
+  backdrop-filter:blur(40px) saturate(2.7);
+  -webkit-backdrop-filter:blur(40px) saturate(2.7);
+}
+/* 弹窗 / Toast：真正的透明玻璃 */
+.modal{
+  background:
+    var(--specular),
+    radial-gradient(130% 100% at 12% 0%,rgba(255,255,255,.36) 0%,rgba(255,255,255,0) 55%),
+    linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.06));
+  border:1px solid rgba(255,255,255,.46);border-bottom:none;
+  box-shadow:0 -28px 80px -36px rgba(15,30,55,.5), inset 0 1px 0 rgba(255,255,255,.82), inset 0 -1px 0 rgba(255,255,255,.16);
+  backdrop-filter:blur(64px) saturate(2.8);
+  -webkit-backdrop-filter:blur(64px) saturate(2.8);
+}
+.toast-card,.loading-box{
+  background:
+    var(--specular),
+    radial-gradient(130% 100% at 14% 0%,rgba(255,255,255,.42) 0%,rgba(255,255,255,0) 54%),
+    linear-gradient(180deg,rgba(255,255,255,.24),rgba(255,255,255,.07));
+  box-shadow:0 34px 80px -36px rgba(15,30,55,.55), inset 0 1px 0 rgba(255,255,255,.85), inset 0 -1px 0 rgba(255,255,255,.18);
+  backdrop-filter:blur(60px) saturate(2.8);
+  -webkit-backdrop-filter:blur(60px) saturate(2.8);
+}
+/* 空态提示：emoji 换为内联 SVG 气泡 */
+.empty-tip::before{
+  content:"";
+  display:block;
+  width:34px;height:34px;
+  margin:0 auto 10px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa2b1' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 4a8 8 0 0 1 8 8c0 2.2-.9 4.2-2.3 5.7-.3.6-.6 1.5-.7 2.3h-10c-.1-.8-.4-1.7-.7-2.3A8 8 0 0 1 12 4Z'/%3E%3Cpath d='M9 19h6'/%3E%3C/svg%3E") center/contain no-repeat;
+  opacity:.8;
+}
+/* 独立运行（添加到主屏幕）：全屏铺满 + 状态栏深色承接白字 */
+@media (display-mode:standalone){
+  .app{padding:0}
+  .shell-wrap{min-height:100dvh}
+  .topbar{
+    padding-top:calc(env(safe-area-inset-top) + 10px);
+    background:
+      linear-gradient(180deg,
+        rgba(14,24,46,.70) 0%,
+        rgba(14,24,46,.42) calc(env(safe-area-inset-top) * .55),
+        rgba(14,24,46,0) calc(env(safe-area-inset-top) + 6px)),
+      var(--specular),
+      radial-gradient(130% 170% at 8% 0%,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 58%),
+      linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05));
+  }
 }
 </style>
 </head>
@@ -2829,7 +2984,7 @@ async function renderFolders() {
     if (moveDstId === f.id) card.classList.add("move-dst");
     const cover = f.coverBase64
       ? lazyImg(f.coverBase64, "folder-cover", 'alt=""')
-      : '<div class="folder-cover-empty">📁</div>';
+      : '<div class="folder-cover-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h3.2l2 2H18a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 18 19H6a2.5 2.5 0 0 1-2.5-2.5v-9Z"/><path d="M3.5 11h17"/></svg></div>';
     let statusHtml = "";
     const marked = ["已出","待出","已完结","待退款","已退款"];
     if (f.status && marked.indexOf(f.status) >= 0) {
@@ -2911,7 +3066,7 @@ async function openFolder(folderId, meetFilter) {
     let html =
       '<div class="detail-hero">' +
         '<div class="hero-cover">' +
-          (coverSrc ? '<img src="' + escapeHtml(coverSrc) + '" alt="">' : '<div class="hero-cover-empty">🖼</div>') +
+          (coverSrc ? '<img src="' + escapeHtml(coverSrc) + '" alt="">' : '<div class="hero-cover-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m5.5 17 4.5-4.5 3 3 2.5-2.5 3 3"/></svg></div>') +
         '</div>' +
         '<div class="hero-main">' +
           '<div class="hero-pills">' +
@@ -4371,6 +4526,27 @@ limitPriceInput(document.getElementById("cardPriceInput"));
     console.error(e);
     screenTip.textContent = "本地存储初始化失败";
   }
+})();
+
+/* ===== PWA：Manifest 动态注入 + Service Worker 注册 + 独立运行模式 ===== */
+(function () {
+  if (/^https?:$/.test(location.protocol)) {
+    var ml = document.createElement("link");
+    ml.rel = "manifest";
+    ml.href = "manifest.json";
+    document.head.appendChild(ml);
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js").catch(function (err) {
+          console.warn("SW 注册失败（file:// 或无网络时属正常）：", err);
+        });
+      });
+    }
+  }
+  var standalone =
+    (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+    (navigator.standalone === true);
+  if (standalone) document.documentElement.classList.add("standalone");
 })();
 </script>
 </body>
