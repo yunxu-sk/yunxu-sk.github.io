@@ -71,8 +71,8 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 }
 .glass::before,.surface::before,.chip::before,.btn::before{
   content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
-  backdrop-filter:blur(18px) saturate(1.6);
-  -webkit-backdrop-filter:blur(18px) saturate(1.6);
+  backdrop-filter:blur(10px) saturate(1.9);
+  -webkit-backdrop-filter:blur(10px) saturate(1.9);
   filter:url(#lgv);
 }
 .glass::after,.surface::after,.btn::after{
@@ -83,35 +83,35 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 .glass::after{background:linear-gradient(180deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 30%)}
 
 .glass{
-  background:linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.18) 100%);
+  background:linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.10) 100%);
   box-shadow:var(--shadow);
 }
 .surface{
-  background:linear-gradient(165deg, rgba(255,255,255,.36), rgba(255,255,255,.14));
+  background:linear-gradient(165deg, rgba(255,255,255,.36), rgba(255,255,255,.08));
   border-radius:var(--r-md);
   box-shadow:var(--shadow-soft);
 }
 .chip{
   font-size:12.5px;padding:8px 14px;border-radius:999px;
-  background:rgba(255,255,255,.26);color:var(--ink-soft);
+  background:rgba(255,255,255,.24);color:var(--ink-soft);
   transition:all .18s var(--ease);white-space:nowrap;
 }
-.chip.on{background:rgba(36,42,53,.5);border-color:transparent;color:#fff;font-weight:600;box-shadow:0 8px 18px -8px rgba(36,42,53,.5)}
-.chip.on::before{backdrop-filter:blur(4px) saturate(1.3);-webkit-backdrop-filter:blur(4px) saturate(1.3);filter:none}
+.chip.on{background:rgba(36,42,53,.4);border-color:transparent;color:#fff;font-weight:600;box-shadow:0 8px 18px -8px rgba(36,42,53,.45)}
+.chip.on::before{backdrop-filter:blur(3px) saturate(1.3);-webkit-backdrop-filter:blur(3px) saturate(1.3);filter:none}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
   padding:11px 14px;border-radius:14px;font-size:13.5px;font-weight:600;
-  background:rgba(255,255,255,.30);color:var(--ink-soft);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 8px 18px -12px rgba(70,100,160,.28);
+  background:rgba(255,255,255,.28);color:var(--ink-soft);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 8px 18px -12px rgba(70,100,160,.24);
   transition:transform .12s var(--ease), opacity .15s, background .18s;
 }
 .btn:active{transform:scale(.97)}
 .btn.primary{
-  background:rgba(255,255,255,.52);color:var(--ink);border-color:rgba(255,255,255,.65);
+  background:rgba(255,255,255,.50);color:var(--ink);border-color:rgba(255,255,255,.72);
   font-weight:700;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 10px 22px -12px rgba(47,54,68,.3);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8), 0 10px 22px -12px rgba(47,54,68,.28);
 }
-.btn.ghost{background:rgba(255,255,255,.16)}
+.btn.ghost{background:rgba(255,255,255,.14)}
 .btn.danger{color:var(--danger)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 
@@ -123,9 +123,9 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 }
 .modal.sheet::before{
   content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;
-  background:linear-gradient(165deg, rgba(255,255,255,.62) 0%, rgba(255,255,255,.38) 100%);
-  backdrop-filter:blur(26px) saturate(1.6);
-  -webkit-backdrop-filter:blur(26px) saturate(1.6);
+  background:linear-gradient(165deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,.14) 100%);
+  backdrop-filter:blur(14px) saturate(1.9);
+  -webkit-backdrop-filter:blur(14px) saturate(1.9);
   filter:url(#lgv);
 }
 .modal.sheet::after{
@@ -384,7 +384,7 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 }
 .set-row input[type=color]{width:38px;height:32px;border:none;border-radius:9px;background:none;padding:0;flex-shrink:0}
 .set-actions{display:flex;flex-direction:column;gap:8px}
-.set-actions button{padding:11px;border-radius:12px;font-size:13.5px;font-weight:600;background:rgba(255,255,255,.4);border:1px solid var(--line);text-align:left;padding-left:14px}
+.set-actions button{padding:11px;border-radius:12px;font-size:13.5px;font-weight:600;background:rgba(255,255,255,.26);border:1px solid var(--line);text-align:left;padding-left:14px}
 .set-actions button:active{transform:scale(.98)}
 .set-actions button.danger{color:var(--danger)}
 .danger-zone{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
@@ -392,15 +392,15 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 /* 分组列表卡片（统一等高行） */
 .set-list{
   border-radius:14px;margin-bottom:4px;overflow:hidden;
-  background:rgba(255,255,255,.42);border:1px solid var(--line);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:rgba(255,255,255,.26);border:1px solid var(--line);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
 .set-list .set-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);margin-bottom:0}
 .set-list .set-row:last-child{border-bottom:none}
 .set-list .set-row>span{flex:0 0 56px;font-size:13px;color:var(--ink-soft)}
 .set-list .set-row input[type=text],.set-list .set-row input:not([type]){
   flex:1;font-size:13px;padding:6px 10px;border-radius:9px;
-  background:rgba(255,255,255,.45);border:1px solid var(--line);min-width:0;
+  background:rgba(255,255,255,.30);border:1px solid var(--line);min-width:0;
 }
 .set-list .set-row input[type=color]{width:34px;height:30px;border:none;border-radius:8px;background:none;padding:0;flex-shrink:0}
 .set-list .row-btn{
@@ -424,9 +424,9 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 .set-label:first-of-type{margin-top:4px}
 .set-field{
   width:100%;font-size:14px;padding:13px 16px;border-radius:16px;min-height:48px;
-  background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.6);
-  backdrop-filter:blur(16px) saturate(1.6);-webkit-backdrop-filter:blur(16px) saturate(1.6);
-  box-shadow:0 6px 18px -10px rgba(60,80,120,.18), inset 0 1px 0 rgba(255,255,255,.6);
+  background:rgba(255,255,255,.30);border:1px solid rgba(255,255,255,.6);
+  backdrop-filter:blur(10px) saturate(1.8);-webkit-backdrop-filter:blur(10px) saturate(1.8);
+  box-shadow:0 6px 18px -10px rgba(60,80,120,.14), inset 0 1px 0 rgba(255,255,255,.65);
   color:var(--ink);
 }
 .set-field::placeholder{color:var(--faint)}
