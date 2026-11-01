@@ -453,7 +453,7 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 .set-pill.ghost-pill{background:rgba(255,255,255,.12);font-size:12.5px;min-height:40px;padding:10px 12px;color:var(--ink-soft)}
 .bg-layer{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;display:none}
 .bg-layer.on{display:block}
-.bg-layer::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(238,243,251,.35), rgba(230,236,247,.35))}
+.bg-layer::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(238,243,251,.18), rgba(230,236,247,.18))}
 .set-grid2{display:flex;gap:10px}
 .set-grid2 .set-pill{flex:1}
 .set-stack{display:flex;flex-direction:column;gap:11px;margin-top:16px}
@@ -1673,8 +1673,8 @@ function bind(){
   // 自定义背景图（欢迎页 / 主页）
   $("btnPickLoginBg").onclick = ()=>$("loginBgInput").click();
   $("btnPickMainBg").onclick = ()=>$("mainBgInput").click();
-  $("loginBgInput").onchange = async e=>{ const f=e.target.files[0]; if(!f)return; const b=await compressImage(f,1080,0.75); const p=await loadProfile(); const th=Object.assign({},p.theme,{loginBg:b}); await saveProfile({theme:th}); applyTheme(th); appAlert("欢迎页背景已更新"); };
-  $("mainBgInput").onchange = async e=>{ const f=e.target.files[0]; if(!f)return; const b=await compressImage(f,1080,0.75); const p=await loadProfile(); const th=Object.assign({},p.theme,{mainBg:b}); await saveProfile({theme:th}); applyTheme(th); appAlert("主页背景已更新"); };
+  $("loginBgInput").onchange = async e=>{ const f=e.target.files[0]; if(!f)return; const b=await compressImage(f,1600,0.88); const p=await loadProfile(); const th=Object.assign({},p.theme,{loginBg:b}); await saveProfile({theme:th}); applyTheme(th); appAlert("欢迎页背景已更新"); };
+  $("mainBgInput").onchange = async e=>{ const f=e.target.files[0]; if(!f)return; const b=await compressImage(f,1600,0.88); const p=await loadProfile(); const th=Object.assign({},p.theme,{mainBg:b}); await saveProfile({theme:th}); applyTheme(th); appAlert("主页背景已更新"); };
   $("btnClearLoginBg").onclick = async ()=>{ const p=await loadProfile(); const th=Object.assign({},p.theme); delete th.loginBg; await saveProfile({theme:th}); applyTheme(th); appAlert("已清除欢迎页背景"); };
   $("btnClearMainBg").onclick = async ()=>{ const p=await loadProfile(); const th=Object.assign({},p.theme); delete th.mainBg; await saveProfile({theme:th}); applyTheme(th); appAlert("已清除主页背景"); };
 

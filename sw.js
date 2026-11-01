@@ -1,6 +1,6 @@
 /* 私调记录 PWA Service Worker
  * 版本号每次发版 +1：浏览器会自动清理旧缓存并加载新版 */
-const CACHE = "srtj-v27";
+const CACHE = "srtj-v28";
 const ASSETS = [
   "./",
   "./index.html",
