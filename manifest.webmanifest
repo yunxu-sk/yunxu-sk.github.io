@@ -1,14 +1,14 @@
 {
   "name": "私调记录",
   "short_name": "私调记录",
-  "description": "色卡与私调图片管理工具，本地保存、可备份，可添加到主屏幕全屏使用。",
+  "description": "色卡与私调图片本地管理工具：批量导入、搜索筛选、记账统计、备份导入导出。数据仅存本机，可添加到主屏幕离线使用。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f4f6fa",
-  "theme_color": "#f4f6fa",
+  "background_color": "#f7f9fc",
+  "theme_color": "#f7f9fc",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },

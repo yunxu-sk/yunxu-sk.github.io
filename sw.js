@@ -1,6 +1,6 @@
 /* 私调记录 PWA Service Worker
- * 缓存版本号：每次发布新版本时 +1，浏览器会自动清理旧缓存并加载新页面 */
-const CACHE = "srtj-v4";
+ * 版本号每次发版 +1：浏览器会自动清理旧缓存并加载新版 */
+const CACHE = "srtj-v5";
 const ASSETS = [
   "./",
   "./index.html",
@@ -33,7 +33,7 @@ self.addEventListener("fetch", e => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // 页面导航：网络优先，失败回退缓存，保证离线可用
+  // 页面导航：网络优先，失败回退缓存（离线可用）
   if (req.mode === "navigate") {
     e.respondWith(
       fetch(req)
@@ -47,7 +47,7 @@ self.addEventListener("fetch", e => {
     return;
   }
 
-  // 静态资源：缓存优先，网络兜底并回写缓存
+  // 静态资源：缓存优先，网络兜底并回写
   e.respondWith(
     caches.match(req).then(hit => {
       if (hit) return hit;
