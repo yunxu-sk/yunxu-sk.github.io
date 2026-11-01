@@ -71,8 +71,8 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 }
 .glass::before,.surface::before,.chip::before,.btn::before{
   content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
-  backdrop-filter:blur(10px) saturate(1.9);
-  -webkit-backdrop-filter:blur(10px) saturate(1.9);
+  backdrop-filter:blur(8px) saturate(1.9);
+  -webkit-backdrop-filter:blur(8px) saturate(1.9);
   filter:url(#lgv);
 }
 .glass::after,.surface::after,.btn::after{
@@ -83,35 +83,35 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 .glass::after{background:linear-gradient(180deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 30%)}
 
 .glass{
-  background:linear-gradient(165deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.10) 100%);
+  background:linear-gradient(165deg, rgba(255,255,255,.36) 0%, rgba(255,255,255,.08) 100%);
   box-shadow:var(--shadow);
 }
 .surface{
-  background:linear-gradient(165deg, rgba(255,255,255,.36), rgba(255,255,255,.08));
+  background:linear-gradient(165deg, rgba(255,255,255,.30), rgba(255,255,255,.06));
   border-radius:var(--r-md);
   box-shadow:var(--shadow-soft);
 }
 .chip{
   font-size:12.5px;padding:8px 14px;border-radius:999px;
-  background:rgba(255,255,255,.24);color:var(--ink-soft);
+  background:rgba(255,255,255,.20);color:var(--ink-soft);
   transition:all .18s var(--ease);white-space:nowrap;
 }
-.chip.on{background:rgba(36,42,53,.4);border-color:transparent;color:#fff;font-weight:600;box-shadow:0 8px 18px -8px rgba(36,42,53,.45)}
-.chip.on::before{backdrop-filter:blur(3px) saturate(1.3);-webkit-backdrop-filter:blur(3px) saturate(1.3);filter:none}
+.chip.on{background:rgba(36,42,53,.38);border-color:transparent;color:#fff;font-weight:600;box-shadow:0 8px 18px -8px rgba(36,42,53,.45)}
+.chip.on::before{backdrop-filter:blur(2px) saturate(1.3);-webkit-backdrop-filter:blur(2px) saturate(1.3);filter:none}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
   padding:11px 14px;border-radius:14px;font-size:13.5px;font-weight:600;
-  background:rgba(255,255,255,.28);color:var(--ink-soft);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 8px 18px -12px rgba(70,100,160,.24);
+  background:rgba(255,255,255,.24);color:var(--ink-soft);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 8px 18px -12px rgba(70,100,160,.22);
   transition:transform .12s var(--ease), opacity .15s, background .18s;
 }
 .btn:active{transform:scale(.97)}
 .btn.primary{
-  background:rgba(255,255,255,.50);color:var(--ink);border-color:rgba(255,255,255,.72);
+  background:rgba(255,255,255,.44);color:var(--ink);border-color:rgba(255,255,255,.72);
   font-weight:700;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.8), 0 10px 22px -12px rgba(47,54,68,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8), 0 10px 22px -12px rgba(47,54,68,.26);
 }
-.btn.ghost{background:rgba(255,255,255,.14)}
+.btn.ghost{background:rgba(255,255,255,.12)}
 .btn.danger{color:var(--danger)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 
@@ -123,9 +123,9 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 }
 .modal.sheet::before{
   content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;
-  background:linear-gradient(165deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,.14) 100%);
-  backdrop-filter:blur(14px) saturate(1.9);
-  -webkit-backdrop-filter:blur(14px) saturate(1.9);
+  background:linear-gradient(165deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.10) 100%);
+  backdrop-filter:blur(12px) saturate(1.9);
+  -webkit-backdrop-filter:blur(12px) saturate(1.9);
   filter:url(#lgv);
 }
 .modal.sheet::after{
@@ -143,10 +143,10 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
   padding:32px 26px;text-align:center;
 }
 .brand-mark{
-  width:64px;height:64px;border-radius:20px;margin-bottom:18px;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(160deg, rgba(255,255,255,.85), rgba(255,255,255,.45));
-  border:1px solid var(--line);box-shadow:var(--shadow);
+  position:relative;width:84px;height:84px;border-radius:26px;margin-bottom:18px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:linear-gradient(160deg, rgba(255,255,255,.5), rgba(255,255,255,.2));
+  border:1px solid rgba(255,255,255,.6);box-shadow:var(--shadow);
   color:var(--ink-soft);
 }
 .name-screen h1{font-size:22px;font-weight:700;letter-spacing:.02em;margin-bottom:6px}
@@ -356,13 +356,19 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 }
 .mask.show{display:flex}
 .modal{
+  position:relative;isolation:isolate;overflow:hidden;
   width:100%;max-width:420px;max-height:82vh;overflow-y:auto;
-  border-radius:24px;padding:20px 18px;
-  background:linear-gradient(170deg, rgba(255,255,255,.5), rgba(255,255,255,.26));
-  border:1px solid rgba(255,255,255,.65);
-  backdrop-filter:blur(40px) saturate(1.7);-webkit-backdrop-filter:blur(40px) saturate(1.7);
-  box-shadow:0 30px 70px -20px rgba(50,70,110,.42), inset 0 1px 0 rgba(255,255,255,.75);
+  border-radius:24px;padding:22px 18px;
+  background:linear-gradient(170deg, rgba(255,255,255,.45), rgba(255,255,255,.16));
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:0 30px 70px -20px rgba(50,70,110,.35), inset 0 1px 0 rgba(255,255,255,.7);
 }
+.modal::before{
+  content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;
+  backdrop-filter:blur(22px) saturate(1.8);-webkit-backdrop-filter:blur(22px) saturate(1.8);
+  filter:url(#lgv);
+}
+.modal>*{position:relative;z-index:1}
 .modal h3{font-size:16px;font-weight:700;margin-bottom:14px;text-align:center;position:relative}
 .modal-x{
   position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:10px;
@@ -392,14 +398,14 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 /* 分组列表卡片（统一等高行） */
 .set-list{
   border-radius:14px;margin-bottom:4px;overflow:hidden;
-  background:rgba(255,255,255,.26);border:1px solid var(--line);
+  background:rgba(255,255,255,.20);border:1px solid var(--line);
 }
 .set-list .set-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);margin-bottom:0}
 .set-list .set-row:last-child{border-bottom:none}
 .set-list .set-row>span{flex:0 0 56px;font-size:13px;color:var(--ink-soft)}
 .set-list .set-row input[type=text],.set-list .set-row input:not([type]){
   flex:1;font-size:13px;padding:6px 10px;border-radius:9px;
-  background:rgba(255,255,255,.30);border:1px solid var(--line);min-width:0;
+  background:rgba(255,255,255,.24);border:1px solid var(--line);min-width:0;
 }
 .set-list .set-row input[type=color]{width:34px;height:30px;border:none;border-radius:8px;background:none;padding:0;flex-shrink:0}
 .set-list .row-btn{
@@ -423,7 +429,7 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 .set-label:first-of-type{margin-top:4px}
 .set-field{
   width:100%;font-size:14px;padding:13px 16px;border-radius:16px;min-height:48px;
-  background:rgba(255,255,255,.30);border:1px solid rgba(255,255,255,.6);
+  background:rgba(255,255,255,.24);border:1px solid rgba(255,255,255,.6);
   box-shadow:0 6px 18px -10px rgba(60,80,120,.14), inset 0 1px 0 rgba(255,255,255,.65);
   color:var(--ink);
 }
@@ -437,12 +443,16 @@ img{display:block;-webkit-touch-callout:none;-webkit-user-select:none;user-selec
 .set-pill{
   width:100%;display:flex;align-items:center;justify-content:center;
   min-height:48px;padding:13px 16px;border-radius:16px;font-size:14px;font-weight:600;
-  background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);color:var(--ink-soft);
-  box-shadow:0 4px 14px -10px rgba(60,80,120,.2), inset 0 1px 0 rgba(255,255,255,.55);
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.5);color:var(--ink-soft);
+  box-shadow:0 4px 14px -10px rgba(60,80,120,.18), inset 0 1px 0 rgba(255,255,255,.55);
   transition:transform .12s var(--ease), background .18s;
 }
 .set-pill:active{transform:scale(.98);background:rgba(255,255,255,.3)}
 .set-pill.danger{color:var(--danger)}
+.set-pill.ghost-pill{background:rgba(255,255,255,.12);font-size:12.5px;min-height:40px;padding:10px 12px;color:var(--ink-soft)}
+.bg-layer{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;display:none}
+.bg-layer.on{display:block}
+.bg-layer::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(238,243,251,.35), rgba(230,236,247,.35))}
 .set-grid2{display:flex;gap:10px}
 .set-grid2 .set-pill{flex:1}
 .set-stack{display:flex;flex-direction:column;gap:11px;margin-top:16px}
@@ -507,19 +517,21 @@ input.lazy{background:rgba(228,233,241,.5)}
 </style>
 </head>
 <body>
+<div class="bg-layer" id="loginBgLayer"></div>
+<div class="bg-layer" id="mainBgLayer"></div>
 <div class="app">
   <div class="shell-wrap">
 
     <!-- 命名屏 -->
     <div class="glass name-screen" id="nameScreen">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+      <div class="brand-mark" id="brandMark">
+        <svg id="brandIcon" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        <img id="brandAvatarImg" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit" alt="">
       </div>
       <h1 id="screenTitle">私调记录</h1>
       <p class="sub" id="screenTip">请输入您的圈名</p>
       <input type="text" id="nameInput" maxlength="20" autocomplete="off">
       <button class="btn primary" id="confirmName">确定</button>
-      <p class="foot">数据仅保存在本机浏览器 · 支持导出备份</p>
     </div>
 
     <!-- 主壳 -->
@@ -689,12 +701,24 @@ input.lazy{background:rgba(228,233,241,.5)}
       <input class="set-field" type="text" id="cTextHex" value="#2a2f38">
     </div>
 
+    <label class="set-label">自定义背景图</label>
+    <div class="set-grid2">
+      <button class="set-pill" id="btnPickLoginBg">上传欢迎页背景</button>
+      <button class="set-pill" id="btnPickMainBg">上传主页背景</button>
+    </div>
+    <div class="set-grid2" style="margin-top:8px">
+      <button class="set-pill ghost-pill" id="btnClearLoginBg">清除欢迎页背景</button>
+      <button class="set-pill ghost-pill" id="btnClearMainBg">清除主页背景</button>
+    </div>
+    <input type="file" id="loginBgInput" accept="image/*" style="display:none">
+    <input type="file" id="mainBgInput" accept="image/*" style="display:none">
+
     <div class="set-stack">
+      <button class="set-pill" id="btnSwitchMode">切换为门槛记录模式</button>
       <button class="set-pill" id="btnResetTheme">恢复默认外观</button>
       <button class="set-pill" id="btnExportJson">导出备份（JSON）</button>
       <button class="set-pill" id="btnImportJson">导入备份文件</button>
       <button class="set-pill" id="btnExportCsv">导出记账表格（CSV）</button>
-      <button class="set-pill" id="btnSwitchMode">切换为门槛记录模式</button>
       <button class="set-pill danger" id="btnClearAll">清空所有内容</button>
       <button class="set-pill" id="settingsClose" style="font-weight:700">关闭</button>
     </div>
@@ -1080,6 +1104,17 @@ function applyTheme(t){
   $("cBg2").value=bg2; $("cBg2Hex").value=bg2;
   $("cText").value=text; $("cTextHex").value=text;
   $("subtitleInput").value=t.subtitle||"本机保存 · 可备份";
+  // 自定义背景图
+  const ll=$("loginBgLayer"), ml=$("mainBgLayer");
+  if (t.loginBg){ ll.style.backgroundImage="url("+t.loginBg+")"; } else { ll.style.backgroundImage=""; }
+  if (t.mainBg){ ml.style.backgroundImage="url("+t.mainBg+")"; } else { ml.style.backgroundImage=""; }
+  syncBgLayers();
+}
+function syncBgLayers(){
+  const onName = $("nameScreen").style.display !== "none" && !$("nameScreen").classList.contains("shell");
+  const shellShown = $("shell").classList.contains("show");
+  $("loginBgLayer").classList.toggle("on", !shellShown);
+  $("mainBgLayer").classList.toggle("on", shellShown);
 }
 function hexNorm(v){
   v=String(v||"").trim(); if(!v) return null; if(v[0]!=="#") v="#"+v;
@@ -1634,6 +1669,14 @@ function bind(){
   $("btnPickIcon").onclick = ()=>$("iconInput").click();
   $("iconInput").onchange = async e=>{ const f=e.target.files[0]; if(!f)return; const b=await compressImage(f,100,0.85); await saveProfile({settingsIcon:b}); renderIcon(b); };
 
+  // 自定义背景图（欢迎页 / 主页）
+  $("btnPickLoginBg").onclick = ()=>$("loginBgInput").click();
+  $("btnPickMainBg").onclick = ()=>$("mainBgInput").click();
+  $("loginBgInput").onchange = async e=>{ const f=e.target.files[0]; if(!f)return; const b=await compressImage(f,1080,0.75); const p=await loadProfile(); const th=Object.assign({},p.theme,{loginBg:b}); await saveProfile({theme:th}); applyTheme(th); appAlert("欢迎页背景已更新"); };
+  $("mainBgInput").onchange = async e=>{ const f=e.target.files[0]; if(!f)return; const b=await compressImage(f,1080,0.75); const p=await loadProfile(); const th=Object.assign({},p.theme,{mainBg:b}); await saveProfile({theme:th}); applyTheme(th); appAlert("主页背景已更新"); };
+  $("btnClearLoginBg").onclick = async ()=>{ const p=await loadProfile(); const th=Object.assign({},p.theme); delete th.loginBg; await saveProfile({theme:th}); applyTheme(th); appAlert("已清除欢迎页背景"); };
+  $("btnClearMainBg").onclick = async ()=>{ const p=await loadProfile(); const th=Object.assign({},p.theme); delete th.mainBg; await saveProfile({theme:th}); applyTheme(th); appAlert("已清除主页背景"); };
+
   // 颜色
   const bindColor = (c,h)=>{ $(c).oninput=()=>{ $(h).value=$(c).value; saveTheme(); }; $(h).onchange=()=>{ const n=hexNorm($(h).value); if(n){$(c).value=n;$(h).value=n;saveTheme();} }; };
   bindColor("cBg1","cBg1Hex"); bindColor("cBg2","cBg2Hex"); bindColor("cText","cTextHex");
@@ -1773,6 +1816,10 @@ function renderAvatar(b64){
   const im=$("avatarImg"), ph=$("avatarBox").querySelector("svg");
   if (b64){ im.src=b64; im.style.display="block"; if(ph) ph.style.display="none"; }
   else { im.style.display="none"; if(ph) ph.style.display=""; }
+  // 欢迎屏 brand-mark 同步显示头像
+  const bm=$("brandAvatarImg"), bi=$("brandIcon");
+  if (b64){ bm.src=b64; bm.style.display="block"; if(bi) bi.style.display="none"; }
+  else { bm.style.display="none"; if(bi) bi.style.display=""; }
 }
 function renderIcon(b64){
   const im=$("settingsIconImg");
@@ -1784,6 +1831,7 @@ function enterShell(){
   $("shell").classList.add("show");
   applyModeLabels();
   renderHome();
+  syncBgLayers();
 }
 
 /* ================= 初始化 ================= */
